@@ -1,0 +1,144 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Prebuilt List</h4>
+                <h6>Manage your Prebuilt</h6>
+                <h7></h7>
+            </div>
+            <div class="page-btn">
+                <a href="{% url 'preBuilt' %}" class="btn btn-added"><img
+                        src="{% static 'assets/img/icons/plus.svg' %}" alt="img" class="me-1">Add New Prebuilt</a>
+            </div>
+        </div>
+        {% if added %}
+        <h3 style="color: blue; font-size: 16px;"><span style="color: black;">PreBuilt </span> '{{added}}' <span
+                style="color: black;"> is </span><span style="color: green;">Added</span></h3>
+        {% endif %}
+        {% if edited %}
+        <h3 style="color: blue; font-size: 16px;"><span style="color: black;">PreBuilt </span> '{{edited}}' <span
+                style="color: black;"> is </span><span style="color: green;">Modified</span></h3>
+        {% endif %}
+        {% if pro_deleted %}
+        <h3 style="color: blue; font-size: 16px;"><span style="color: black;">PreBuilt </span>'{{pro_deleted}}' <span
+                style="color: black;"> is </span><span style="color: red;">Deleted</span></h3>
+        {% endif %}
+        <div class="card">
+            <div class="card-body">
+                <div class="table-top">
+                    <div class="search-set">
+                        <div class="search-input">
+                            <a class="btn btn-searchset"><img src="{% static 'assets/img/icons/search-white.svg' %}"
+                                    alt="img"></a>
+                        </div>
+                    </div>
+                    <!-- <div class="wordset">
+                        <ul>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img
+                                        src="{% static 'assets/img/icons/pdf.svg' %}" alt="img"></a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img
+                                        src="{% static 'assets/img/icons/excel.svg' %}" alt="img"></a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img
+                                        src="{% static 'assets/img/icons/printer.svg' %}" alt="img"></a>
+                            </li>
+                        </ul>
+                    </div> -->
+                </div>
+                <div class="table-responsive">
+                    {% csrf_token %}
+                    <table class="table datanew">
+                        <thead>
+                            <tr>
+                                <th>Prebuilt Name</th>
+                                <th>Prebuilt Code</th>
+                                <th>CPU</th>
+                                <th>Monitor</th>
+                                <th>MotherBoard</th>
+                                <th>GPU</th>
+                                <th>SSD</th>
+                                <th>ROM</th>
+                                <th>RAM</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>&emsp;&emsp;&emsp;&emsp;Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pre in prebuilts %}
+
+                            <tr>
+                                <td class="productimgname">
+                                    <a href="#" class="product-img">
+                                        <img src="{{pre.product_image.url}}">
+                                    </a>
+                                    <a href="#">{{pre.modal_name}}</a>
+                                </td>
+                                <td>{{pre.modal_code}}</td>
+                                <td>{{pre.modal_cpu}}</td>
+                                <td>{{pre.modal_monitor}}</td>
+                                <td>{{pre.modal_motherbrd}}</td>
+                                <td>{{pre.modal_gpu}}</td>
+                                <td>{{pre.modal_ssd}}</td>
+                                <td>{{pre.modal_storage_rom}}</td>
+                                <td>{{pre.modal_ram}}</td>
+                                <td>{{pre.price}}</td>
+                                <td>
+                                    {% if pre.status == 1 %}
+                                    <button class="btn btn-sm btn-success status" type="button"
+                                        value="{{pre.id}}">Active</button>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-danger status" type="button"
+                                        value="{{pre.id}}">NotActv</button>
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    <a class="me-3" href="{% url 'viewPrebuiltDetails' pre.id %}">
+                                        <img src="{% static 'assets/img/icons/eye.svg' %}" alt="img">
+                                    </a>
+                                    <a class="me-3" href="{% url 'editPreBuilt' pre.id %}">
+                                        <img src="{% static 'assets/img/icons/edit.svg' %}" alt="img">
+                                    </a>
+                                    <a class="me-3" href="{% url 'deletePreBuilt' pre.id %}">
+                                        <img src="{% static 'assets/img/icons/delete.svg' %}" alt="img">
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $('body').on('click', 'button.status', function (e) {
+        $this = $(this);
+        if ($(this).attr('value')) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'pre_actdea' %}",
+                data: {
+                    activedea: $(this).attr('value'),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('h7').html(data.success);
+                    $this.html(data.html).removeClass('btn-success btn-danger').addClass(data.class);
+                    // location.reload();
+                }
+            });
+        }
+    });
+</script>
+{% endblock body %}

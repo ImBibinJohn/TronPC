@@ -1,0 +1,787 @@
+{% extends "UserTemplates/dash.html" %} {% block body %}{% load static %}
+<style>
+  .error {
+    color: red;
+  }
+
+  input#dob {
+    display: inline-block;
+    position: relative;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+  }
+</style>
+<div id="account-register" class="container">
+  <ul class="breadcrumb">
+    <li>
+      <a href="#">Home</a>
+    </li>
+    <li>
+      <a href="#">Account</a>
+    </li>
+    <li>
+      <a href="{% url 'register' %}">Register</a>
+    </li>
+  </ul>
+  {% block list %}
+
+  {% endblock list %}
+  {% if username_taken %}
+  <div class="account-content">
+    <div class="box-content">
+      <div class="list-group">
+        <h3 class="toggled">Account</h3>
+        <ul class="list-unstyled">
+          <li>
+            <a href="{% url 'login' %}" class="list-group-item">Login</a>
+          </li>
+          <li>
+            <a href="{% url 'register' %}" class="list-group-item">Register</a>
+          </li>
+          <li>
+            <a href="#" class="list-group-item">Forgotten Password</a>
+          </li>
+          <li>
+            <a href="#" class="list-group-item">My Account</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="box-content">
+      <h3 class="box-content toggled">Information</h3>
+      <ul class="list-unstyled">
+        <li>
+          <a href="#">About Us</a>
+        </li>
+        <li>
+          <a href="#">Delivery Information</a>
+        </li>
+        <li>
+          <a href="#">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="#">Terms &amp; Conditions</a>
+        </li>
+        <li>
+          <a href="#">Contact Us</a>
+        </li>
+        <li>
+          <a href="#">Site Map</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </aside>
+
+  <div id="content" class="col-sm-9">
+    <h1>Register Account</h1>
+    <p>
+      If you already have an account with us, please login at the
+      <a href="{% url 'login' %}" style="color: blue;">login page</a>.
+    </p>
+    <form action="{% url 'uregister' %}" method="post" enctype="multipart/form-data" class="ajax form-horizontal"
+      name="Form">
+      {% csrf_token %}
+      <fieldset id="account">
+        <legend>Your Personal Details</legend>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">UserName</label>
+          <div class="col-sm-10">
+            <input type="text" name="username" value="{{username}}" placeholder="username" id="username"
+              class="form-control" />
+            <div class="error">{{username_taken}}</div>
+            <div class="error" id="usernameErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">First Name</label>
+          <div class="col-sm-10">
+            <input type="text" name="firstname" value="{{firstname}}" placeholder="First Name" id="firstname"
+              class="form-control" />
+            <div class="error" id="firstnameErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Last Name</label>
+          <div class="col-sm-10">
+            <input type="text" name="lastname" value="{{lastname}}" placeholder="Last Name" id="lastname"
+              class="form-control" />
+            <div class="error" id="lastnameErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">E-mail</label>
+          <div class="col-sm-10">
+            <input type="text" name="email" value="{{email}}" placeholder="email" id="email" class="form-control" />
+            <div class="error" id="emailErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">DOB</label>
+          <div class="col-sm-10">
+            <input type="date" name="dob" value="{{dob}}" placeholder="Date-of-Birth" id="dob" class="form-control" />
+            <div class="error" id="dobErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Gender</label>
+          <div class="col-sm-10">
+            <select name="gen" value="{{gen}}" id="gen" class="form-control">
+              <option selected="true">{{gen}}</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+            <div class="error" id="genErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" name="addr" value="{{addr}}" placeholder="Address" id="addr" class="form-control" />
+            <div class="error" id="addrErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Contact</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" aria-label="contact" aria-describedby="basic-addon1" name="contact"
+              id="contact" maxlength="10" oninput="validateInputcontact(this)" placeholder="enter contact Number...">
+            <div class="error" id="contactErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">State</label>
+          <div class="col-sm-10">
+            <input type="text" name="state" value="Kerala" hidden />
+            <input type="text" value="Kerala" placeholder="Kerala" id="input-state" class="form-control" disabled />
+            <div class="error" id="stateErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">District</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="dis" value="{{dis}}" id="dis">
+              <option selected="true">{{dis}}</option>
+              <option value="Alappuzha">Alappuzha</option>
+              <option value="Ernakulam">Ernakulam</option>
+              <option value="Idukki">Idukki</option>
+              <option value="Kannur">Kannur</option>
+              <option value="Kasaragod">Kasaragod</option>
+              <option value="Kollam">Kollam</option>
+              <option value="Kottayam">Kottayam</option>
+              <option value="Kozhikode">Kozhikode</option>
+              <option value="Malappuram">Malappuram</option>
+              <option value="Palakkad">Palakkad</option>
+              <option value="Pathanamthitta">Pathanamthitta</option>
+              <option value="Trivandrum">Trivandrum</option>
+              <option value="Thrissur">Thrissur</option>
+              <option value="Wayanad">Wayanad</option>
+            </select>
+            <div class="error" id="disErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">City</label>
+          <div class="col-sm-10">
+            <input type="text" name="city" value="{{city}}" placeholder="city" id="input-city" class="form-control" />
+            <div class="error" id="cityErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Postal</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" aria-label="Price" aria-describedby="basic-addon1" name="pos"
+              value="{{pos}}" id="pos" maxlength="6" oninput="validateInput(this)" placeholder="postal code">
+            <div class="error" id="posErr"></div>
+          </div>
+
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Your Password</legend>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="input-password">Password</label>
+          <div class="col-sm-10">
+            <input type="password" name="password" placeholder="Password" id="password" class="form-control" />
+            <div class="error" id="pass1Err"></div>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="input-confirm">Password Confirm</label>
+          <div class="col-sm-10">
+            <input type="password" name="confirm" placeholder="Password Confirm" id="confirm" class="form-control" />
+            <div class="error" id="pass2Err"></div>
+            <div class="error" id="pass3Err"></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="buttons">
+        <div class="text-right">
+          <input type="submit" value="Continue" class="btn btn-primary" />
+        </div>
+      </div>
+    </form>
+  </div>
+  {% elif email_taken %}
+
+  <div class="account-content">
+    <div class="box-content">
+      <div class="list-group">
+        <h3 class="toggled">Account</h3>
+        <ul class="list-unstyled">
+          <li>
+            <a href="{% url 'login' %}" class="list-group-item">Login</a>
+          </li>
+          <li>
+            <a href="{% url 'register' %}" class="list-group-item">Register</a>
+          </li>
+          <li>
+            <a href="#" class="list-group-item">Forgotten Password</a>
+          </li>
+          <li>
+            <a href="#" class="list-group-item">My Account</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="box-content">
+      <h3 class="box-content toggled">Information</h3>
+      <ul class="list-unstyled">
+        <li>
+          <a href="#">About Us</a>
+        </li>
+        <li>
+          <a href="#">Delivery Information</a>
+        </li>
+        <li>
+          <a href="#">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="#">Terms &amp; Conditions</a>
+        </li>
+        <li>
+          <a href="#">Contact Us</a>
+        </li>
+        <li>
+          <a href="#">Site Map</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </aside>
+
+  <div id="content" class="col-sm-9">
+    <h1>Register Account</h1>
+    <p>
+      If you already have an account with us, please login at the
+      <a href="{% url 'login' %}" style="color: blue;">login pages</a>.
+    </p>
+
+    <form action="{% url 'uregister' %}" method="post" enctype="multipart/form-data" class="ajax form-horizontal"
+      name="Form">
+      {% csrf_token %}
+      <fieldset id="account">
+        <legend>Your Personal Details</legend>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">UserName</label>
+          <div class="col-sm-10">
+            <input type="text" name="username" value="{{username}}" placeholder="username" id="username"
+              class="form-control" />
+            <div class="error" id="usernameErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">First Name</label>
+          <div class="col-sm-10">
+            <input type="text" name="firstname" value="{{firstname}}" placeholder="First Name" id="firstname"
+              class="form-control" />
+            <div class="error" id="firstnameErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Last Name</label>
+          <div class="col-sm-10">
+            <input type="text" name="lastname" value="{{lastname}}" placeholder="Last Name" id="lastname"
+              class="form-control" />
+            <div class="error" id="lastnameErr"></div>
+          </div>
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">E-mail</label>
+          <div class="col-sm-10">
+            <input type="text" name="email" value="{{email}}" placeholder="email" id="email" class="form-control" />
+            <div class="error">{{email_taken}}</div>
+            <div class="error" id="emailErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">DOB</label>
+          <div class="col-sm-10">
+            <input type="date" name="dob" value="{{dob}}" placeholder="Date-of-Birth" id="dob" class="form-control" />
+            <div class="error" id="dobErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Gender</label>
+          <div class="col-sm-10">
+            <select name="gen" value="{{gen}}" id="gen" class="form-control">
+              <option selected="true">{{gen}}</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+            <div class="error" id="genErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" name="addr" value="{{addr}}" placeholder="Address" id="addr" class="form-control" />
+            <div class="error" id="addrErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Contact</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" aria-label="contact" aria-describedby="basic-addon1" name="contact"
+              id="contact" maxlength="10" oninput="validateInputcontact(this)" placeholder="enter contact Number...">
+            <div class="error" id="contactErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">State</label>
+          <div class="col-sm-10">
+            <input type="text" name="state" value="Kerala" hidden />
+            <input type="text" value="Kerala" placeholder="Kerala" id="input-state" class="form-control" disabled />
+            <div class="error" id="stateErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">District</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="dis" value="{{dis}}" id="dis">
+              <option selected="true">{{dis}}</option>
+              <option value="Alappuzha">Alappuzha</option>
+              <option value="Ernakulam">Ernakulam</option>
+              <option value="Idukki">Idukki</option>
+              <option value="Kannur">Kannur</option>
+              <option value="Kasaragod">Kasaragod</option>
+              <option value="Kollam">Kollam</option>
+              <option value="Kottayam">Kottayam</option>
+              <option value="Kozhikode">Kozhikode</option>
+              <option value="Malappuram">Malappuram</option>
+              <option value="Palakkad">Palakkad</option>
+              <option value="Pathanamthitta">Pathanamthitta</option>
+              <option value="Trivandrum">Trivandrum</option>
+              <option value="Thrissur">Thrissur</option>
+              <option value="Wayanad">Wayanad</option>
+            </select>
+            </select>
+            <div class="error" id="disErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">City</label>
+          <div class="col-sm-10">
+            <input type="text" name="city" value="{{city}}" placeholder="city" id="input-city" class="form-control" />
+            <div class="error" id="cityErr"></div>
+          </div>
+
+        </div>
+        <div class="form-group required box">
+          <label class="col-sm-2 control-label">Postal</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" aria-label="Price" aria-describedby="basic-addon1" name="pos"
+              value="{{pos}}" id="pos" maxlength="6" oninput="validateInput(this)" placeholder="postal code">
+            <div class="error" id="posErr"></div>
+          </div>
+
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Your Password</legend>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="input-password">Password</label>
+          <div class="col-sm-10">
+            <input type="password" name="password" placeholder="Password" id="password" class="form-control" />
+            <div class="error" id="pass1Err"></div>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="input-confirm">Password Confirm</label>
+          <div class="col-sm-10">
+            <input type="password" name="confirm" placeholder="Password Confirm" id="confirm" class="form-control" />
+            <div class="error" id="pass2Err"></div>
+            <div class="error" id="pass3Err"></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="buttons">
+        <div class="text-right">
+          <input type="submit" value="Continue" class="btn btn-primary" />
+        </div>
+      </div>
+    </form>
+
+    {% else %}
+
+    <div class="account-content">
+      <div class="box-content">
+        <div class="list-group">
+          <h3 class="toggled">Account</h3>
+          <ul class="list-unstyled">
+            <li>
+              <a href="{% url 'login' %}" class="list-group-item">Login</a>
+            </li>
+            <li>
+              <a href="{% url 'register' %}" class="list-group-item">Register</a>
+            </li>
+            <li>
+              <a href="#" class="list-group-item">Forgotten Password</a>
+            </li>
+            <li>
+              <a href="#" class="list-group-item">My Account</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="box-content">
+        <h3 class="box-content toggled">Information</h3>
+        <ul class="list-unstyled">
+          <li>
+            <a href="#">About Us</a>
+          </li>
+          <li>
+            <a href="#">Delivery Information</a>
+          </li>
+          <li>
+            <a href="#">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#">Terms &amp; Conditions</a>
+          </li>
+          <li>
+            <a href="#">Contact Us</a>
+          </li>
+          <li>
+            <a href="#">Site Map</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    </aside>
+
+    <div id="content" class="col-sm-9">
+      <h1>Register Account</h1>
+      <p>
+        If you already have an account with us, please login at the
+        <a href="{% url 'login' %}" style="color: blue;">login page</a>.
+      </p>
+
+      <form action="{% url 'uregister' %}" method="post" enctype="multipart/form-data" class="ajax form-horizontal"
+        name="Form">
+        {% csrf_token %}
+        <fieldset id="account">
+          <legend>Your Personal Details</legend>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">UserName</label>
+            <div class="col-sm-10">
+              <input type="text" name="username" placeholder="enter username..." id="username" class="form-control" />
+              <div class="error" id="usernameErr"></div>
+            </div>
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">First Name</label>
+            <div class="col-sm-10">
+              <input type="text" name="firstname" placeholder="enter first name..." id="firstname"
+                class="form-control" />
+              <div class="error" id="firstnameErr"></div>
+            </div>
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">Last Name</label>
+            <div class="col-sm-10">
+              <input type="text" name="lastname" placeholder="enter last name..." id="lastname" class="form-control" />
+              <div class="error" id="lastnameErr"></div>
+            </div>
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">E-mail</label>
+            <div class="col-sm-10">
+              <input type="text" name="email" placeholder="enter Email..." id="email" class="form-control" />
+              <div class="error" id="emailErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">DOB</label>
+            <div class="col-sm-10">
+              <input type="date" name="dob" placeholder="Date-of-Birth" id="dob" class="form-control" />
+              <div class="error" id="dobErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">Gender</label>
+            <div class="col-sm-10">
+              <select name="gen" id="gen" class="form-control">
+                <option selected="true" disabled="disabled">--Choose Gender--</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
+              <div class="error" id="genErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">Address</label>
+            <div class="col-sm-10">
+              <input type="text" name="addr" placeholder="your address..." id="addr" class="form-control" />
+              <div class="error" id="addrErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">Contact</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" aria-label="contact" aria-describedby="basic-addon1"
+                name="contact" id="contact" maxlength="10" oninput="validateInputcontact(this)"
+                placeholder="enter contact Number...">
+              <div class="error" id="contactErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">State</label>
+            <div class="col-sm-10">
+              <input type="text" name="state" value="Kerala" hidden />
+              <input type="text" value="Kerala" placeholder="Kerala" id="input-state" class="form-control" disabled />
+              <div class="error" id="stateErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">District</label>
+            <div class="col-sm-10">
+              <select class="form-control" name="dis" id="dis">
+                <option selected="true" disabled="disabled">--Choose District--</option>
+                <option value="Alappuzha">Alappuzha</option>
+                <option value="Ernakulam">Ernakulam</option>
+                <option value="Idukki">Idukki</option>
+                <option value="Kannur">Kannur</option>
+                <option value="Kasaragod">Kasaragod</option>
+                <option value="Kollam">Kollam</option>
+                <option value="Kottayam">Kottayam</option>
+                <option value="Kozhikode">Kozhikode</option>
+                <option value="Malappuram">Malappuram</option>
+                <option value="Palakkad">Palakkad</option>
+                <option value="Pathanamthitta">Pathanamthitta</option>
+                <option value="Trivandrum">Trivandrum</option>
+                <option value="Thrissur">Thrissur</option>
+                <option value="Wayanad">Wayanad</option>
+              </select>
+              <div class="error" id="disErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">City</label>
+            <div class="col-sm-10">
+              <input type="text" name="city" placeholder="your city..." id="input-city" class="form-control" />
+              <div class="error" id="cityErr"></div>
+            </div>
+
+          </div>
+          <div class="form-group required box">
+            <label class="col-sm-2 control-label">Postal</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" aria-label="Price" aria-describedby="basic-addon1" name="pos"
+                id="pos" maxlength="6" oninput="validateInput(this)" placeholder="enter postal code...">
+              <div class="error" id="posErr"></div>
+            </div>
+
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Your Password</legend>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-password">Password</label>
+            <div class="col-sm-10">
+              <input type="password" name="password" placeholder="Password" id="password" class="form-control" />
+              <div class="error" id="pass1Err"></div>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-confirm">Password Confirm</label>
+            <div class="col-sm-10">
+              <input type="password" name="confirm" placeholder="Password Confirm" id="confirm" class="form-control" />
+              <div class="error" id="pass2Err"></div>
+              <div class="error" id="pass3Err"></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="buttons">
+          <div class="text-right">
+            <input type="submit" value="Continue" class="btn btn-primary" />
+          </div>
+        </div>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    function validateInputcontact(input) {
+      // Replace non-numeric and non-comma characters with empty string
+      input.value = input.value.replace(/[^0-9,]/g, '');
+
+      // Set inputmode and pattern based on input value
+      if (input.value.indexOf(',') === -1) {
+        input.inputMode = 'numeric';
+        input.pattern = '[0-9,]*';
+      } else {
+        input.inputMode = 'decimal';
+        input.pattern = '[0-9,]*\\.?[0-9]{0,2}';
+      }
+
+      // Limit the input to 10 characters
+      if (input.value.length > 10) {
+        input.value = input.value.substring(0, 10);
+      }
+    }
+
+    // Get the input field
+    var priceInput = document.getElementById("contact");
+    priceInput.addEventListener('input', function () {
+      validateInput(this);
+    });
+  </script>
+
+  <script>
+
+    function validateInput(input) {
+      // Replace non-numeric and non-comma characters with empty string
+      input.value = input.value.replace(/[^0-9,]/g, '');
+
+      // Set inputmode and pattern based on input value
+      if (input.value.indexOf(',') === -1) {
+        input.inputMode = 'numeric';
+        input.pattern = '[0-9,]*';
+      } else {
+        input.inputMode = 'decimal';
+        input.pattern = '[0-9,]*\\.?[0-9]{0,2}';
+      }
+    }
+    // Get the input field
+    var priceInput = document.getElementById("pos");
+  </script>
+
+  <script type="text/javascript">
+    $("body").on("submit", "form.ajax", function (e) {
+      e.preventDefault();
+
+      $form = $(this);
+      $url = $form.attr("action");
+      let regex = /^\S+@\S+\.\S+$/;
+      let regexmob = /^[1-9]\d{9}$/;
+      let regexpos = /^\d{6}$/;
+      let userspace = /\s/;
+      const passwordInput = document.Form.password;
+      const confirmInput = document.Form.confirm;
+
+      if (!$.trim(document.Form.username.value)) {
+        printError("usernameErr", "Please enter UserName");
+      } else if (userspace.test(document.Form.username.value)) {
+        printError("usernameErr", "Space Not allowed");
+      } else if (!$.trim(document.Form.firstname.value)) {
+        printError("firstnameErr", "Please enter firstname");
+      } else if (!$.trim(document.Form.lastname.value)) {
+        printError("lastnameErr", "Please enter lastname");
+      } else if (!$.trim(document.Form.email.value)) {
+        printError("emailErr", "Please enter your email");
+      } else if (regex.test(document.Form.email.value) === false) {
+        printError("emailErr", "Please enter a valid email");
+      } else if (!$.trim(document.Form.dob.value)) {
+        printError("dobErr", "Please enter Birthday");
+      } else if (document.Form.gen.value == "--Choose Gender--") {
+        printError("genErr", "Please Select Gender");
+      } else if (!$.trim(document.Form.addr.value)) {
+        printError("addrErr", "Please enter Address");
+      } else if (!$.trim(document.Form.contact.value)) {
+        printError("contactErr", "Please enter your mob number");
+      } else if (regexmob.test(document.Form.contact.value) === false) {
+        printError("contactErr", "Please enter a valid contact Number");
+      } else if (document.Form.dis.value == "--Choose District--") {
+        printError("disErr", "Please Choose your District");
+      } else if (!$.trim(document.Form.city.value)) {
+        printError("cityErr", "Please enter City");
+      } else if (!$.trim(document.Form.pos.value)) {
+        printError("posErr", "Please enter your Postal Code");
+      } else if (regexpos.test(document.Form.pos.value) === false) {
+        printError("posErr", "Please enter a valid Postal Code");
+      } else if (!$.trim(document.Form.password.value)) {
+        printError("pass1Err", "Please enter a Password");
+      } else if (!$.trim(document.Form.confirm.value)) {
+        printError("pass2Err", "Please confirm your password");
+      } else if (passwordInput.value.length < 6) {
+        printError("pass1Err", "Please enter atleast 6 characters");
+      } else if (confirmInput.value.length < 6) {
+        printError("pass2Err", "Please enter atleast 6 characters");
+      } else if (passwordInput.value !== confirmInput.value) {
+        printError("pass3Err", "Passwords do not match!");
+      } else if (!passwordInput.value.trim()) {
+        printError("pass1Err", "Please enter a password");
+      } else if (!confirmInput.value.trim()) {
+        printError("pass2Err", "Please confirm your password");
+      } else {
+        e.currentTarget.submit();
+      }
+
+    });
+
+    $("body").on("change keyup", "input,select,textarea", function (e) {
+      if ($.trim($(this).val())) {
+        $(this).nextAll("div.error").html("");
+      }
+    });
+    function printError(Id, Msg) {
+      document.getElementById(Id).innerHTML = Msg;
+    }
+
+  </script>
+
+  {% endblock %}

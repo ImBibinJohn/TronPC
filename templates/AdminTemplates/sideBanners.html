@@ -1,0 +1,195 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Side Banners Replace</h4>
+                <h6>Replace Side Banners</h6>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="cardhead">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Main Top Left Banner</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        {% if banners %}
+                                        {% for i in banners %}
+
+                                        {% if i.top_left_banner == "top_left_banner" %}
+                                        No banner to display
+                                        {% else %}
+                                        <div class="col-md-4 mb-2 mb-md-0">
+                                            <img src="{{i.top_left_banner.url}}" class="img-fluid" alt="image">
+                                            <a class="btn btn-danger" href="{% url 'delete_sideBanners' 1 %}">Delete</a>
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% else %}
+                                        No banner to display
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <form action="{% url 'add_sideBanners_form' 1 %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Replace Main Top Left Banner</label>
+
+                                    <div class="image-upload">
+                                        <input type="file" name="add_banner" required>
+                                        <div class="image-uploads">
+                                            <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                            <h4>Drag and drop a file to upload</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2">Replace</button>
+                                <a href="{% url 'productList' %}" class="btn btn-cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="cardhead">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Main Top Right Banner</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        <div class="row">
+    
+                                            {% if banners %}
+                                            {% for i in banners %}
+    
+                                            {% if i.top_right_banner == "top_right_banner" %}
+                                            No banner to display
+                                            {% else %}
+                                            <div class="col-md-4 mb-2 mb-md-0">
+                                                <img src="{{i.top_right_banner.url}}" class="img-fluid" alt="image">
+                                                <a class="btn btn-danger" href="{% url 'delete_sideBanners' 2 %}">Delete</a>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% else %}
+                                            No banner to display
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <form action="{% url 'add_sideBanners_form' 2 %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Replace Main Top Right Banner</label>
+                                    <div class="image-upload">
+                                        <input type="file" name="add_banner" required>
+                                        <div class="image-uploads">
+                                            <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                            <h4>Drag and drop a file to upload</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2">Replace</button>
+                                <a href="{% url 'productList' %}" class="btn btn-cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="cardhead">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Main Bottom Right Banner</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        <div class="row">
+    
+                                            {% if banners %}
+                                            {% for i in banners %}
+    
+                                            {% if i.bottom_right_banner == "bottom_right_banner" %}
+                                            No banner to display
+                                            {% else %}
+                                            <div class="col-md-4 mb-2 mb-md-0">
+                                                <img src="{{i.bottom_right_banner.url}}" class="img-fluid" alt="image">
+                                                <a class="btn btn-danger" href="{% url 'delete_sideBanners' 3 %}">Delete</a>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% else %}
+                                            No banner to display
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <form action="{% url 'add_sideBanners_form' 3 %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Replace Main Top Bottom Banner</label>
+                                    <div class="image-upload">
+                                        <input type="file" name="add_banner" required>
+                                        <div class="image-uploads">
+                                            <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                            <h4>Drag and drop a file to upload</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2">Replace</button>
+                                <a href="{% url 'productList' %}" class="btn btn-cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock body %}

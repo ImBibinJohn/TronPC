@@ -1,0 +1,706 @@
+{% extends "UserTemplates/dash.html" %} {% block body %}
+{% load static %}
+<script>
+  (function () {
+    window.onpageshow = function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+  })();
+</script>
+<div class="modal fade newsletter-popup" id="newsletter-popup">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="newsletter-wrap clearfix">
+          <div class="newsletter-content">
+            <div class="newsletter-content-innner">
+              <h3>Subscribe Newsletter</h3>
+              <p class="newsletter-desc">
+                To get instant updates about our new products and promos!
+              </p>
+              <form name="frmnewsletterpopup" id="frmnewsletterpopup" onsubmit="subscribe_popup();return false"
+                method="post">
+                <input type="email" class="newsletter_usr_popup_email" name="newsletter_usr_popup_email"
+                  id="newsletter_usr_popup_email" placeholder="Enter e-mail here..." required />
+                <button class="btn btn-default subscribe-btn" type="submit">
+                  Subscribe
+                </button>
+              </form>
+              <!-- newsletter notofication -->
+              <div class="newsletter-popup-message"></div>
+              <!-- newsletter notofication -->
+              <div class="newsletter-content-bottom">
+                <input type="checkbox" id="popup_dont_show_again" />
+                <label for="popup_dont_show_again">Don't show this popup again!</label>
+              </div>
+            </div>
+            <button type="button" class="newsletter-btn-close close" data-dismiss="modal" aria-label="Close">
+              <i class="icon-close"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function subscribe_popup() {
+    $.ajax({
+      type: "post",
+      url: "",
+      dataType: "html",
+      data: $("#frmnewsletterpopup").serialize(),
+      success: function (html) {
+        try {
+          eval(html);
+        } catch (e) { }
+      },
+    });
+  }
+  //-->
+</script>
+<script>
+
+  // check for validation
+  $(document).ready(function () {
+    $("#newsletter_usr_popup_email").keypress(function (e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        subscribe_popup();
+      }
+    });
+
+    //transition effect
+    if ($.cookie("showpopup") != 1) {
+      $("#newsletter-popup").modal("show");
+    }
+    $("#popup_dont_show_again").on("change", function () {
+      if ($.cookie("showpopup") != 1) {
+        $.cookie("showpopup", "1");
+      } else {
+        $.cookie("showpopup", "0");
+      }
+    });
+  });
+  //-->
+</script>
+
+{% block list %}
+
+{% endblock list %}
+
+<script>
+  $(document).ready(function () {
+    // 	setTestimonialCarousel();
+    // });
+    // function setTestimonialCarousel() {
+    const direct = $("html").attr("dir");
+    const items = 1;
+    $(".slideTestimonial").each(function () {
+      const sliderOptions = {
+        loop: false,
+        nav: true,
+        navText: [
+          '<i class="fa fa-caret-left"></i>',
+          '<i class="fa fa-caret-right"></i>',
+        ],
+        dots: false,
+        items: items,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        responsiveRefreshRate: 200,
+        responsive: {
+          0: { items: 1 },
+          1201: { items: 1 },
+        },
+      };
+
+      if (direct == "rtl") sliderOptions["rtl"] = true;
+      $(this).owlCarousel(sliderOptions);
+    });
+  });
+          //-->
+</script>
+{% for i in banners %}
+
+{% if i.top_left_banner == 'top_left_banner' %}
+{% else %}
+
+<div class="swiper-viewport">
+  <div id="banner0" class="swiper-container">
+    <div class="swiper-wrapper">
+
+
+      <!-- top_left_banner -->
+      <div class="swiper-slide">
+        <a href="#"><img src="{{i.top_left_banner.url}}" alt="Left Banner" class="img-responsive" /></a>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+{% endif %}
+
+{% endfor %}
+<script>
+
+  if ($("#banner0 .swiper-slide").length > 1) {
+    $("#banner0").swiper({
+      effect: "fade",
+      autoplay: 2500,
+      autoplayDisableOnInteraction: false,
+    });
+  }
+
+</script>
+
+<div class="box all-products special left-vertical-product">
+  <div class="box-heading">
+    <div class="box-content">
+      <div class="page-title toggled">
+        <h3>Special Products</h3>
+      </div>
+      <div class="block_box">
+        <div id="special-carousel" class="box-product vertical-carousel clearfix" data-items="1">
+          {% if specials %}
+
+          {% for special in specials %}
+
+          <div class="product-layout col-xs-12">
+            <div class="product-thumb transition clearfix">
+              <div class="image">
+                <a href="#">
+                  <img src="{{special.product_image.url}}" alt="iPhone" title="iPhone" class="img-responsive" />
+                  <img class="img-responsive hover-img" src="{{special.product_image.url}}" title="iPhone"
+                    alt="iPhone" />
+                </a>
+                <div class="sale-text">
+                  <span class="section-sale">On Sale!</span>
+                </div>
+              </div>
+              <div class="thumb-description clearfix">
+                <div class="caption">
+                  <h4 class="product-title">
+                    <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                  </h4>
+                  <p class="price">
+                    <span class="price-new">{{special.price}}</span>
+                    <!-- <span class="price-old">{{special.price}}</span> -->
+                  </p>
+                  <div class="rating">
+                    <span class="fa fa-stack"></span>
+                  </div>
+
+                  <a href="{% url 'add_to_cart_form' special.id %}" style="color: blue;">
+                    <u>ADD TO CART</u>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <center>
+            <h5>No Special Products</h5>
+          </center>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="news mt-30">
+  <div class="newsletterblock">
+    <div class="newsletter-form">
+      <div class="page-title">
+        <h3>Newsletter</h3>
+      </div>
+      <div class="block-content">
+        <div class="news-info">
+          <div class="news-dec">
+            <i class="icon-plane-3"></i>
+            <div class="title-text">Sign Up & Get News</div>
+            <div class="news-description">
+              Subscribe to our newsletters now and stay up to date with
+              new collections and exclusive offers.
+            </div>
+          </div>
+        </div>
+        <!-- newsletter box -->
+        <form name="frmnewsletter" id="frmnewsletter" onsubmit="subscribe();return false" method="post">
+          <div class="subscribe-form">
+            <input type="email" name="newsletter_usr_email" id="newsletter_usr_email" placeholder="Enter e-mail here..."
+              class="form-control input-lg inputNew txtemail" required />
+            <button type="submit" class="subscribe-btn">
+              Subscribe
+            </button>
+          </div>
+          <!-- newsletter notofication -->
+          <div class="newsletter-message"></div>
+          <!-- newsletter notofication -->
+        </form>
+        <!-- newsletter box -->
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+  //add
+  function subscribe() {
+    $.ajax({
+      type: "post",
+      url: "#",
+      dataType: "html",
+      data: $("#frmnewsletter").serialize(),
+      success: function (html) {
+        try {
+          eval(html);
+        } catch (e) { }
+      },
+    });
+  }
+
+  // check for validation
+  $(document).ready(function () {
+    $("#newsletter_usr_email").keypress(function (e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        subscribe();
+      }
+    });
+  });
+  //-->
+</script>
+</aside>
+
+<div id="content" class="col-sm-6">
+
+  <div class="slideshow">
+    <div class="swiper-viewport">
+      <div id="slideshow0" class="swiper-container">
+        <div class="swiper-wrapper">
+          {% for i in carousal %}
+          <div class="swiper-slide text-center Main-banner1">
+            <a href="#"><img src="{{i.carousal_home_main.url}}" alt="Main-banner1" class="img-responsive" /></a>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pager hidden">
+          <div class="swiper-button-prev">
+            <i class="fa fa-caret-left"></i>
+          </div>
+          <div class="swiper-button-next">
+            <i class="fa fa-caret-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper('#slideshow0', {
+      loop: true,
+      autoplay: {
+        delay: 3000, // Autoplay duration in milliseconds
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  </script>
+  <div class="box all-products latest">
+    <div class="box-heading">
+      <div class="box-content">
+        <div class="page-title toggled">
+          <h3>Specials</h3>
+        </div>
+        <div class="block_box row">
+          <div id="latest-carousel" class="box-product product-carousel clearfix" data-items="4">
+            {% if specials %}
+            {% for product in specials %}
+            <div class="product-content">
+              <div class="product-layout col-xs-12">
+                <div class="product-thumb transition clearfix">
+                  <div class="image">
+                    <div class="sale-text">
+                      <span class="section-sale" style="color: blue;">special!</span>
+                    </div>
+                    <a href="#">
+                      <img src="{{product.product_image.url}}" alt="Microwaves" title="Microwaves"
+                        class="img-responsive" />
+                      <img class="img-responsive hover-img" src="{{product.product_image.url}}" title="Microwaves"
+                        alt="Microwaves" />
+                    </a>
+                  </div>
+                  <div class="thumb-description clearfix">
+                    <div class="caption">
+                      <h4 class="product-title">
+                        <a href="{% url 'view' product.id %}">{{product.product_name}}</a>
+                      </h4>
+                      <p class="price">₹{{product.price}}</p>
+                      <div class="rating">
+                        <span class="fa fa-stack"></span>
+                      </div>
+
+                      <a href="{% url 'add_to_cart_form' product.id %}" style="color: blue;">
+                        <u>ADD TO CART</u>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h4 style="margin-left: 10%;">No Specials to show</h4>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box mblog section mt-30">
+    <div class="box-content">
+      <div class="page-title section">
+        <h3>From Our Blog</h3>
+      </div>
+      <div class="block_box row">
+        <div id="blogcarousel" class="blogs-block blog-carousel clearfix" data-items="2">
+
+          {% if blogs %}
+
+          {% for blog in blogs %}
+          <div class="blog-blocks product-layout col-xs-12">
+            <div class="item">
+              <object style="height: 390px; width: 640px">
+                <param name="movie" value="">
+                <param name="allowFullScreen" value="true">
+                <param name="allowScriptAccess" value="always"><embed
+                  src="http://www.youtube.com/v/{{blog.blog_clean_link}}?version=3" type="application/x-shockwave-flash"
+                  allowfullscreen="true" allowScriptAccess="always" width="421" height="237">
+              </object>
+              <div class="caption blog-description">
+                <div class="link_info">
+                  <h4 class="">
+                    <a>{{blog.blog_name}}</a>
+                  </h4>
+                  Description
+                  <div class="blog-text">
+                    <span>{{blog.blog_description}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <h4 style="margin-left: 5%;">No Blogs to show</h4>
+          {% endif %}
+        </div>
+      </div>
+    </div><br>
+    <!-- &#9655; -->
+    <a class="blog-read btn-default btn-danger" href="https://www.youtube.com/@tron_pc/featured">show more <img
+        src="{% static 'images/YouTube_icon.png' %}" width="30px" height="30px"
+        style="margin-top:-1%;position: relative;"></a>
+  </div>
+
+  <script>
+
+    $(document).ready(function () {
+      const direc = $("html").attr("dir");
+
+      $(".blog-carousel").each(function () {
+        if (
+          $(this).closest("#column-left").length == 0 &&
+          $(this).closest("#column-right").length == 0
+        ) {
+          $(this).addClass("owl-carousel owl-theme");
+          const items = $(this).data("items") || 2;
+          const sliderOptions = {
+            loop: false,
+            nav: true,
+            navText: [
+              '<i class="fa fa-caret-left"></i>',
+              '<i class="fa fa-caret-right"></i>',
+            ],
+            dots: false,
+            items: items,
+            responsiveRefreshRate: 200,
+            responsive: {
+              0: { items: 1 },
+              481: { items: items },
+            },
+          };
+          if (direc == "rtl") sliderOptions["rtl"] = true;
+          $(this).owlCarousel(sliderOptions);
+        }
+      });
+    });
+    //-->
+  </script>
+  <div class="box carousel brand" style="padding-bottom: 2%;">
+    <div class="page-title"><br>
+      <h3>Brand Logo</h3>
+    </div>
+    <div class="brand-main">
+      <div class="row">
+
+
+        <div class="swiper-viewport">
+          <div id="carousel0" class="swiper-container">
+            <div class="swiper-wrapper">
+              {% for brand in brands %}
+              <div class="swiper-slide col-sm-12">
+
+                <div class="text-center">
+
+                  <img src="{{brand.brand_image.url}}" alt="Starbucks" class="img-responsive m-auto" />
+
+                </div>
+
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="swiper-pagination carousel0"></div>
+          <div class="swiper-pager">
+            <div class="swiper-button">
+              <i class="fa fa-caret-left"></i>
+            </div>
+            <div class="swiper-button">
+              <i class="fa fa-caret-right"></i>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <script>
+
+    $("#carousel0").swiper({
+      mode: "horizontal",
+      slidesPerView: 5,
+      paginationClickable: false,
+      nextButton: ".swiper-button-next",
+      prevButton: ".swiper-button-prev",
+      loop: false,
+      autoplay: false,
+      autoplayDisableOnInteraction: true,
+      breakpoints: {
+        1340: {
+          slidesPerView: 4,
+          spaceBetween: 0,
+        },
+        1199: {
+          slidesPerView: 3,
+          spaceBetween: 0,
+        },
+        991: {
+          slidesPerView: 4,
+          spaceBetween: 0,
+        },
+        540: {
+          slidesPerView: 3,
+          spaceBetween: 0,
+        },
+        425: {
+          slidesPerView: 2,
+          spaceBetween: 0,
+        },
+        300: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+      },
+    });
+
+  </script>
+</div>
+<aside id="column-right" class="col-sm-3 hidden-xs">
+
+  {% for i in banners %}
+
+  {% if i.top_right_banner == 'top_right_banner' %}
+  {% else %}
+  <div class="swiper-viewport">
+    <div id="banner1" class="swiper-container">
+      <div class="swiper-wrapper">
+
+        <!-- top_right_banner -->
+        <div class="swiper-slide">
+          <a href="#"><img src="{{i.top_right_banner.url}}" alt="Right Banner" class="img-responsive" /></a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  <script>
+    if ($("#banner1 .swiper-slide").length > 1) {
+      $("#banner1").swiper({
+        effect: "fade",
+        autoplay: 2500,
+        autoplayDisableOnInteraction: false,
+      });
+    }
+  </script>
+
+  <div class="service-box">
+    <div class="page-title toggled">
+      <h3>Our Services</h3>
+    </div>
+    <div class="service-desc block-content clearfix">
+      <div class="service-item">
+        <div class="service">
+          <div class="service-icon">
+            <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+            <lord-icon src="https://cdn.lordicon.com/uetqnvvg.json" trigger="loop"
+              colors="primary:#121331,secondary:#3080e8" style="width:55px;height:50px">
+            </lord-icon>
+          </div>
+          <div class="service-content">
+            <h4 class="promo-title">All Kerala Shipping Available</h4>
+            <span class="promo-desc"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if dotd %}
+  <div class="special-countdown left-vertical-product">
+    <div class="countdown-carousel list-products">
+      <div class="page-title">
+        <h3>Deal of the day</h3>
+      </div>
+      <div class="countdown-inner">
+        <div id="special-count" class="box-product special-count-carousel clearfix">
+          <div class="product-layout col-xs-12">
+            <div class="product-thumb transition">
+              <div class="image countdown-images">
+                <div class="special-image">
+                  <a href="#">
+                    <img src="{{dotd.product_image.url}}" alt="Sony TV" title="Sony TV"
+                      class="img-responsive" />
+                    <img class="img-responsive hover-img"
+                      src="{{dotd.product_image.url}}" title="Sony TV" alt="Sony TV" />
+                  </a>
+                  <div class="sale-text">
+                    <span class="section-sale">On Sale!</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="thumb-description">
+                <div class="caption">
+                  <div class="desc-inner">
+                    <h4 class="product-title">
+                      <a href="{% url 'view' dotd.id %}">{{dotd.product_name}}</a>
+                    </h4>
+                    <div class="price">
+                      <span class="price-new">{{dotd.price}}</span>
+                    </div>
+
+                    <div class="rating">
+                      <span class="fa fa-stack"></span>
+                    </div>
+                    <a href="{% url 'add_to_cart_form' dotd.id %}" style="color: blue;">
+                      <u>ADD TO CART</u>
+                    </a>
+                    <p>
+                      {{dotd.description}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+      deal();
+    });
+    function deal() {
+      const additional1 = $("html").attr("dir");
+
+      $(".special-count-carousel").each(function () {
+        // if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {
+        $(this).addClass("owl-carousel owl-theme");
+        const items = $(this).data("items") || 1;
+        const sliderOptions = {
+          loop: false,
+          nav: true,
+          navText: [
+            '<i class="fa fa-caret-left"></i>',
+            '<i class="fa fa-caret-right"></i>',
+          ],
+          dots: false,
+          items: items,
+          responsiveRefreshRate: 200,
+          responsive: {
+            0: { items: 1 },
+            481: { items: items + 1 > 1 ? items + 1 : 1 },
+            601: { items: items + 2 > 1 ? items + 2 : 1 },
+            992: { items: items },
+          },
+        };
+        if (additional1 == "rtl") sliderOptions["rtl"] = true;
+        $(this).owlCarousel(sliderOptions);
+        // }
+      });
+    }
+
+
+  </script>
+  {% for i in banners %}
+
+  {% if i.bottom_right_banner == 'bottom_right_banner' %}
+  {% else %}
+  <div class="swiper-viewport">
+    <div id="banner2" class="swiper-container">
+      <!-- bottom_right_banner -->
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <a href="#"><img src="{{i.bottom_right_banner.url}}" alt="Right Banner2" class="img-responsive" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  <script>
+    if ($("#banner2 .swiper-slide").length > 1) {
+      $("#banner2").swiper({
+        effect: "fade",
+        autoplay: 2500,
+        autoplayDisableOnInteraction: false,
+      });
+    }
+  </script>
+</aside>
+</div>
+</div>
+</div>
+
+{% endblock body %}

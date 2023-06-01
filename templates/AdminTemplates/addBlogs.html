@@ -1,0 +1,277 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+
+{% if blog_list_edit %}
+
+{% for blogs in blog_list_edit %}
+    
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Add Blog</h4>
+                <h6>Create new Blog</h6>
+            </div>
+        </div>
+        {% if added %}
+        <h3 style="color: blue; font-size: 16px;">'{{added}}' <span style="color: black;"> is </span><span
+                style="color: green;">Edited</span></h3>
+        {% endif %}
+        {% if blog_deleted %}
+        <h3 style="color: blue; font-size: 16px;">'{{blog_deleted}}' <span style="color: black;"> is </span><span
+                style="color: red;">Deleted</span></h3>
+        {% endif %}
+        <div class="card">
+            <form name="Form" class="ajax" method="POST" action="{% url 'editBlogsForm' blogs.id %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Blog Name</label>
+                                <input type="text" name="blog_name" id="blog_name" value="{{blogs.blog_name}}">
+                                <div class="error" id="nameErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Link</label>
+                                <input type="text" class="form-control" name="blog_link" id="blog_link" value="{{blogs.blog_link}}">
+                                <div class="error" id="linkErr"></div>
+
+       
+                                {% if name_exists %}
+                                <div class="error">*this link already exists</div>
+                                {% endif %}
+                                    
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" name="blog_des" id="blog_des">{{blogs.blog_description}}</textarea>
+                                <div class="error" id="desErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Change Blog</button>
+                            <a href="{% url 'addBlogs' %}" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% endfor %}
+        <section class="comp-section comp-cards">
+            <div class="section-header">
+                <h3 class="section-title">All Blogs</h3>
+                <div class="line"></div>
+            </div>
+            <div class="row">
+
+                {% if blog_list %}
+
+                {% for i in blog_list %}
+
+                <div class="col-12 col-md-6 col-lg-4 d-flex">
+                    <div class="card flex-fill bg-white">
+                        <div class="card-header">
+                            <object style="height: 390px; width: 640px">
+                                <param name="movie" value="">
+                                <param name="allowFullScreen" value="true">
+                                <param name="allowScriptAccess" value="always"><embed
+                                  src="http://www.youtube.com/v/{{i.blog_clean_link}}?version=3" type="application/x-shockwave-flash"
+                                  allowfullscreen="true" allowScriptAccess="always" width="367" height="200">
+                              </object>
+                        </div>
+                        <div class="card-body">
+                            <b style="font-weight: bold;">{{i.blog_name}}</b>
+                            <p class="card-text">{{i.blog_description}}</p>
+                            <a class="btn btn-danger" href="{% url 'deleteBlog' i.id %}">Delete</a>
+                            <a class="btn btn-secondary" href="{% url 'editBlogs' i.id %}">Edit Blog</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+                {% else %}
+                <h5 class="card-title mb-0">No Blogs to Display</h5>
+                {% endif %}
+
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    $("body").on("submit", "form.ajax", function (e) {
+        e.preventDefault();
+        var regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/;
+        $form = $(this);
+        $url = $form.attr("action");
+        if (!$.trim(document.Form.blog_name.value)) {
+            printError("nameErr", "Please enter Blog name");
+        } else if (!$.trim(document.Form.blog_link.value)) {
+            printError("linkErr", "Please Enter Link");
+        } else if (regex.test(document.Form.blog_link.value) === false) {
+            printError("linkErr", "Please enter a valid YouTube Link");
+        } else if (!$.trim(document.Form.blog_des.value)) {
+            printError("desErr", "Please Enter Description");
+        } else {
+            e.currentTarget.submit();
+        }
+    });
+
+    $("body").on("change keyup", "input,select,textarea", function (e) {
+        if ($.trim($(this).val())) {
+            $(this).nextAll("div.error").html("");
+        }
+    });
+    function printError(Id, Msg) {
+        document.getElementById(Id).innerHTML = Msg;
+    }
+</script>
+{% else %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Add Blog</h4>
+                <h6>Create new Blog</h6>
+            </div>
+        </div>
+        {% if added %}
+        <h3 style="color: blue; font-size: 16px;">'{{added}}' <span style="color: black;"> is </span><span
+                style="color: green;">Added</span></h3>
+        {% endif %}
+        {% if blog_deleted %}
+        <h3 style="color: blue; font-size: 16px;">'{{blog_deleted}}' <span style="color: black;"> is </span><span
+                style="color: red;">Deleted</span></h3>
+        {% endif %}
+        <div class="card">
+            <form name="Form" class="ajax" method="POST" action="{% url 'addBlogsForm' %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Blog Name</label>
+                                {% if name_exists %}
+                                <input type="text" name="blog_name" id="blog_name" value="{{blog_name}}">
+                                {% else %}
+                                <input type="text" name="blog_name" id="blog_name">
+                                {% endif %}
+                                <div class="error" id="nameErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Link</label>
+                                
+                                {% if name_exists %}
+                                <input type="text" class="form-control" name="blog_link" id="blog_link" value="{{blog_link}}">
+                                {% else %}
+                                <input type="text" class="form-control" name="blog_link" id="blog_link">
+                                <div class="error" id="linkErr"></div>
+                                {% endif %}
+       
+                                {% if name_exists %}
+                                <div class="error">*this link already exists</div>
+                                {% endif %}
+                                    
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                {% if name_exists %}
+                                <textarea class="form-control" name="blog_des" id="blog_des">{{blog_des}}</textarea>
+                                {% else %}
+                                <textarea class="form-control" name="blog_des" id="blog_des"></textarea>
+                                <div class="error" id="desErr"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Add Blog</button>
+                            <a href="{% url 'addBlogs' %}" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <section class="comp-section comp-cards">
+            <div class="section-header">
+                <h3 class="section-title">All Blogs</h3>
+                <div class="line"></div>
+            </div>
+            <div class="row">
+
+                {% if blog_list %}
+
+                {% for i in blog_list %}
+
+                <div class="col-12 col-md-6 col-lg-4 d-flex">
+                    <div class="card flex-fill bg-white">
+                        <div class="card-header">
+                            <object style="height: 390px; width: 640px">
+                                <param name="movie" value="">
+                                <param name="allowFullScreen" value="true">
+                                <param name="allowScriptAccess" value="always"><embed
+                                  src="http://www.youtube.com/v/{{i.blog_clean_link}}?version=3" type="application/x-shockwave-flash"
+                                  allowfullscreen="true" allowScriptAccess="always" width="367" height="200">
+                              </object>
+                        </div>
+                        <div class="card-body">
+                            <b style="font-weight: bold;">{{i.blog_name}}</b>
+                            <p class="card-text">{{i.blog_description}}</p>
+                            <a class="btn btn-danger" href="{% url 'deleteBlog' i.id %}">Delete</a>
+                            <a class="btn btn-secondary" href="{% url 'editBlogs' i.id %}">Edit Blogs</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+                {% else %}
+                <h5 class="card-title mb-0">No Blogs to Display</h5>
+                {% endif %}
+
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    $("body").on("submit", "form.ajax", function (e) {
+        e.preventDefault();
+        var regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/;
+        $form = $(this);
+        $url = $form.attr("action");
+        if (!$.trim(document.Form.blog_name.value)) {
+            printError("nameErr", "Please enter Blog name");
+        } else if (!$.trim(document.Form.blog_link.value)) {
+            printError("linkErr", "Please Enter Link");
+        } else if (regex.test(document.Form.blog_link.value) === false) {
+            printError("linkErr", "Please enter a valid YouTube Link");
+        } else if (!$.trim(document.Form.blog_des.value)) {
+            printError("desErr", "Please Enter Description");
+        } else {
+            e.currentTarget.submit();
+        }
+    });
+
+    $("body").on("change keyup", "input,select,textarea", function (e) {
+        if ($.trim($(this).val())) {
+            $(this).nextAll("div.error").html("");
+        }
+    });
+    function printError(Id, Msg) {
+        document.getElementById(Id).innerHTML = Msg;
+    }
+</script>
+
+{% endif %}
+    
+{% endblock body %}

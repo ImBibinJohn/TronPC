@@ -1,0 +1,146 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Prebuilt Details</h4>
+                <h6>Full details of a PreBuilt</h6>
+            </div>
+        </div>
+        {% for pro in prebuilts %}
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="productdetails">
+                            <ul class="product-bar">
+                                <li>
+                                    <h4>Modal Name</h4>
+                                    <h6>{{pro.modal_name}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Modal Code</h4>
+                                    <h6>{{pro.modal_code}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Date Added</h4>
+                                    <h6>{{pro.date_added}}</h6>
+                                </li>
+                                <li>
+                                    <h4>CPU</h4>
+                                    <h6>{{pro.modal_cpu}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Modal Monitor</h4>
+                                    <h6>{{pro.modal_monitor}}</h6>
+                                </li>
+                                <li>
+                                    <h4>RAM</h4>
+                                    <h6>{{pro.modal_ram}}</h6>
+                                </li>
+                                <li>
+                                    <h4>MotherBoard</h4>
+                                    <h6>{{pro.modal_motherbrd}}</h6>
+                                </li>
+                                <li>
+                                    <h4>GPU</h4>
+                                    <h6>{{pro.modal_motherbrd}}</h6>
+                                </li>
+                                <li>
+                                    <h4>MotherBoard</h4>
+                                    <h6>{{pro.modal_gpu}}</h6>
+                                </li>
+                                <li>
+                                    <h4>SSD</h4>
+                                    <h6>{{pro.modal_ssd}}</h6>
+                                </li>
+                                <li>
+                                    <h4>RAM</h4>
+                                    <h6>{{pro.modal_storage_rom}}</h6>
+                                </li>
+                                <li>
+                                    <h4>SMPS</h4>
+                                    <h6>{{pro.modal_smps}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Offer</h4>
+                                    <h6>{{pro.modal_offer}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Modal Price</h4>
+                                    <h6>{{pro.price}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Modal Description</h4>
+                                    <h6>{{pro.description}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Status</h4>
+                                    <h6>Active</h6>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="slider-product-details">
+                            <div class="owl-carousel owl-theme product-slide">
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image.url}}" alt="img">
+                                    <h4>{{raw_name}}</h4>
+                                </div>
+
+                                {% if pro.product_image_1 == "" %}
+                                {% else %}
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image_1.url}}" alt="img">
+                                    <h4>{{raw_name1}}</h4>
+                                </div>
+                                {% endif %}
+
+                                {% if pro.product_image_2 == "" %}
+                                {% else %}
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image_2.url}}" alt="img">
+                                    <h4>{{raw_name2}}</h4>
+                                </div>
+                                {% endif %}
+
+                                {% if pro.product_image_3 == "" %}
+                                {% else %}
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image_3.url}}" alt="img">
+                                    <h4>{{raw_name3}}</h4>
+                                </div>
+                                {% endif %}
+
+                                {% if pro.product_image_4 == "" %}
+                                {% else %}
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image_4.url}}" alt="img">
+                                    <h4>{{raw_name4}}</h4>
+                                </div>
+                                {% endif %}
+
+                                {% if pro.product_image_5 == "" %}
+                                {% else %}
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image_5.url}}" alt="img">
+                                    <h4>{{raw_name5}}</h4>
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock body %}

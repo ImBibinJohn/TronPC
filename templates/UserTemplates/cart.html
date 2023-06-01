@@ -1,0 +1,423 @@
+{% extends "UserTemplates/dash.html" %} {% block body %}{% load static %}
+<style>
+    #myInputBox::placeholder {
+        font-weight: bold;
+        color: black;
+    }
+
+    /* Style for table head */
+    .table thead {
+        background-color: #f2f2f2;
+        color: black;
+        font-weight: bold;
+
+    }
+
+    /* Style for table body */
+    .table tbody {
+        background-color: #fefffc;
+    }
+
+    .tables {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+
+    .tables th,
+    .tables td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+</style>
+<div id="information-contact" class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li>
+            <a href="{% url 'contact' %}">Contact Us</a>
+        </li>
+    </ul>
+    {% block list %}
+
+    {% endblock list %}
+    <div class="box all-products special left-vertical-product">
+        <div class="box-heading">
+            <div class="box-content">
+                <div class="page-title toggled">
+                    <h3>Special Products</h3>
+                </div>
+                <div class="block_box">
+                    <div id="special-carousel" class="box-product vertical-carousel clearfix" data-items="1">
+                        {% if specials %}
+
+                        {% for special in specials %}
+
+                        <div class="product-layout col-xs-12">
+                            <div class="product-thumb transition clearfix">
+                                <div class="image">
+                                    <a href="#">
+                                        <img src="{{special.product_image.url}}" alt="iPhone" title="iPhone"
+                                            class="img-responsive" />
+                                        <img class="img-responsive hover-img" src="{{special.product_image.url}}"
+                                            title="iPhone" alt="iPhone" />
+                                    </a>
+                                    <div class="sale-text">
+                                        <span class="section-sale">On Sale!</span>
+                                    </div>
+                                </div>
+                                <div class="thumb-description clearfix">
+                                    <div class="caption">
+                                        <h4 class="product-title">
+                                            <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                                        </h4>
+                                        <p class="price">
+                                            <span class="price-new">{{special.price}}</span>
+                                            <!-- <span class="price-old">{{special.price}}</span> -->
+                                        </p>
+                                        <div class="rating">
+                                            <span class="fa fa-stack"></span>
+                                        </div>
+
+                                        <a href="{% url 'view' special.id %}" style="color: blue;">
+                                            <u>ADD TO CART</u>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <center>
+                            <h5>No Special Products</h5>
+                        </center>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </aside>
+    <div id="content" class="col-sm-9 checkout">
+        <div class="table-responsive">
+            <h1>Shopping Cart</h1>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td class="text-center">Image</td>
+                        <td class="text-left">Product Name</td>
+                        <td class="text-left">Model</td>
+                        <td class="text-left">Quantity</td>
+                        <td class="text-right">Unit Price</td>
+                        <td class="text-right">Total</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in cart %}
+                    <form action="{% url 'cartQuaAdd' i.id %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <tr>
+                            <td class="text-center"><a href="{% url 'view' i.product_id %}"><img
+                                        src="{{i.product.product_image.url}}" alt="Tablet" title="Tablet"
+                                        class="img-thumbnail" style="width: 70px; height: 60px;" /></a></td>
+                            <td class="text-left"><a href="{% url 'view' i.product_id %}">{{i.product.product_name}}</a>
+                            </td>
+                            <td class="text-left">{{i.product.product_code}}</td>
+                            <td class="text-left">
+                                <div class="cart_input_block input-group btn-block" style="max-width: 200px;">
+                                    <input type="number" name="quantity" placeholder="{{i.product_quantity}}"
+                                        class="form-control" id="myInputBox" style="width: 100px;" />
+
+                                    <span class="input-group-btn">
+                                        <button type="submit" data-toggle="tooltip" title="Update"
+                                            class="btn btn-primary">
+                                            <i class="fa fa-refresh"></i>
+                                        </button>
+
+                                        <button type="button"
+                                            onclick="window.location.href='{% url 'cartDelete' i.id %}'"
+                                            data-toggle="tooltip" title="Remove" class="btn btn-danger">
+                                            <i class="fa fa-times-circle"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="text-right">₹{{i.product.price}}</td>
+                            <td class="text-right">₹{{i.price}}</td>
+                        </tr>
+                    </form>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        {% if pre_built_list %}
+        <h4>PreBuilt Cart</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td class="text-left">Product Image</td>
+                        <td class="text-left">Product Name</td>
+                        <td class="text-left">Model</td>
+                        <td class="text-left">Quantity</td>
+                        <td class="text-left">Delete</td>
+                        <td class="text-right">Unit Price</td>
+                        <td class="text-right">Total</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in pre_built_list %}
+                    <form action="{% url 'cartQuaAdd' i.id %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <tr>
+                            <td class="text-center"><img src="{% static 'images/prebuilt.jpg' %}" alt="Tablet"
+                                    title="Tablet" class="img-thumbnail" style="width: 70px; height: 60px;" /></td>
+                            <td class="text-left">{{i.prebuilt_name}}</td>
+                            <td class="text-left">{{i.product_code}}</td>
+                            <td class="text-left">
+                                <div class="cart_input_block input-group btn-block" style="max-width: 200px;">
+                                    <center>{{i.product_quantity}}</center>
+                            <td class="text-left">
+                                <center>
+                                    <span class="input-group-btn">
+                                        <button type="button"
+                                            onclick="window.location.href='{% url 'cartDelete' i.id %}'"
+                                            data-toggle="tooltip" title="Remove" class="btn btn-danger"
+                                            style="border-radius: 5px;">
+                                            <i class="fa fa-times-circle"></i>
+                                        </button>
+                                </center>
+                                </span>
+                            </td>
+        </div>
+        </td>
+        <td class="text-right">₹{{i.price}}</td>
+        <td class="text-right">₹{{i.price}}</td>
+        </tr>
+        </form>
+        {% endfor %}
+
+        </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if cus_built_list %}
+    <h4>CustomBuilt Cart</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td class="text-left">CustomImage</td>
+                    <td class="text-left">Processor</td>
+                    <td class="text-left">Custom Code</td>
+                    <td class="text-left">Cpu Cooler</td>
+                    <td class="text-left">MotherBoard</td>
+                    <td class="text-left">RAM</td>
+                    <td class="text-right">Hardisk</td>
+                    <td class="text-right">GPU</td>
+                    <td class="text-right">PowerSupply</td>
+                    <td class="text-right">Cabinet</td>
+                    <td class="text-right">Description</td>
+                    <td class="text-right">Additionals</td>
+                    <td class="text-right">Edit/Delete</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in cus_built_list %}
+                <tr>
+                    <td class="text-center"><img src="{% static 'images/prebuilt.jpg' %}" alt="Tablet" title="Tablet"
+                            class="img-thumbnail" style="width: 70px; height: 60px;" /></td>
+
+                    {% if i.cus_processor == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_processor}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_code == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_code}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_cpu_cooler == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_cpu_cooler}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_motherbrd == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_motherbrd}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_ram == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_ram}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_hardisk == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_hardisk}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_gpu == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_gpu}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_powersupply == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_powersupply}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_cabinet == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_cabinet}}</td>
+                    {% endif %}
+
+
+                    {% if i.cus_desc == "" %}
+                    <td class="text-left">---</td>
+                    {% else %}
+                    <td class="text-left">{{i.cus_desc}}</td>
+                    {% endif %}
+
+
+                    <td class="text-left">
+                        <table class="tables">
+                            <tbody>
+                                <tr>
+                                    <th>Monitor</th>
+                                    <th>Speaker</th>
+                                    <th>KeyBoard</th>
+                                    <th>Mouse</th>
+                                    <th>Printer</th>
+                                    <th>Ups</th>
+                                    <th>wifi-dongle</th>
+                                    <th>blutooth-dongle</th>
+
+                                </tr>
+                                <tr>
+                                    {% if datajson.Monitor == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.Monitor}}</td>
+                                    {% endif %}
+
+                                    {% if datajson.Speaker == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.Speaker}}</td>
+                                    {% endif %}
+
+                                    {% if datajson.Keyboard == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.Keyboard}}</td>
+                                    {% endif %}
+
+                                    {% if datajson.Mouse == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.Mouse}}</td>
+                                    {% endif %}
+
+                                    {% if datajson.Printer == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.Printer}}</td>
+                                    {% endif %}
+
+                                    {% if datajson.Ups == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.Ups}}</td>
+                                    {% endif %}
+
+                                    {% if datajson.wifi_dongle == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.wifi_dongle}}</td>
+                                    {% endif %}
+
+                                    {% if datajson.blutooth_dongle == "" %}
+                                    <td>---</td>
+                                    {% else %}
+                                    <td>{{datajson.blutooth_dongle}}</td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </td>
+                    <td class="text-left">
+                        <center>
+                            <span class="input-group-btn">
+                                <button type="button" onclick="window.location.href='{% url 'pcb' %}'"
+                                    data-toggle="tooltip" title="edit" class="btn btn-primary"
+                                    style="border-radius: 5px; margin-right: 10px;">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </button>
+                                <button type="button" onclick="window.location.href='{% url 'cusDelete' i.id %}'"
+                                    data-toggle="tooltip" title="Remove" class="btn btn-danger"
+                                    style="border-radius: 5px;">
+                                    <i class="fa fa-times-circle"></i>
+                                </button>
+                            </span>
+                        </center>
+
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <br />
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-8">
+            <table class="table table-bordered">
+                <tr>
+                    <td class="text-left cart-total-title">Sub-Total:</td>
+                    <td class="text-right cart-total-price" style="color: green; font-size: 18px;">₹{{total_price}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {% if 'Guest' in userid %}
+    <div class="buttons clearfix">
+        <div class="pull-left"><a href="{% url 'index' %}" class="btn btn-default">Continue Shopping</a></div>
+        <div class="pull-right"><a href="{% url 'register' %}" class="btn btn-primary">Checkout</a></div>
+    </div>
+    {% else %}
+    <div class="buttons clearfix">
+        <div class="pull-left"><a href="{% url 'home' %}" class="btn btn-default">Continue Shopping</a></div>
+        <div class="pull-right"><a href="{% url 'checkOut' %}" class="btn btn-primary">Checkout</a></div>
+    </div>
+    {% endif %}
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}

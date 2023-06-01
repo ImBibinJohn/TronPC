@@ -1,0 +1,127 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+<style>
+    .brand-recognition {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+    }
+
+    .logo {
+        flex: 0 0 200px;
+        margin-right: 50px;
+    }
+
+    .logo img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .info {
+        flex: 1;
+    }
+
+    h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: #000;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Add Brand</h4>
+                <h6>Add New Brand</h6>
+            </div>
+        </div>
+        {% if added %}
+        Brand <h6 style="color: blue; font-size: 16px;">'{{added}}' <span style="color: green;">is added</span></h6>
+        {% endif %}
+        <div class="card">
+            <form action="{% url 'addBrand_Form' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+
+                                {% if name_exists %}
+                                <label style="color: blue;">'{{name_exists}}' <span style="color: red;">Brand already
+                                        exists!</span></label>
+                                {% else %}
+                                <label>Brand Name</label>
+                                {% endif %}
+                                <input type="text" name="bnd_name" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label> Brand Logo</label>
+                                <input type="file" name="bnd_img" id="image-input" accept="image/*" required>
+                                <div class="image-uploads">
+                                </div><br>
+                                <img id="image-preview" src="#" alt="Image preview"
+                                    style="width: 200px; height: auto; display: none;">
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Add Brand</button>
+                            <a href="#" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% if brands %}
+        {% for i in brands %}
+        <div class="brand-recognition">
+            <div class="logo">
+                <img src="{{i.brand_image.url}}" alt="Brand Logo">
+            </div>
+            <div class="info">
+                <h2>{{i.brand_name}}</h2>
+                <a class="btn btn-danger" href="{% url 'deleteBrand' i.id %}">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h5 class="card-title mb-0">No Brands to Display</h5>
+        {% endif %}
+
+
+        <script>
+            function previewImage(event) {
+                var input = event.target;
+                var preview = document.getElementById('image-preview');
+                preview.style.display = "block";  // Remove the "display: none" style
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var dataURL = reader.result;
+                    preview.src = dataURL;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+            var inputElement = document.getElementById("image-input");
+            inputElement.addEventListener("change", previewImage);
+        </script>
+
+        {% endblock body %}

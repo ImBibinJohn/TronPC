@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+{% load static %}
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>TronPC | User</title>
+  <meta name="description" content="My Store" />
+  <script src="{% static 'catalog/view/javascript/jquery/jquery-2.1.1.min.js' %}"></script>
+  <link href="{% static 'catalog/view/javascript/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen" />
+  <script src="{% static 'catalog/view/javascript/bootstrap/js/bootstrap.min.js' %}"></script>
+  <link href="{% static 'catalog/view/javascript/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet"
+    type="text/css" />
+  <script src="{% static 'catalog/view/javascript/custom/jquery.elevateZoom.min.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/owl.carousel.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'catalog/view/javascript/custom/quickview.js' %}"></script>
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/custom-font.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/animate.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/owl.carousel.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/owl.theme.default.min.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" />
+
+  <script src="{% static 'catalog/view/javascript/custom/custom_search.js' %}"></script>
+  <style>
+    :root {
+      --primary-color: #111111;
+      --primary-hover-color: #ffffff;
+      --secondary-color: #16202c;
+      --secondary-hover-color: #4d94ff;
+      --secondary-light-color: #777777;
+      --background-color: #f7f7f7;
+      --border-color: #e5e5e5
+    }
+
+    @media screen and (min-width: 766px) {
+      .tronlogo {
+        display: none;
+      }
+    }
+  </style>
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/stylesheet.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/javascript/jquery/swiper/css/swiper.min.css' %}" type="text/css" rel="stylesheet"
+    media="screen" />
+  <link href="{% static 'catalog/view/javascript/jquery/swiper/css/opencart.css' %}" type="text/css" rel="stylesheet"
+    media="screen" />
+  <script src="{% static 'catalog/view/javascript/jquery/swiper/js/swiper.jquery.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/jquery.cookie.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/countdown.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/common.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/jquery-ui.min.js' %}"></script>
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'catalog/view/theme/custom/stylesheet/custom/jquery-ui.min.css' %}" />
+  <script src="{% static 'catalog/view/javascript/custom/custom.js' %}"></script>
+  <link href="{% static 'images/tronpclogo.png' %}" rel="icon" />
+  <script>
+    (function () {
+      window.onpageshow = function (event) {
+        if (event.persisted) {
+          window.location.reload();
+        }
+      };
+    })();
+  </script>
+</head>
+
+
+<link href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" type="text/css" rel="stylesheet"
+  media="screen" />
+<link href="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css' %}"
+  type="text/css" rel="stylesheet" media="screen" />
+<script src="{% static 'catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js' %}"></script>
+<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<body class="common-home">
+  <div class="loader"></div>
+  <div class="top-header">
+    <nav id="top"></nav>
+    <header>
+      <div class="container">
+        <div class="row">
+          <div class="header-top">
+            <div class="customer-support col-md-4 hidden-xs">
+
+              {% if pro %}
+              <!-- logo left -->
+              <div id="logo" class="col-md-4">
+                <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
+                    alt="Your Store" class="img-responsive" /></a>
+              </div>
+            </div>
+            <!-- logo middle -->
+            <div id="logo" class="col-md-4">
+              <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
+                  alt="Your Store" class="img-responsive tronlogo" /></a>
+            </div>
+            {% else %}
+            <!-- logo left -->
+            <div id="logo" class="col-md-4">
+              <a href="{% url 'index' %}"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
+                  alt="Your Store" class="img-responsive" /></a>
+            </div>
+          </div>
+          <!-- logo middle -->
+          <div id="logo" class="col-md-4">
+            <a href="{% url 'index' %}"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
+                alt="Your Store" class="img-responsive tronlogo" /></a>
+          </div>
+          {% endif %}
+
+          <div class="header-links col-md-4">
+            <!-- start account -->
+
+            {% if pro %}
+            <div id="header_ac" class="dropdown">
+              <a href="{% static 'images/tronpclogo.png' %}" title="My Account" class="dropdown-toggle"
+                data-toggle="dropdown">
+                <i class="icon-user-2"></i>
+                <span class="account-main hidden-sm hidden-xs">
+                  <span>My Account</span>
+
+                  {% for pr in pro %}
+                  <span>{{pr.username}}</span>
+                  {% endfor %}
+
+
+
+
+                </span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right account-link-toggle">
+                <li>
+                  <a href="#">My Account</a>
+                </li>
+                <li>
+                  <a href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li>
+                  <a href="#">Cart</a>
+                </li>
+              </ul>
+            </div>
+            {% else %}
+            <div id="header_ac" class="dropdown">
+              <a href="{% static 'images/tronpclogo.png' %}" title="My Account" class="dropdown-toggle"
+                data-toggle="dropdown">
+                <i class="icon-user-2"></i>
+                <span class="account-main hidden-sm hidden-xs">
+                  <span>My Account</span>
+                  {% if 'Guest' in userid %}
+                  <span style="color: #fff;">{{userid}}</span><br>
+                  {% endif %}
+                </span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right account-link-toggle">
+                <li>
+                  <a href="{% url 'register' %}">Register</a>
+                </li>
+                <li>
+                  <a href="{% url 'login' %}">Login</a>
+                </li>
+              </ul>
+            </div>
+            {% endif %}
+
+
+            <!-- start cart -->
+
+            {% if cart_list_count %}
+            <a href="{% url 'cart' %}">
+              <div class="header_cart">
+                <div id="cart" class="btn-group btn-block">
+                  <button type="button" class="btn btn-inverse btn-block btn-lg">
+
+                    <span id="cart-total"><span class="hidden-sm hidden-xs">My Cart</span>
+                      <span class="cart-item">
+                        {{cart_list_count}}
+                        <span class="hidden-sm hidden-xs">
+                          items ₹{{total_price}}</span></span></span>
+
+                  </button>
+
+                </div>
+
+              </div>
+            </a>
+            {% else %}
+
+            <div class="header_cart">
+              <div id="cart" class="btn-group btn-block">
+                <button type="button" data-toggle="dropdown" data-loading-text="Loading..."
+                  class="btn btn-inverse btn-block btn-lg dropdown-toggle">
+                  <span id="cart-total"><span class="hidden-sm hidden-xs">My Cart</span>
+                    <span class="cart-item">0<span class="hidden-sm hidden-xs">
+                        items ₹0.00</span></span></span>
+                </button>
+                <ul class="dropdown-menu header-cart-toggle pull-right">
+                  <li>
+                    <p class="text-center product-cart-empty">
+                      Your shopping cart is empty!
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="header-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="header-left col-lg-3 col-md-3 hidden-sm hidden-xs">
+          <div class="menu-list">
+            <div class="box-categories"><span>All Categories</span></div>
+          </div>
+        </div>
+        <div class="header-center col-md-6 col-xs-3">
+          <!-- start menu -->
+          <nav id="menu" class="navbar navbar_menu">
+            <div class="navbar-header">
+              <button type="button" class="btn btn-navbar navbar-toggle" id="btnMenuBar">
+                <span class="addcart-icon"></span>
+              </button>
+            </div>
+            <div id="topCategoryList" class="main-menu menu-navbar clearfix" data-more="More">
+              <div class="menu-close hidden-lg hidden-md">
+                <span id="category" class="">Menu</span><i class="icon-close"></i>
+              </div>
+              <ul class="nav navbar-nav">
+
+                {% if pro %}
+                <li class="menulist home">
+                  <a id="home" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'productsHome' %}">All Products</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'pcb' %}">Custom Built</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'contactHome' %}">Contact</a>
+                </li>
+
+                {% elif 'Guest' in userid %}
+                <li class="menulist home">
+                  <a id="home" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'allProducts' %}">All Products</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'pcb' %}">Custom Built</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'contact' %}">Contact</a>
+                </li>
+                {% else %}
+                <li class="menulist home">
+                  <a id="home" href="{% url 'indexZero' %}">Home</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'allProducts' %}">All Products</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'pcb' %}">Custom Built</a>
+                </li>
+                <li class="menulist">
+                  <a href="{% url 'contact' %}">Contact</a>
+                </li>
+                {% endif %}
+
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div class="header-right col-md-3 col-xs-9">
+          <!-- start search -->
+          <div class="btn_search">
+            <div class="header-search">
+              <div id="customSearch" class="input-group custom-search">
+                <input type="text" name="search" value="" placeholder="Search here..."
+                  class="form-control input-lg ui-autocomplete-input" />
+                <span class="btn-search input-group-btn">
+                  <button type="button" class="btn btn-default btn-lg">
+                    <i class="search-icon icon-search"></i>
+                  </button>
+                </span>
+              </div>
+
+              <script type="text/javascript">
+                $("#customSearch .btn-search button").bind(
+                  "click",
+                  function () {
+                    url = "#";
+
+                    var search = $(
+                      "#customSearch input[name='search']"
+                    ).prop("value");
+                    if (search) {
+                      url += "&search=" + encodeURIComponent(search);
+                    }
+
+                    var category_id = $(
+                      "#customSearch select[name='category_id']"
+                    ).prop("value");
+                    if (category_id > 0) {
+                      url +=
+                        "&category_id=" + encodeURIComponent(category_id);
+                      // url += '&sub_category=true';
+                      // url += '&description=true';
+                    }
+
+                    location = url;
+                  }
+                );
+
+                $("#customSearch input[name='search']").bind(
+                  "keydown",
+                  function (e) {
+                    if (e.keyCode == 13) {
+                      $("#customSearch .btn-search button").trigger(
+                        "click"
+                      );
+                    }
+                  }
+                );
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </header>
+  </div>
+  <script>
+    $(document).ready(function () {
+      var headerfixed = 0;
+      if (headerfixed == 1) {
+        $(window).scroll(function () {
+          if ($(window).width() > 991) {
+            if ($(this).scrollTop() > 150) {
+              $(".header-bottom").addClass("header-fixed");
+            } else {
+              $(".header-bottom").removeClass("header-fixed");
+            }
+          } else {
+            $(".header-bottom").removeClass("header-fixed");
+          }
+        });
+      } else {
+        $(".header-bottom").removeClass("header-fixed");
+      }
+    });
+  </script>
+  {% block list %}
+
+  {% endblock list %}
+  <div class="container">
+    <div class="row">
+      <aside id="column-left" class="col-sm-3 hidden-xs">
+        <div class="main-category left-column-main-category hidden-sm hidden-xs" style="display: none;">
+          <div class="vertical-category-wrapper navbar-collapse navbar-ex2-collapse">
+            <div class="vertical-category" data-more="More&nbsp;Categories" data-less="Less&nbsp;Categories">
+              <ul class="category-list nav navbar-nav">
+                {% for cat in category %}
+                <li class="menu-item">
+                  <a href="{% url 'categoryFilter' cat.id %}">
+                    <span class="category-img hidden-sm hidden-xs"><img src="{{cat.category_image.url}}" alt="shop"
+                        style="width: 30px; height: 30px;" /></span>
+                    {{cat.category_name}}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% block body %}
+        {% endblock %}
+        <footer>
+          <div>
+            <p style="color: white; margin-left: 2%; margin-top: 1%">
+              All rights reserved &copy; 2023
+            </p>
+          </div>
+        </footer>
+        <!-- top scroll -->
+        <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i class="fa fa-caret-up"></i></a>
+</body>
+
+</html>

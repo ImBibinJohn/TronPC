@@ -1,0 +1,79 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Product Details</h4>
+                <h6>Full details of a product</h6>
+            </div>
+        </div>
+        {% for pro in product_id %}
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="productdetails">
+                            <ul class="product-bar">
+                                <li>
+                                    <h4>Product</h4>
+                                    <h6>{{pro.product_name}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Category</h4>
+                                    <h6>{{pro.category.category_name}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Brand</h4>
+                                    <h6>{{pro.brand}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Product Code</h4>
+                                    <h6>{{pro.product_code}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Quantity</h4>
+                                    <h6>{{pro.quantity}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Price</h4>
+                                    <h6>{{pro.price}}</h6>
+                                </li>
+                                <li>
+                                    <h4>Status</h4>
+                                    <h6>Active</h6>
+                                </li>
+                                <li>
+                                    <h4>Description</h4>
+                                    <h6>{{pro.description}}</h6>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="slider-product-details">
+                            <div class="owl-carousel owl-theme product-slide">
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image.url}}" alt="img">
+                                    <h4>{{raw_name}}</h4>
+                                    <h6>{{raw_mb_size}}kb</h6>
+                                </div>
+                                <div class="slider-product">
+                                    <img src="{{pro.product_image.url}}" alt="img">
+                                    <h4>{{raw_name}}</h4>
+                                    <h6>{{raw_mb_size}}kb</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock body %}

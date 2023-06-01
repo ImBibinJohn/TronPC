@@ -1,0 +1,141 @@
+{% extends "UserTemplates/dash.html" %} {% block body %}{% load static %}
+<div id="product-search" class="container">
+  <ul class="breadcrumb">
+    <li>
+      <a href="#">Home</a>
+    </li>
+    <li>
+      <a href="#">Special Offers</a>
+    </li>
+  </ul>
+  {% block list %}
+
+  {% endblock list %}
+  <div class="box all-products special left-vertical-product">
+    <div class="box-heading">
+      <div class="box-content">
+        <div class="page-title toggled">
+          <h3>Special Products</h3>
+        </div>
+        <div class="block_box">
+          <div id="special-carousel" class="box-product vertical-carousel clearfix" data-items="1">
+            {% if specials %}
+
+            {% for special in specials %}
+
+            <div class="product-layout col-xs-12">
+              <div class="product-thumb transition clearfix">
+                <div class="image">
+                  <a href="#">
+                    <img src="{{special.product_image.url}}" alt="iPhone" title="iPhone" class="img-responsive" />
+                    <img class="img-responsive hover-img" src="{{special.product_image.url}}" title="iPhone"
+                      alt="iPhone" />
+                  </a>
+                  <div class="sale-text">
+                    <span class="section-sale">On Sale!</span>
+                  </div>
+                </div>
+                <div class="thumb-description clearfix">
+                  <div class="caption">
+                    <h4 class="product-title">
+                      <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                    </h4>
+                    <p class="price">
+                      <span class="price-new">{{special.price}}</span>
+                      <!-- <span class="price-old">{{special.price}}</span> -->
+                    </p>
+                    <div class="rating">
+                      <span class="fa fa-stack"></span>
+                    </div>
+
+                    <a href="{% url 'add_to_cart_form' special.id %}" style="color: blue;">
+                      <u>ADD TO CART</u>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <center>
+              <h5>No Special Products</h5>
+            </center>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </aside>
+
+  <div id="content" class="col-sm-9">
+    <div class="cat_info">
+      <div class="row">
+        <div class="col-sm-2 col-xs-4 cat_list_gird">
+          <div class="btn-group btn-group-sm">
+            <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Grid">
+              <i class="icon-grid"></i>
+            </button>
+            <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="List">
+              <i class="icon-list"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-sm-3" style="top: 10px;">
+          <center>
+            {% if category_name %}
+            <h1 class="page_title">{{category_name}} List</h1>
+            {% else %}
+            <h1 class="page_title">All Products</h1>
+            {% endif %}
+          </center>
+        </div>
+      </div>
+    </div>
+    <div class="row category-row">
+
+      {% if products %}
+      {% for product in products %}
+      <div class="product-layout product-list col-xs-12">
+        <div class="product-thumb">
+          <div class="image">
+            <a href="#">
+              <img src="{{product.product_image.url}}" alt="iPhone" title="iPhone" class="img-responsive" />
+              <img class="img-responsive hover-img" src="{{product.product_image.url}}" title="iPhone" alt="iPhone" />
+            </a>
+            <div class="sale-text">
+              <span class="section-sale">On Sale!</span>
+            </div>
+          </div>
+          <div class="thumb-description clearfix">
+            <div class="caption">
+              <h4 class="product-title">
+                <a href="{% url 'view' product.id %}">{{product.product_name}}</a>
+              </h4>
+              <p class="price">
+                <span class="price-new">{{product.price}}</span>
+              </p>
+              <p class="price">
+                <span class="price-new">{{product.description}}</span>
+              </p><br>
+              <div class="btn-all">
+                <a href="{% url 'add_to_cart_form' product.id %}" style="color: blue;">
+                  <u>ADD TO CART</u>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <center>
+        <h5>No Products!</h5>
+      </center>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock body %}

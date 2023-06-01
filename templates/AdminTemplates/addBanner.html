@@ -1,0 +1,80 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Banner Add</h4>
+                <h6>Create/edit Banner</h6>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'add_carousal_form' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                
+                                {% if msg %}
+                                <label style="color: red;font-size: 16px;">**{{msg}}</label>
+                                {% else %}
+                                <label>Main carousal banner</label>
+                                {% endif %}
+                                    
+
+                                <div class="image-upload">
+                                    <input type="file" name="carousal" required>
+                                    <div class="image-uploads">
+                                        <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                        <h4>Drag and drop a file to upload</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Add Carousal</button>
+                            <a href="{% url 'addBanner' %}" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <section class="comp-section comp-cards">
+            <div class="section-header">
+                <h3 class="section-title">Carousals</h3>
+                <div class="line"></div>
+            </div>
+            <div class="row">
+
+                {% if carousals %}
+
+                {% for i in carousals %}
+
+                <div class="col-12 col-md-6 col-lg-4 d-flex">
+                    <div class="card flex-fill bg-white">
+                        <img alt="Card Image" src="{{i.carousal_home_main.url}}" class="card-img-top">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Card with image and button + {{i.carousal_home_main.url}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make
+                                up the bulk of the card's content.</p>
+                            <a class="btn btn-danger" href="{% url 'deleteBanner' i.id %}">Delete</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+                {% else %}
+                <h5 class="card-title mb-0">No Carousals to Display</h5>
+                {% endif %}
+
+            </div>
+        </section>
+
+    </div>
+</div>
+
+{% endblock body %}

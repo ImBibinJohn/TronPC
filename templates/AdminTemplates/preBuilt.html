@@ -1,0 +1,699 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+{% if count == 'add' %}
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+        appearance: textfield;
+        /* Standard */
+    }
+
+    .error {
+        color: red;
+        font-size: 90%;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>PreBuilt Add</h4>
+                <h6>Create new PreBuilt</h6>
+            </div>
+            <div class="page-btn">
+                <a href="{% url 'viewpreBuilt' %}" class="btn btn-added"><img
+                        src="{% static 'assets/img/icons/eye.svg' %}" alt="img" class="me-1">View PreBuilt</a>
+            </div>
+        </div>
+        {% if added %}
+        <h3 style="color: blue; font-size: 16px;">'{{added}}' <span style="color: black;"> is </span><span
+                style="color: green;">Added</span></h3>
+        {% endif %}
+        <div class="card">
+            <form method="POST" action="{% url 'addpreBuiltForm' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>preBuilt Name</label>
+                                <input type="text" name="pre_name" id="pre_name" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Cpu</label>
+                                <input type="text" name="pre_cpu" id="pre_cpu" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Monitor</label>
+                                <input type="text" name="pre_mntr" id="pre_mntr" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>MotherBoard</label>
+                                <input type="text" name="pre_mtrbrd" id="pre_mtrbrd" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>GPU</label>
+                                <input type="text" name="pre_gpu" id="pre_gpu" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>SMPS</label>
+                                <select class="form-control js-example-tags" name="pre_smps" id="pre_smps" required>
+                                    <option value="" selected disabled>Choose SMPS</option>
+                                    <option value="DC-DC Converter">DC-DC Converter</option>
+                                    <option value="Forward Converter">Forward Converter</option>
+                                    <option value="Flyback Converter">Flyback Converter</option>
+                                    <option value="self-oscillating Flyback Converter">self-oscillating Flyback
+                                        Converter</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>ROM</label>
+                                <select class="form-control js-example-tags" name="pre_rom" id="pre_rom" required>
+                                    <option value="" selected disabled>Choose ROM</option>
+                                    <option value="500GB">500GB</option>
+                                    <option value="1TB">1TB</option>
+                                    <option value="2TB">2TB</option>
+                                    <option value="3TB">3TB</option>
+                                    <option value="5TB">5TB</option>
+                                    <option value="10TB">10TB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>RAM</label>
+                                <select class="form-control js-example-tags" name="pre_ram" id="pre_ram" required>
+                                    <option value="" selected disabled>Choose RAM</option>
+                                    <option value="1GB">1GB</option>
+                                    <option value="2GB">2GB</option>
+                                    <option value="3GB">3GB</option>
+                                    <option value="4GB">4GB</option>
+                                    <option value="8GB">8GB</option>
+                                    <option value="16GB">16GB</option>
+                                    <option value="32GB">32GB</option>
+                                    <option value="64GB">64GB</option>
+                                  </select>  
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>SSD</label>
+                                <input type="text" name="pre_ssd" id="pre_ssd" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="pre_price">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input style="color: green;font-size: large;" type="text" class="form-control"
+                                        aria-label="Price" aria-describedby="basic-addon1" name="pre_price"
+                                        id="pre_price" oninput="validateInput(this)" required>
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" name="pre_des" id="pre_des" required></textarea>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label> Product Image</label>
+                                <div class="image-upload">
+                                    <input type="file" name="pre_pic" id="pre_pic" required>
+                                    <div class="image-uploads">
+                                        <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                        <h4>Drag and drop a file to upload</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <span class="btn btn-primary" onclick="myFunction()">Add More Images +</span>
+                            </div>
+                        </div>
+                        <div id="myDIV" style="display: none;">
+                            <div class="col-lg-12">
+                                <div class="form-group"><br>
+                                    <label> Product Image 1</label>
+                                    <div class="">
+                                        <input type="file" name="pre_pic1" id="pre_pic1">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label> Product Image 2</label>
+                                    <div class="">
+                                        <input type="file" name="pre_pic2" id="pre_pic2">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label> Product Image 3</label>
+                                    <div class="">
+                                        <input type="file" name="pre_pic3" id="pre_pic3">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label> Product Image 4</label>
+                                    <div class="">
+                                        <input type="file" name="pre_pic4" id="pre_pic4">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label> Product Image 5</label>
+                                    <div class="">
+                                        <input type="file" name="pre_pic5" id="pre_pic5">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <br>
+                            <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                            <a href="{% url 'preBuilt' %}" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(".js-example-tags").select2({
+        tags: true
+    });
+</script>
+<script>
+
+    function validateInput(input) {
+        // Replace non-numeric and non-comma characters with empty string
+        input.value = input.value.replace(/[^0-9,]/g, '');
+
+        // Set inputmode and pattern based on input value
+        if (input.value.indexOf(',') === -1) {
+            input.inputMode = 'numeric';
+            input.pattern = '[0-9,]*';
+        } else {
+            input.inputMode = 'decimal';
+            input.pattern = '[0-9,]*\\.?[0-9]{0,2}';
+        }
+    }
+    // Get the input field
+    var priceInput = document.getElementById("pre_price");
+
+    // Add event listener for input event
+    priceInput.addEventListener("input", function (event) {
+        // Get the input value
+        var inputValue = event.target.value;
+
+        // Remove any existing commas from the input value
+        var cleanedValue = inputValue.replace(/,/g, '');
+
+        // Add commas every three digits from the right
+        var formattedValue = cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        // Set the formatted value back to the input field
+        event.target.value = formattedValue;
+    });
+</script>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+
+{% elif count == 'edit' %}
+
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+        appearance: textfield;
+        /* Standard */
+    }
+
+    .error {
+        color: red;
+        font-size: 90%;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>PreBuilt Add</h4>
+                <h6>Create new PreBuilt</h6>
+            </div>
+            <div class="page-btn">
+                <a href="{% url 'viewpreBuilt' %}" class="btn btn-added"><img
+                        src="{% static 'assets/img/icons/eye.svg' %}" alt="img" class="me-1">View PreBuilt</a>
+            </div>
+        </div>
+        {% if added %}
+        <h3 style="color: blue; font-size: 16px;">'{{added}}' <span style="color: black;"> is </span><span
+                style="color: green;">Added</span></h3>
+        {% endif %}
+
+        {% for pre in prebuilts %}
+
+        <div class="card">
+            <form method="POST" action="{% url 'editpreBuiltForm' pre.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>preBuilt Name</label>
+                                <input type="text" name="pre_name" id="pre_name" value="{{pre.modal_name}}" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Cpu</label>
+                                <input type="text" name="pre_cpu" id="pre_cpu" value="{{pre.modal_cpu}}" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Monitor</label>
+                                <input type="text" name="pre_mntr" id="pre_mntr" value="{{pre.modal_monitor}}" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>MotherBoard</label>
+                                <input type="text" name="pre_mtrbrd" id="pre_mtrbrd" value="{{pre.modal_motherbrd}}"
+                                    required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>GPU</label>
+                                <input type="text" name="pre_gpu" id="pre_gpu" value="{{pre.modal_gpu}}" required>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>SMPS</label>
+                                <select class="form-control js-example-tags" name="pre_smps" id="pre_smps">
+                                    <option selected="true" value="{{pre.modal_smps}}">{{pre.modal_smps}}</option>
+                                    <option value="DC-DC Converter">DC-DC Converter</option>
+                                    <option value="Forward Converter">Forward Converter</option>
+                                    <option value="Flyback Converter">Flyback Converter</option>
+                                    <option value="self-oscillating Flyback Converter">self-oscillating Flyback
+                                        Converter</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>ROM</label>
+                                <select class="form-control js-example-tags" name="pre_rom" id="pre_rom">
+                                    <option selected="true" value="{{pre.modal_storage_rom}}">{{pre.modal_storage_rom}}
+                                    </option>
+                                    <option value="500GB">500GB</option>
+                                    <option value="1TB">1TB</option>
+                                    <option value="2TB">2TB</option>
+                                    <option value="3TB">3TB</option>
+                                    <option value="5TB">5TB</option>
+                                    <option value="10TB">10TB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>RAM</label>
+                                <select class="form-control js-example-tags" name="pre_ram" id="pre_ram">
+                                    <option selected="true" value="{{pre.modal_ram}}">{{pre.modal_ram}}</option>
+                                    <option value="1GB">1GB</option>
+                                    <option value="2GB">2GB</option>
+                                    <option value="3GB">3GB</option>
+                                    <option value="4GB">4GB</option>
+                                    <option value="8GB">8GB</option>
+                                    <option value="16GB">16GB</option>
+                                    <option value="32GB">32GB</option>
+                                    <option value="64GB">64GB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>SSD</label>
+                                <input type="text" name="pre_ssd" id="pre_ssd" value="{{pre.modal_ssd}}" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="pre_price">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input style="color: green;font-size: large;" type="text" class="form-control"
+                                        aria-label="Price" aria-describedby="basic-addon1" name="pre_price"
+                                        id="pre_price" oninput="validateInput(this)" value="{{pro_price}}" required>
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" name="pre_des" id="pre_des"
+                                    required>{{pre.description}}</textarea>
+
+                            </div>
+                        </div>
+                                                            
+                        {% if pre.product_image == "" %}
+                        <div class="col-lg-9">
+                            <div class="form-group">
+                                <label> Product Image</label>
+                                <div class="image-upload">
+                                    <input type="file" name="pre_pic" id="pre_pic" required>
+                                    <div class="image-uploads">
+                                        <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                        <h4>Drag and drop a file to upload</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="col-lg-9">
+                            <div class="form-group">
+                                <label> Product Image</label>
+                                <div class="image-upload">
+                                    <input type="file" name="pre_pic" id="pre_pic" value="{{pre.product_image}}">
+                                    <div class="image-uploads">
+                                        <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                        <h4>Select A File to Replace</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label> Product Image</label>
+                                <div class="image-upload">
+                                    
+                                    {% if pre.product_image == "" %}
+                                    <div class="">
+                                        <h6>NO Image</h6>
+                                    </div>
+                                    {% else %}
+                                    <div class="">
+                                        <img src="{{pre.product_image.url}}" alt="img" width="300" height="200">
+                                        <a href="{% url 'pre_img_del' pre.id %}" class="btn btn-cancel">Delete</a>
+                                    </div>
+                                    {% endif %}
+                                        
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <span class="btn btn-primary" onclick="myFunction()">Edit More Images +</span>
+                            </div>
+                        </div>
+                        <div id="myDIV" style="display: none;">
+                            <div class="col-lg-12">
+                                <div class="col-lg-3">
+                                    <div class="form-group"><br>
+                                        <label>PreBuilt Image 1</label>
+                                        <div class="">
+                                    
+                                            {% if pre.product_image_1 == "" %}
+                                            <div class="">
+                                                <h6>NO Image</h6>
+                                            </div>
+                                            {% else %}
+                                            <div class="">
+                                                <img src="{{pre.product_image_1.url}}" alt="img" width="300" height="200">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'pre_img_del_1' pre.id %}" class="btn btn-cancel">Delete</a>
+                                            </div>
+                                            {% endif %}
+                                            <div class="col-lg-6">
+                                                <div class="form-group"><br>
+                                                    <label>PreBuilt Image 1</label>
+                                                    <div class="">
+                                                        <input type="file" name="pre_pic1" id="pre_pic1" value="{{pre.product_image_1}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="col-lg-12">
+                                <div class="col-lg-3">
+                                    <div class="form-group"><br>
+                                        <label>PreBuilt Image 2</label>
+                                        <div class="">
+                                    
+                                            {% if pre.product_image_2 == "" %}
+                                            <div class="">
+                                                <h6>NO Image</h6>
+                                            </div>
+                                            {% else %}
+                                            <div class="">
+                                                <img src="{{pre.product_image_2.url}}" alt="img" width="300" height="200">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'pre_img_del_2' pre.id %}" class="btn btn-cancel">Delete</a>
+                                            </div>
+                                            {% endif %}
+                                            <div class="col-lg-6">
+                                                <div class="form-group"><br>
+                                                    <label>PreBuilt Image 2</label>
+                                                    <div class="">
+                                                        <input type="file" name="pre_pic2" id="pre_pic2" value="{{pre.product_image_2}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="col-lg-12">
+                                <div class="col-lg-3">
+                                    <div class="form-group"><br>
+                                        <label>PreBuilt Image 3</label>
+                                        <div class="">
+                                    
+                                            {% if pre.product_image_3 == "" %}
+                                            <div class="">
+                                                <h6>NO Image</h6>
+                                            </div>
+                                            {% else %}
+                                            <div class="">
+                                                <img src="{{pre.product_image_3.url}}" alt="img" width="300" height="200">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'pre_img_del_3' pre.id %}" class="btn btn-cancel">Delete</a>
+                                            </div>
+                                            {% endif %}
+                                            <div class="col-lg-6">
+                                                <div class="form-group"><br>
+                                                    <label>PreBuilt Image 3</label>
+                                                    <div class="">
+                                                        <input type="file" name="pre_pic3" id="pre_pic3" value="{{pre.product_image_3}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="col-lg-12">
+                                <div class="col-lg-3">
+                                    <div class="form-group"><br>
+                                        <label>PreBuilt Image 4</label>
+                                        <div class="">
+                                    
+                                            {% if pre.product_image_4 == "" %}
+                                            <div class="">
+                                                <h6>NO Image</h6>
+                                            </div>
+                                            {% else %}
+                                            <div class="">
+                                                <img src="{{pre.product_image_4.url}}" alt="img" width="300" height="200">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'pre_img_del_4' pre.id %}" class="btn btn-cancel">Delete</a>
+                                            </div>
+                                            {% endif %}
+                                            <div class="col-lg-6">
+                                                <div class="form-group"><br>
+                                                    <label>PreBuilt Image 4</label>
+                                                    <div class="">
+                                                        <input type="file" name="pre_pic4" id="pre_pic4" value="{{pre.product_image_4}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="col-lg-12">
+                                <div class="col-lg-3">
+                                    <div class="form-group"><br>
+                                        <label>PreBuilt Image 5</label>
+                                        <div class="">
+                                    
+                                            {% if pre.product_image_5 == "" %}
+                                            <div class="">
+                                                <h6>NO Image</h6>
+                                            </div>
+                                            {% else %}
+                                            <div class="">
+                                                <img src="{{pre.product_image_5.url}}" alt="img" width="300" height="200">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'pre_img_del_5' pre.id %}" class="btn btn-cancel">Delete</a>
+                                            </div>
+                                            {% endif %}
+                                            <div class="col-lg-6">
+                                                <div class="form-group"><br>
+                                                    <label>PreBuilt Image 5</label>
+                                                    <div class="">
+                                                        <input type="file" name="pre_pic5" id="pre_pic5" value="{{pre.product_image_5}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="col-lg-12">
+                            <br>
+                            <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                            <a href="{% url 'preBuilt' %}" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<script>
+    $(".js-example-tags").select2({
+        tags: true
+    });
+</script>
+<script>
+
+    function validateInput(input) {
+        // Replace non-numeric and non-comma characters with empty string
+        input.value = input.value.replace(/[^0-9,]/g, '');
+
+        // Set inputmode and pattern based on input value
+        if (input.value.indexOf(',') === -1) {
+            input.inputMode = 'numeric';
+            input.pattern = '[0-9,]*';
+        } else {
+            input.inputMode = 'decimal';
+            input.pattern = '[0-9,]*\\.?[0-9]{0,2}';
+        }
+    }
+    // Get the input field
+    var priceInput = document.getElementById("pre_price");
+
+    // Add event listener for input event
+    priceInput.addEventListener("input", function (event) {
+        // Get the input value
+        var inputValue = event.target.value;
+
+        // Remove any existing commas from the input value
+        var cleanedValue = inputValue.replace(/,/g, '');
+
+        // Add commas every three digits from the right
+        var formattedValue = cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        // Set the formatted value back to the input field
+        event.target.value = formattedValue;
+    });
+</script>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+{% else %}
+something is wrong in here!
+{% endif %}
+
+{% endblock body %}

@@ -1,0 +1,146 @@
+{% extends "UserTemplates/dash.html" %} {% block body %}{% load static %}
+<div id="information-contact" class="container">
+  <ul class="breadcrumb">
+
+    {% if pro %}
+    <li>
+      <a href="{% url 'home' %}">Home</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{% url 'index' %}">Home</a>
+    </li>
+    {% endif %}
+
+    <li>
+      <a href="{% url 'contact' %}">Contact Us</a>
+    </li>
+  </ul>
+  {% block list %}
+
+  {% endblock list %}
+  <div class="account-content">
+    <div class="box-content">
+      <div class="list-group">
+        <h3 class="toggled">Account</h3>
+        <ul class="list-unstyled">
+          <li>
+            <a href="{% url 'login' %}" class="list-group-item">Login</a>
+          </li>
+          <li>
+            <a href="{% url 'register' %}" class="list-group-item">Register</a>
+          </li>
+          <li>
+            <a href="#" class="list-group-item">Forgotten Password</a>
+          </li>
+          <li>
+            <a href="#" class="list-group-item">My Account</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sidebar">
+    <div class="box-content">
+      <h3 class="box-content toggled">Information</h3>
+
+      {% if pro %}
+      <ul class="list-unstyled">
+        <li>
+          <a href="{% url 'contactHome' %}">About Us</a>
+        </li>
+        <li>
+          <a href="#">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="#">Terms &amp; Conditions</a>
+        </li>
+        <li>
+          <a href="{% url 'contactHome' %}">Contact Us</a>
+        </li>
+        <li>
+          <a href="{% url 'contactHome' %}">Site Map</a>
+        </li>
+      </ul>
+      {% else %}
+      <ul class="list-unstyled">
+        <li>
+          <a href="{% url 'contact' %}">About Us</a>
+        </li>
+        <li>
+          <a href="#">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="#">Terms &amp; Conditions</a>
+        </li>
+        <li>
+          <a href="{% url 'contact' %}">Contact Us</a>
+        </li>
+        <li>
+          <a href="{% url 'contact' %}">Site Map</a>
+        </li>
+      </ul>
+
+      {% endif %}
+    </div>
+  </div>
+  </aside>
+
+  <div id="content" class="col-sm-9">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 class="contact-title" style="font-size: 25px">Contact US</h1>
+        <h3 class="contact-title">Our Location</h3>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 contact-left">
+        <div class="content-details">
+          <div class="location-info">
+            <div class="location-title title">
+              <i class="fa fa-home"></i> Our Store
+            </div>
+            <div class="content-address">
+              7TC-22/1991, MARUTHAMKUZHI, SASTHAMANGALAM P. O NEAR OLD BRIDGE
+            </div>
+
+            <div>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3945.8621791213736!2d76.9722603!3d8.5127598!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b05bbf1027eb4a7%3A0x1ab7cd43062d98bd!2sTRON%20PC!5e0!3m2!1sen!2sin!4v1683056422821!5m2!1sen!2sin"
+                width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12 contact-left">
+        <div class="content-details"><br>
+          <div class="phone-info">
+            <div class="phone-title title">
+              <i class="fa fa-mobile"></i> Telephone
+            </div>
+            <div class="content-number">+91 8590344770</div>
+          </div>
+          <div class="fax-info">
+            <div class="fax-title title"><img src="https://img.icons8.com/ios/10/null/new-post--v1.png" /> Email</div>
+            <div class="fax-number">tronpcofficial@gmail.com</div>
+          </div>
+          <div class="openstore-info">
+            <div class="open-title title">
+              <i class="fa fa-clock-o"></i> Opening Times
+            </div>
+            <div class="openstore-detail">09:00 AM To 7:00 PM</div>
+          </div>
+          <div class="openstore-info">
+            <div class="open-title title">
+              <i class="fa fa-clock-o"></i> Working Days
+            </div>
+            <div class="openstore-detail">Monday - Satuarday</div><br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

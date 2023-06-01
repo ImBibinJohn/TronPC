@@ -1,0 +1,213 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Product List</h4>
+                <h6>Manage your products</h6>
+                <h7></h7>
+            </div>
+            <div class="page-btn">
+                <a href="{% url 'addProduct' %}" class="btn btn-added"><img
+                        src="{% static 'assets/img/icons/plus.svg' %}" alt="img" class="me-1">Add New Product</a>
+            </div>
+        </div>
+        {% if added %}
+        <h3 style="color: blue; font-size: 16px;"><span style="color: black;">Product </span> '{{added}}' <span
+                style="color: black;"> is </span><span style="color: green;">Modified</span></h3>
+        {% endif %}
+        {% if pro_deleted %}
+        <h3 style="color: blue; font-size: 16px;"><span style="color: black;">Product </span>'{{pro_deleted}}' <span
+                style="color: black;"> is </span><span style="color: red;">Deleted</span></h3>
+        {% endif %}
+        <div class="card">
+            <div class="card-body">
+                <div class="table-top">
+                    <div class="search-set">
+                        <!-- <div class="search-path">
+                            <a class="btn btn-filter" id="filter_search">
+                                <img src="{% static 'assets/img/icons/filter.svg' %}" alt="img">
+                                <span><img src="{% static 'assets/img/icons/closes.svg' %}" alt="img"></span>
+                            </a>
+                        </div> -->
+                        <div class="search-input">
+                            <a class="btn btn-searchset"><img src="{% static 'assets/img/icons/search-white.svg' %}"
+                                    alt="img"></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 
+                <div class="card mb-0" id="filter_inputs">
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <select class="select">
+                                                <option>Choose Product</option>
+                                                <option>Macbook pro</option>
+                                                <option>Orange</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <select class="select">
+                                                <option>Choose Category</option>
+                                                <option>Computers</option>
+                                                <option>Fruits</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <select class="select">
+                                                <option>Choose Sub Category</option>
+                                                <option>Computer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <select class="select">
+                                                <option>Brand</option>
+                                                <option>N/D</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg col-sm-6 col-12 ">
+                                        <div class="form-group">
+                                            <select class="select">
+                                                <option>Price</option>
+                                                <option>150.00</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <a class="btn btn-filters ms-auto"><img
+                                                    src="{% static 'assets/img/icons/search-whites.svg' %}"
+                                                    alt="img"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="table-responsive">
+                    {% csrf_token %}
+                    <table class="table  datanew">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Product Code</th>
+                                <th>Category </th>
+                                <th>Brand</th>
+                                <th>price</th>
+                                <th>Qty</th>
+                                <th>Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pro in pro_list %}
+
+                            <tr>
+                                <td class="productimgname">
+                                    <a href="#" class="product-img">
+                                        <img src="{{pro.product_image.url}}" alt="product">
+                                    </a>
+                                    <a href="#">{{pro.product_name}}</a>
+                                </td>
+                                <td>{{pro.product_code}}</td>
+                                <td>{{pro.category.category_name}}</td>
+                                <td>{{pro.brand}}</td>
+                                <td>{{pro.price}}</td>
+                                <td>{{pro.quantity}}</td>
+                                <td>
+                                    {% if pro.status == 1 %}
+                                    <button class="btn btn-sm btn-success status" type="button"
+                                        value="{{pro.id}}">Active</button>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-danger status" type="button"
+                                        value="{{pro.id}}">NotActv</button>
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    <a class="me-3" href="{% url 'productDetails' pro.id %}">
+                                        <img src="{% static 'assets/img/icons/eye.svg' %}" alt="img">
+                                    </a>
+                                    <a class="me-3" href="{% url 'editProduct' pro.id %}">
+                                        <img src="{% static 'assets/img/icons/edit.svg' %}" alt="img">
+                                    </a>
+                                    <a class="me-3" href="{% url 'deleteProduct' pro.id %}">
+                                        <img src="{% static 'assets/img/icons/delete.svg' %}" alt="img">
+                                    </a>
+                                    {% if pro.special == 1 %}
+                                    <button class="btn btn-sm btn-success change" type="button"
+                                        value="{{pro.id}}">Special</button>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-danger change" type="button"
+                                        value="{{pro.id}}">NotSpl</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $('body').on('click', 'button.change', function (e) {
+        $this = $(this);
+        if ($(this).attr('value')) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'actdea' %}",
+                data: {
+                    activedea: $(this).attr('value'),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('h7').html(data.success);
+                    $this.html(data.html).removeClass('btn-success btn-danger').addClass(data.class);
+                    // location.reload();
+                }
+            });
+        }
+    });
+</script>
+<script>
+    $('body').on('click', 'button.status', function (e) {
+        $this = $(this);
+        if ($(this).attr('value')) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'actsts' %}",
+                data: {
+                    activedea: $(this).attr('value'),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('h7').html(data.success);
+                    $this.html(data.html).removeClass('btn-success btn-danger').addClass(data.class);
+                    // location.reload();
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock body %}

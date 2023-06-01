@@ -1,0 +1,460 @@
+{% include 'AdminTemplates/adminDash.html' %} {% load static %}
+{% block body %}
+
+{% if count == 'add' %}
+
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+        appearance: textfield;
+        /* Standard */
+    }
+
+    .error {
+        color: red;
+        font-size: 90%;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Product Add</h4>
+                <h6>Create new product</h6>
+            </div>
+            <div class="page-btn">
+                <a href="{% url 'productList' %}" class="btn btn-added"><img
+                        src="{% static 'assets/img/icons/eye.svg' %}" alt="img" class="me-1">View ProductList</a>
+            </div>
+        </div>
+        {% if added %}
+        <h3 style="color: blue; font-size: 16px;">'{{added}}' <span style="color: black;"> is </span><span
+                style="color: green;">Added</span></h3>
+        {% endif %}
+        <div class="card">
+            <form name="Form" class="ajax" method="POST" action="{% url 'addProductForm' %}"
+                enctype="multipart/form-data" id="imageForm">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label> Product Image <div class="error" id="picErr"></div></label>
+                                <div class="image-upload">
+                                    <input type="file" name="pro_pic" id="pro_pic" accept="image/*">
+                                    <div class="image-uploads">
+                                        <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                        <h4>Drag and drop a file to upload</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" name="pro_name" id="pro_name">
+                                <div class="error" id="nameErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select class="select" name="pro_cat" id="pro_cat">
+                                    <option selected="true" disabled="disabled">Choose Category</option>
+                                    {% for i in cat_list %}
+                                    <option value="{{i.id}}">{{i.category_name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="error" id="catErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Brand</label>
+                                <select class="select" name="pro_brand" id="pro_brand">
+                                    <option selected="true" disabled="disabled">Choose Brand</option>
+                                    {% for i in brnd_list %}
+                                    <option value="{{i.id}}">{{i.brand_name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="error" id="brndErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" class="form-control" placeholder="Quantity" aria-label="Quantity"
+                                    aria-describedby="basic-addon1" name="pro_qty" id="pro_qty">
+                                <div class="error" id="qtyErr"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" name="pro_des" id="pro_des"></textarea>
+                                <div class="error" id="desErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="pro_price">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input style="color: green;font-size: large;" type="text" class="form-control"
+                                        aria-label="Price" aria-describedby="basic-addon1" name="pro_price"
+                                        id="pro_price" oninput="validateInput(this)">
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                                <div class="error" id="prcErr"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                            <a href="{% url 'productList' %}" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script>
+    function validateInput(input) {
+        // Replace non-numeric and non-comma characters with empty string
+        input.value = input.value.replace(/[^0-9,]/g, '');
+
+        // Set inputmode and pattern based on input value
+        if (input.value.indexOf(',') === -1) {
+            input.inputMode = 'numeric';
+            input.pattern = '[0-9,]*';
+        } else {
+            input.inputMode = 'decimal';
+            input.pattern = '[0-9,]*\\.?[0-9]{0,2}';
+        }
+    }
+    // Get the input field
+    var priceInput = document.getElementById("pro_price");
+
+    // Add event listener for input event
+    priceInput.addEventListener("input", function (event) {
+        // Get the input value
+        var inputValue = event.target.value;
+
+        // Remove any existing commas from the input value
+        var cleanedValue = inputValue.replace(/,/g, '');
+
+        // Add commas every three digits from the right
+        var formattedValue = cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        // Set the formatted value back to the input field
+        event.target.value = formattedValue;
+    });
+</script>
+<script>
+    $("body").on("submit", "form.ajax", function (e) {
+        e.preventDefault();
+
+        $form = $(this);
+        $url = $form.attr("action");
+        if (!$.trim(document.Form.pro_pic.value)) {
+            printError("picErr", "(Please Choose Image)");
+        } else {
+            var imageInput = document.getElementById('pro_pic');
+            var img = new Image();
+            img.src = URL.createObjectURL(imageInput.files[0]);
+            img.onload = function () {
+                var width = this.width;
+                var height = this.height;
+                if (height < 440 || height > 455 || width < 285 || width > 295) {
+                    printError("picErr", "(Image dimensions should be within the range of 285x440 to 295x455 pixels.)");
+                } else if (!$.trim(document.Form.pro_name.value)) {
+                    printError("nameErr", "Please enter product name");
+                } else if (document.Form.pro_cat.value == "Choose Category") {
+                    printError("catErr", "Please choose one category");
+                } else if (document.Form.pro_brand.value == "Choose Brand") {
+                    printError("brndErr", "Please choose Brand");
+                } else if (!$.trim(document.Form.pro_qty.value)) {
+                    printError("qtyErr", "Please Enter Quantity");
+                } else if (!$.trim(document.Form.pro_des.value)) {
+                    printError("desErr", "Please Enter Description");
+                } else if (!$.trim(document.Form.pro_price.value)) {
+                    printError("prcErr", "Please Enter Price");
+                } else {
+                    e.currentTarget.submit();
+                }
+            };
+        }
+    });
+
+    $("body").on("change keyup", "input,select,textarea", function (e) {
+        if ($.trim($(this).val())) {
+            $(this).nextAll("div.error").html("");
+        }
+    });
+
+    function printError(Id, Msg) {
+        document.getElementById(Id).innerHTML = Msg;
+    }
+
+    $(document).on("change", "#pro_pic", function () {
+        var imageInput = document.getElementById('pro_pic');
+        if ($.trim(imageInput.value)) {
+            printError("picErr", ""); // Remove the error message
+        }
+    });
+</script>
+
+
+{% elif count == 'edit' %}
+
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+        appearance: textfield;
+        /* Standard */
+    }
+
+    .error {
+        color: red;
+        font-size: 90%;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Product Edit</h4>
+                <h6>Edit product</h6>
+            </div>
+            <di class="page-btn">
+                <a href="{% url 'productList' %}" class="btn btn-added"><img
+                        src="{% static 'assets/img/icons/eye.svg' %}" alt="img" class="me-1">View ProductList</a>
+        </div>
+    </div>
+    {% if added %}
+    <h3 style="color: blue; font-size: 16px;">'{{added}}' <span style="color: black;"> is </span><span
+            style="color: green;">Modified</span></h3>
+    {% endif %}
+    {% if fill_all %}
+    <h3 style="color: red; font-size: 16px;"><span
+        style="color: blue;">These </span> [{{fill_all}}] <span
+        style="color: blue;">field(s) were empty!</span></h3>
+    {% endif %}
+
+    {% for pro in pro_list %}
+    <div class="card">
+        <form name="Form" class="ajax" method="POST" action="{% url 'editProductForm' pro.id %}"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label> Product Image</label>
+                            <div class="image-upload">
+                                <input type="file" name="pro_pic" id="pro_pic" value="{{pro.product_image.url}}">
+                                <div class="image-uploads">
+                                    <img src="{% static 'assets/img/icons/upload.svg' %}" alt="img">
+                                    <h4>Drag and drop a file to upload</h4>
+                                </div>
+                                <div class="error" id="picErr"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" name="pro_name" id="pro_name" value="{{pro.product_name}}">
+                            <div class="error" id="nameErr"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select class="select" name="pro_cat" id="pro_cat">
+                                <option selected="true" value="{{pro.category.id}}">{{pro.category.category_name}}
+                                </option>
+                                {% for i in cat_list %}
+                                <option value="{{i.id}}">{{i.category_name}}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="error" id="catErr"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Brand</label>
+                            <select class="select" name="pro_brand" id="pro_brand">
+                                <option selected="true" value="{{pro.brand}}">{{pro.brand}}</option>
+                                <option value="Brand">Brand</option>
+                            </select>
+                            <div class="error" id="brndErr"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" class="form-control" placeholder="Product Quantity"
+                                aria-label="Quantity" aria-describedby="basic-addon1" name="pro_qty" id="pro_qty"
+                                value="{{pro.quantity}}">
+                            <div class="error" id="qtyErr"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea class="form-control" name="pro_des" id="pro_des">{{pro.description}}</textarea>
+                            <div class="error" id="desErr"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="pro_price">Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input style="color: green;font-size: large;" type="text" class="form-control"
+                                    aria-label="Price" aria-describedby="basic-addon1" name="pro_price" id="pro_price"
+                                    oninput="validateInput(this)" value="{{pro_price}}">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                            <div class="error" id="prcErr"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                        <a href="{% url 'productList' %}" class="btn btn-cancel">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+</div>
+<script>
+    function validateInput(input) {
+        // Replace non-numeric and non-comma characters with empty string
+        input.value = input.value.replace(/[^0-9,]/g, '');
+
+        // Set inputmode and pattern based on input value
+        if (input.value.indexOf(',') === -1) {
+            input.inputMode = 'numeric';
+            input.pattern = '[0-9,]*';
+        } else {
+            input.inputMode = 'decimal';
+            input.pattern = '[0-9,]*\\.?[0-9]{0,2}';
+        }
+    }
+    // Get the input field
+    var priceInput = document.getElementById("pro_price");
+
+    // Add event listener for input event
+    priceInput.addEventListener("input", function (event) {
+        // Get the input value
+        var inputValue = event.target.value;
+
+        // Remove any existing commas from the input value
+        var cleanedValue = inputValue.replace(/,/g, '');
+
+        // Add commas every three digits from the right
+        var formattedValue = cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        // Set the formatted value back to the input field
+        event.target.value = formattedValue;
+    });
+</script>
+<script>
+    $("body").on("submit", "form.ajax", function (e) {
+        e.preventDefault();
+
+        $form = $(this);
+        $url = $form.attr("action");
+        if (!$.trim(document.Form.pro_pic.value)) {
+        } if (!$.trim(document.Form.pro_name.value)) {
+            printError("nameErr", "Please enter product name");
+        } if (document.Form.pro_cat.value == "Choose Category") {
+            printError("catErr", "Please choose one category");
+        } if (document.Form.pro_brand.value == "Choose Brand") {
+            printError("brndErr", "Please choose Brand");
+        } if (!$.trim(document.Form.pro_qty.value)) {
+            printError("qtyErr", "Please Enter Quantity");
+        } if (!$.trim(document.Form.pro_des.value)) {
+            printError("desErr", "Please Enter Description");
+        } if (!$.trim(document.Form.pro_price.value)) {
+            printError("prcErr", "Please Enter Price");
+        } if (!$.trim(document.Form.pro_pic.value)) {
+            e.currentTarget.submit();
+
+        } else {
+            var imageInput = document.getElementById('pro_pic');
+            var img = new Image();
+            img.src = URL.createObjectURL(imageInput.files[0]);
+            img.onload = function () {
+                var width = this.width;
+                var height = this.height;
+                if (height < 440 || height > 455 || width < 285 || width > 295) {
+                    printError("picErr", "(Image dimensions should be within the range of 285x440 to 295x455 pixels.)");
+                } else if (!$.trim(document.Form.pro_name.value)) {
+                    printError("nameErr", "Please enter product name");
+                } else if (document.Form.pro_cat.value == "Choose Category") {
+                    printError("catErr", "Please choose one category");
+                } else if (document.Form.pro_brand.value == "Choose Brand") {
+                    printError("brndErr", "Please choose Brand");
+                } else if (!$.trim(document.Form.pro_qty.value)) {
+                    printError("qtyErr", "Please Enter Quantity");
+                } else if (!$.trim(document.Form.pro_des.value)) {
+                    printError("desErr", "Please Enter Description");
+                } else if (!$.trim(document.Form.pro_price.value)) {
+                    printError("prcErr", "Please Enter Price");
+                } else {
+                    e.currentTarget.submit();
+                }
+
+            };
+        }
+    });
+
+    $("body").on("change keyup", "input,select,textarea", function (e) {
+        if ($.trim($(this).val())) {
+            $(this).nextAll("div.error").html("");
+        }
+    });
+
+    function printError(Id, Msg) {
+        document.getElementById(Id).innerHTML = Msg;
+    }
+
+    $(document).on("change", "#pro_pic", function () {
+        var imageInput = document.getElementById('pro_pic');
+        if ($.trim(imageInput.value)) {
+            printError("picErr", ""); // Remove the error message
+        }
+    });
+</script>
+
+{% else %}
+<h5>OOPS!! Something went Wrong!</h5>
+{% endif %}
+
+{% endblock body %}

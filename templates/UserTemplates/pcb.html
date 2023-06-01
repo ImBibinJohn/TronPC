@@ -1,0 +1,795 @@
+{% extends "UserTemplates/dash.html" %} {% block body %}{% load static %}
+<style>
+    .containerz {
+        height: 100%;
+        margin-left: 0;
+    }
+
+    .containerz {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .uppercase {
+        text-transform: uppercase;
+    }
+
+    .btn {
+        display: inline-block;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        border: 0;
+        outline: 0;
+        padding: 0;
+        transition: all 200ms ease-in;
+        cursor: pointer;
+    }
+
+    .btn--primary {
+        background: #7f8ff4;
+        color: #fff;
+        box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+        border-radius: 2px;
+        margin-left: -20px;
+        padding: 12px 10px;
+    }
+
+    .btn--primary:hover {
+        background: #6c7ff2;
+    }
+
+    .btn--primary:active {
+        background: #7f8ff4;
+        box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn--inside {
+        margin-left: -50px;
+        width: 140px;
+    }
+
+    .form__field {
+        width: 360px;
+        background: #fff;
+        color: #0d0d0d;
+        font: inherit;
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+        border: 0;
+        outline: 0;
+        padding: 22px 18px;
+        font-weight: normal;
+    }
+
+    .this {
+        margin-left: -5%;
+    }
+
+    .modal-footer .btn-primary {
+        background-color: #7f8ff4;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .modal-footer .btn-primary:hover {
+        background-color: #45a049;
+    }
+
+    @media screen and (max-width : 500px) {
+        .form__field {
+            width: 300px;
+            background: #fff;
+            color: #0d0d0d;
+            font: inherit;
+            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+            border: 0;
+            outline: 0;
+            padding: 22px 18px;
+            font-weight: normal;
+        }
+
+        .btn--inside {
+            margin-left: 230px;
+            margin-top: -90px;
+            width: 150px;
+        }
+
+        .this {
+            margin-left: 0%;
+        }
+
+    }
+
+    @media screen and (max-width : 300px) {
+        .form__field {
+            width: 250px;
+            background: #fff;
+            color: #0d0d0d;
+            font: inherit;
+            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+            border: 0;
+            outline: 0;
+            padding: 22px 18px;
+            font-weight: normal;
+        }
+
+        .btn--inside {
+            margin-left: 130px;
+            margin-top: -150px;
+            width: 130px;
+        }
+
+        .this {
+            margin-left: 0%;
+        }
+
+        .my-selector::after {
+            content: "";
+            display: block;
+            margin-bottom: 30px;
+        }
+
+    }
+
+    .form__field::placeholder {
+        color: #ccc;
+        font-weight: lighter;
+    }
+
+    .form__field:focus {
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 255, 0.5);
+        outline: none;
+        font-weight: bold;
+    }
+
+    .highlight {
+        animation: glowing 1s infinite;
+    }
+
+    @keyframes glowing {
+        0% {
+            box-shadow: 0 0 5px rgba(0, 217, 255, 0.8);
+
+        }
+
+        50% {
+            box-shadow: 0 0 5px rgba(0, 217, 255, 0.8);
+
+        }
+
+        100% {
+            box-shadow: 0 0 5px rgba(0, 217, 255, 0.8);
+
+        }
+    }
+</style>
+<div id="product-search" class="container">
+    <ul class="breadcrumb">
+
+        {% if pro %}
+        <li>
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li>
+            <a href="{% url 'pcb' %}">CustomBuilt</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{% url 'index' %}">Home</a>
+        </li>
+        <li>
+            <a href="{% url 'pcb' %}">CustomBuilt</a>
+        </li>
+        {% endif %}
+    </ul>
+    {% block list %}
+
+    {% endblock list %}
+    <div class="box all-products special left-vertical-product">
+        <div class="box-heading">
+            <div class="box-content">
+                <div class="page-title toggled">
+                    <h3>Special Products</h3>
+                </div>
+                <div class="block_box">
+                    <div id="special-carousel" class="box-product vertical-carousel clearfix" data-items="1">
+                        {% if specials %}
+
+                        {% for special in specials %}
+
+                        <div class="product-layout col-xs-12">
+                            <div class="product-thumb transition clearfix">
+                                <div class="image">
+                                    <a href="#">
+                                        <img src="{{special.product_image.url}}" alt="iPhone" title="iPhone"
+                                            class="img-responsive" />
+                                        <img class="img-responsive hover-img" src="{{special.product_image.url}}"
+                                            title="iPhone" alt="iPhone" />
+                                    </a>
+                                    <div class="sale-text">
+                                        <span class="section-sale">On Sale!</span>
+                                    </div>
+                                </div>
+                                <div class="thumb-description clearfix">
+                                    <div class="caption">
+                                        <h4 class="product-title">
+                                            <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                                        </h4>
+                                        <p class="price">
+                                            <span class="price-new">{{special.price}}</span>
+                                            <!-- <span class="price-old">{{special.price}}</span> -->
+                                        </p>
+                                        <div class="rating">
+                                            <span class="fa fa-stack"></span>
+                                        </div>
+
+                                        <a href="{% url 'add_to_cart_form' special.id %}" style="color: blue;">
+                                            <u>ADD TO CART</u>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <center>
+                            <h5>No Special Products</h5>
+                        </center>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for i in banners %}
+
+    {% if i.top_left_banner == 'top_left_banner' %}
+    {% else %}
+
+    <div class="swiper-viewport">
+      <div id="banner0" class="swiper-container">
+        <div class="swiper-wrapper">
+
+
+          <!-- top_left_banner -->
+          <div class="swiper-slide">
+            <a href="#"><img src="{{i.top_left_banner.url}}" alt="Left Banner" class="img-responsive" /></a>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+    {% endif %}
+
+    {% endfor %}
+    <script>
+        if ($("#banner0 .swiper-slide").length > 1) {
+            $("#banner0").swiper({
+                effect: "fade",
+                autoplay: 2500,
+                autoplayDisableOnInteraction: false,
+            });
+        }
+    </script>
+    </aside>
+
+
+    {% if built_added_already %}
+    {% for built in data %}
+
+    <div id="content" class="col-sm-9">
+        <form action="{% url 'pcbAddFormEdit' built.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h4>CustomBuilt ID : <span style="font-size: 14px;color: #7f8ff4;"
+                    class="my-selector">{{built.cus_code}}</span> &nbsp;{{built_added_already}}
+                <input type="text" value="{{built.cus_code}}" name="cus_code" hidden>
+            </h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_processor" value="{{built.cus_processor}}"
+                                placeholder="prefered Processor" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_processor">Processor</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_ram" value="{{built.cus_ram}}"
+                                placeholder="prefered RAM" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_ram">RAM</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_gpu" value="{{built.cus_gpu}}"
+                                placeholder="prefered GPU" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_gpu">GPU</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_cpu_cooler"
+                                value="{{built.cus_cpu_cooler}}" placeholder="prefered cooler"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_cpu_cooler">Cpu Cooler</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_motherbrd" value="{{built.cus_motherbrd}}"
+                                placeholder="prefered mother Board" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_motherbrd">MotherBoard</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_cabinet" value="{{built.cus_cabinet}}"
+                                placeholder="prefered cabinet" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_cabinet">Cabinet</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_hardisk" value="{{built.cus_hardisk}}"
+                                placeholder="prefered ROM" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_hardisk">Storage</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_powersupply"
+                                value="{{built.cus_powersupply}}" placeholder="prefered powersupply"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_powersupply">PowerSupply</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <textarea type="text" class="form__field" name="cus_desc" value="{{built.cus_desc}}"
+                                placeholder="Description" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)">{{built.cus_desc}}</textarea>
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_desc">Description</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row this">
+                <div class="containerz">
+                    <div class="containerz__item">
+                        <div class="form-group">
+                            <span class="btn btn--primary" onclick="myFunction()">Add More custom +</span>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div id="myDIV" style="display: none;">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="monitor" value="{{datajson.Monitor}}"
+                                    placeholder="prefered monitor" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="monitor">Monitor</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="speaker" value="{{datajson.Speaker}}"
+                                    placeholder="prefered speaker" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="speaker">Speaker</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="keyboard" value="{{datajson.Keyboard}}"
+                                    placeholder="prefered keyboard" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="keyboard">KeyBoard</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="mouse" value="{{datajson.Mouse}}"
+                                    placeholder="prefered mouse" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="mouse">Mouse</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="printer" value="{{datajson.Printer}}"
+                                    placeholder="prefered printer" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="printer">Printer</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="ups" value="{{datajson.Ups}}"
+                                    placeholder="prefered ups" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="ups">Ups</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="wifi_dongle"
+                                    value="{{datajson.wifi_dongle}}" placeholder="prefered wifi-dongle"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="wifi_dongle">wifi-dongle</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="blutooth_dongle"
+                                    value="{{datajson.blutooth_dongle}}" placeholder="prefered blutooth-dongle-dongle"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="blutooth_dongle">Blutooth-dongle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Update Cart</button>
+            </div>
+        </form>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div id="content" class="col-sm-9">
+        <form action="{% url 'pcbAddForm' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h4>CustomBuilt ID : <span style="font-size: 14px;color: #7f8ff4;" class="my-selector">{{cus_cod}}</span>
+                <input type="text" value="{{cus_cod}}" name="cus_code" hidden>
+            </h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_processor" placeholder="prefered Processor"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_processor">Processor</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_ram" placeholder="prefered RAM"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_ram">RAM</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_gpu" placeholder="prefered GPU"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_gpu">GPU</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_cpu_cooler" placeholder="prefered cooler"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_cpu_cooler">Cpu Cooler</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_motherbrd"
+                                placeholder="prefered mother Board" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_motherbrd">MotherBoard</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_cabinet" placeholder="prefered cabinet"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_cabinet">Cabinet</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_hardisk" placeholder="prefered ROM"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_hardisk">Storage</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <input type="text" class="form__field" name="cus_powersupply"
+                                placeholder="prefered powersupply" onfocus="highlightButton(this)"
+                                onblur="removeHighlightButton(this)" />
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_powersupply">PowerSupply</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="containerz">
+                        <div class="containerz__item">
+                            <textarea type="text" class="form__field" name="cus_desc" placeholder="Description"
+                                onfocus="highlightButton(this)" onblur="removeHighlightButton(this)"></textarea>
+                            <button type="button" class="btn btn--primary btn--inside uppercase"
+                                data-input="cus_desc">Description</button>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row this">
+                <div class="containerz">
+                    <div class="containerz__item">
+                        <div class="form-group">
+                            <span class="btn btn--primary" onclick="myFunction()">Add More custom +</span>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <div id="myDIV" style="display: none;">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="monitor" placeholder="prefered monitor"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="monitor">Monitor</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="speaker" placeholder="prefered speaker"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="speaker">Speaker</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="keyboard" placeholder="prefered keyboard"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="keyboard">KeyBoard</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="mouse" placeholder="prefered mouse"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="mouse">Mouse</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="printer" placeholder="prefered printer"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="printer">Printer</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="ups" placeholder="prefered ups"
+                                    onfocus="highlightButton(this)" onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="ups">Ups</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="wifi_dongle"
+                                    placeholder="prefered wifi-dongle" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="wifi_dongle">wifi-dongle</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="containerz">
+                            <div class="containerz__item">
+                                <input type="text" class="form__field" name="blutooth_dongle"
+                                    placeholder="prefered blutooth-dongle-dongle" onfocus="highlightButton(this)"
+                                    onblur="removeHighlightButton(this)" />
+                                <button type="button" class="btn btn--primary btn--inside uppercase"
+                                    data-input="blutooth_dongle">Blutooth-dongle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    something is wrong!contact admin
+</div>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        var inputs = document.querySelectorAll('input.form__field');
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            var button = document.querySelector('button[data-input="' + input.name + '"]');
+            checkInputValue(input, button);
+            input.addEventListener('input', function () {
+                handleInputChange(this);
+            });
+            input.addEventListener('blur', function () {
+                handleInputBlur(this);
+            });
+        }
+    });
+
+    function highlightButton(input) {
+        var button = document.querySelector('button[data-input="' + input.name + '"]');
+        button.classList.add('highlight');
+        button.style.backgroundColor = '#45a049';
+    }
+
+    function removeHighlightButton(input) {
+        var button = document.querySelector('button[data-input="' + input.name + '"]');
+        button.classList.remove('highlight');
+        button.style.backgroundColor = '#6c7ff2';
+    }
+
+    function checkInputValue(input, button) {
+        if (input.value.trim() !== '') {
+            highlightButton(input);
+        } else {
+            removeHighlightButton(input);
+        }
+    }
+
+    function handleInputChange(input) {
+        checkInputValue(input);
+    }
+
+    function handleInputBlur(input) {
+        checkInputValue(input);
+    }
+
+</script>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+{% endblock body %}
