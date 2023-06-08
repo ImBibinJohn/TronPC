@@ -22,8 +22,8 @@ class UserDetails(models.Model):
     postal_code = models.CharField(max_length=20, blank=True, null=True)
     phone_number = models.IntegerField(blank=True, null=True)
 
-    account_type = models.IntegerField(blank=True, null=True)
-    
+    account_type = models.IntegerField(blank=True, null=True, default=True)
+
     def __str__(self):
         return self.username
 

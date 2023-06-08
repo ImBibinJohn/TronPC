@@ -63,7 +63,7 @@ def uregister(request):
 
                         udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
                                                   username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
-                                                  district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=password)
+                                                  district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
                         udetailsadd.save()
                         cart_add_Guest = Cart.objects.filter(
                             customer_id=userid)
@@ -139,19 +139,32 @@ def loginform(request):
         except UserDetails.DoesNotExist:
             user_object = None
         if user_object:
-            print('user exist')
-            unew = UserDetails.objects.get(email=user_email)
-            providedText = unew.pass_word
-            providedText, salt = providedText.split(':')
-            checked = bool(providedText == hashlib.sha256(
-                salt.encode() + user_pass.encode()).hexdigest())
-            if checked == True:
-                request.session['userid'] = unew.id
-                return redirect('mainIndex')
+            if user_object and user_object.account_type == False:
+                unew = UserDetails.objects.get(email=user_email)
+                providedText = unew.pass_word
+                providedText, salt = providedText.split(':')
+                checked = bool(providedText == hashlib.sha256(
+                    salt.encode() + user_pass.encode()).hexdigest())
+                if checked == True:
+                    request.session['userid'] = unew.id
+                    return redirect('adminIndex')
+                else:
+                    user_email = request.POST['user_email']
+                    pas = "password not correct"
+                    return render(request, 'UserTemplates/login.html', {'pas': pas, 'user_email': user_email})
             else:
-                user_email = request.POST['user_email']
-                pas = "password not correct"
-                return render(request, 'UserTemplates/login.html', {'pas': pas, 'user_email': user_email})
+                unew = UserDetails.objects.get(email=user_email)
+                providedText = unew.pass_word
+                providedText, salt = providedText.split(':')
+                checked = bool(providedText == hashlib.sha256(
+                    salt.encode() + user_pass.encode()).hexdigest())
+                if checked == True:
+                    request.session['userid'] = unew.id
+                    return redirect('mainIndex')
+                else:
+                    user_email = request.POST['user_email']
+                    pas = "password not correct"
+                    return render(request, 'UserTemplates/login.html', {'pas': pas, 'user_email': user_email})
         else:
             print('not exist')
             user_email = request.POST['user_email']
@@ -1131,858 +1144,1180 @@ def logout(request):
 def adminDash(request):
     return render(request, 'AdminTemplates/adminDash.html')
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def adminIndex(request):
-    return render(request, 'AdminTemplates/adminIndex.html')
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            return render(request, 'AdminTemplates/adminIndex.html')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 
 def addBlogs(request):
-    blog_list = Blogs.objects.all()
-    return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list})
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            blog_list = Blogs.objects.all()
+            return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 
 def addBlogsForm(request):
-    if request.method == 'POST':
-        blog_name = request.POST['blog_name'].capitalize()
-        blog_link = request.POST['blog_link']
-        blog_des = request.POST['blog_des']
-        mydata = Blogs.objects.filter(blog_link=blog_link).values()
-        if mydata:
-            name_exists = f"{blog_link}"
-            blog_list = Blogs.objects.all()
-            context = {'name_exists': name_exists, 'blog_list': blog_list,
-                       'blog_name': blog_name, 'blog_link': blog_link, 'blog_des': blog_des}
-            return render(request, 'AdminTemplates/addBlogs.html', context)
-        else:
-            blog_name = request.POST['blog_name'].capitalize()
-            blog_link = request.POST['blog_link']
-            clean_url = blog_link.replace("https://youtu.be/", "")
-            blog_des = request.POST['blog_des']
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                blog_name = request.POST['blog_name'].capitalize()
+                blog_link = request.POST['blog_link']
+                blog_des = request.POST['blog_des']
+                mydata = Blogs.objects.filter(blog_link=blog_link).values()
+                if mydata:
+                    name_exists = f"{blog_link}"
+                    blog_list = Blogs.objects.all()
+                    context = {'name_exists': name_exists, 'blog_list': blog_list,
+                            'blog_name': blog_name, 'blog_link': blog_link, 'blog_des': blog_des}
+                    return render(request, 'AdminTemplates/addBlogs.html', context)
+                else:
+                    blog_name = request.POST['blog_name'].capitalize()
+                    blog_link = request.POST['blog_link']
+                    clean_url = blog_link.replace("https://youtu.be/", "")
+                    blog_des = request.POST['blog_des']
 
-            blog_add = Blogs(blog_name=blog_name, blog_link=blog_link,
-                             blog_description=blog_des, blog_clean_link=clean_url)
-            blog_add.save()
-            added = f"{blog_name}"
-            blog_list = Blogs.objects.all()
-            return render(request, 'AdminTemplates/addBlogs.html', {'added': added, 'blog_list': blog_list})
-    return redirect('addBlogs')
+                    blog_add = Blogs(blog_name=blog_name, blog_link=blog_link,
+                                    blog_description=blog_des, blog_clean_link=clean_url)
+                    blog_add.save()
+                    added = f"{blog_name}"
+                    blog_list = Blogs.objects.all()
+                    return render(request, 'AdminTemplates/addBlogs.html', {'added': added, 'blog_list': blog_list})
+            return redirect('addBlogs')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 
 def editBlogs(request, id):
-    blog_list_edit = Blogs.objects.filter(id=id)
-    blog_list = Blogs.objects.all()
-    return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list, 'blog_list_edit': blog_list_edit})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            blog_list_edit = Blogs.objects.filter(id=id)
+            blog_list = Blogs.objects.all()
+            return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list, 'blog_list_edit': blog_list_edit})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def editBlogsForm(request, id):
-    if request.method == 'POST':
-        blog_name = request.POST['blog_name'].capitalize()
-        blog_link = request.POST['blog_link']
-        blog_des = request.POST['blog_des']
-        db = Blogs.objects.get(id=id)
-        clean_url = blog_link.replace("https://youtu.be/", "")
-        db.blog_clean_link = clean_url
-        db.blog_name = blog_name
-        db.blog_link = blog_link
-        db.blog_description = blog_des
-        db.save()
-        added = f"{blog_name}"
-        blog_list = Blogs.objects.all()
-        return render(request, 'AdminTemplates/addBlogs.html', {'added': added, 'blog_list': blog_list})
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                blog_name = request.POST['blog_name'].capitalize()
+                blog_link = request.POST['blog_link']
+                blog_des = request.POST['blog_des']
+                db = Blogs.objects.get(id=id)
+                clean_url = blog_link.replace("https://youtu.be/", "")
+                db.blog_clean_link = clean_url
+                db.blog_name = blog_name
+                db.blog_link = blog_link
+                db.blog_description = blog_des
+                db.save()
+                added = f"{blog_name}"
+                blog_list = Blogs.objects.all()
+                return render(request, 'AdminTemplates/addBlogs.html', {'added': added, 'blog_list': blog_list})
+            else:
+                return redirect('addBlogs')
+        else:
+            print('something wrong!')
     else:
-        return redirect('addBlogs')
-
+        return redirect('/')
 
 def productList(request):
-    pro_list = Product.objects.all()
-    brnd_list = Brands.objects.all()
-    return render(request, 'AdminTemplates/productList.html', {'pro_list': pro_list, 'brnd_list': brnd_list})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            pro_list = Product.objects.all()
+            brnd_list = Brands.objects.all()
+            return render(request, 'AdminTemplates/productList.html', {'pro_list': pro_list, 'brnd_list': brnd_list})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def addProduct(request):
-    cat_list = Category.objects.all()
-    brnd_list = Brands.objects.all()
-    count = 'add'
-    return render(request, 'AdminTemplates/addProduct.html', {'cat_list': cat_list, 'count': count, 'brnd_list': brnd_list})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            cat_list = Category.objects.all()
+            brnd_list = Brands.objects.all()
+            count = 'add'
+            return render(request, 'AdminTemplates/addProduct.html', {'cat_list': cat_list, 'count': count, 'brnd_list': brnd_list})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def editProduct(request, id):
-    cat_list = Category.objects.all()
-    pro_list = Product.objects.filter(id=id)
-    pro_list_price = Product.objects.get(id=id)
-    pro_price = pro_list_price.price[:-3]
-    count = 'edit'
-    return render(request, 'AdminTemplates/addProduct.html', {'cat_list': cat_list, 'count': count, 'pro_list': pro_list, 'pro_price': pro_price})
-
-
-def addProductForm(request):
-    if request.method == 'POST':
-        pro_name = request.POST['pro_name'].capitalize()
-        pro_cat = request.POST['pro_cat']
-        pro_brand = request.POST['pro_brand']
-        pro_qty = request.POST['pro_qty']
-        pro_des = request.POST['pro_des']
-        pro_price = request.POST['pro_price']
-        price = int(pro_price.replace(',', ''))
-        locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
-        mod_price = locale.currency(price, grouping=True, symbol=False)
-        pro_pic = request.FILES['pro_pic']
-        code_length = 3  # Customize the length of the code
-        x = datetime.datetime.now()
-        salt = x.strftime("%f")[3:].upper()
-        pro_cod = 'PRO-' + salt + \
-            ''.join(random.choices(string.ascii_uppercase +
-                    string.digits, k=code_length))
-        for_key = Category.objects.get(id=pro_cat)
-        for_brnd = Brands.objects.get(id=pro_brand)
-        pro_add = Product(product_name=pro_name, product_code=pro_cod, date_added=x, brand=for_brnd, quantity=pro_qty,
-                          description=pro_des, price=mod_price, status=True, special=False, product_image=pro_pic, category=for_key)
-        pro_add.save()
-        added = f"{pro_name}"
-        cat_list = Category.objects.all()
-        brnd_list = Brands.objects.all()
-        count = 'add'
-    return render(request, 'AdminTemplates/addProduct.html', {'added': added, 'cat_list': cat_list, 'count': count, 'brnd_list': brnd_list})
-
-
-def editProductForm(request, id):
-    if request.method == 'POST':
-        pro_list = Product.objects.get(id=id)
-        pro_name = request.POST['pro_name'].capitalize()
-        pro_cat = request.POST['pro_cat']
-        pro_brand = request.POST['pro_brand']
-        pro_qty = request.POST['pro_qty']
-        pro_des = request.POST['pro_des']
-        pro_price = request.POST['pro_price']
-        empty_fields = []
-        if pro_name.strip() == '':
-            empty_fields.append('Product Name')
-        if pro_cat.strip() == '':
-            empty_fields.append('Category')
-        if pro_brand.strip() == '':
-            empty_fields.append('Brand')
-        if pro_qty.strip() == '':
-            empty_fields.append('Quantity')
-        if pro_des.strip() == '':
-            empty_fields.append('Description')
-        if pro_price.strip() == '':
-            empty_fields.append('Price')
-
-        if empty_fields:
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
             cat_list = Category.objects.all()
             pro_list = Product.objects.filter(id=id)
             pro_list_price = Product.objects.get(id=id)
             pro_price = pro_list_price.price[:-3]
             count = 'edit'
-            fill_all = "" + ", ".join(empty_fields)
-            return render(request, 'AdminTemplates/addProduct.html', {'cat_list': cat_list, 'count': count, 'pro_list': pro_list, 'pro_price': pro_price, 'fill_all': fill_all})
+            return render(request, 'AdminTemplates/addProduct.html', {'cat_list': cat_list, 'count': count, 'pro_list': pro_list, 'pro_price': pro_price})
         else:
-            price = int(pro_price.replace(',', ''))
-            locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
-            mod_price = locale.currency(price, grouping=True, symbol=False)
-            if request.FILES.get('pro_pic') is not None:
-                pro_pic = request.FILES.get('pro_pic')
-            else:
-                pro_pic = pro_list.product_image
-                current_date = datetime.datetime.now()
-                current_time = current_date.date()
-                pro_cod = pro_list.product_code
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def addProductForm(request):
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                pro_name = request.POST['pro_name'].capitalize()
+                pro_cat = request.POST['pro_cat']
+                pro_brand = request.POST['pro_brand']
+                pro_qty = request.POST['pro_qty']
+                pro_des = request.POST['pro_des']
+                pro_price = request.POST['pro_price']
+                price = int(pro_price.replace(',', ''))
+                locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
+                mod_price = locale.currency(price, grouping=True, symbol=False)
+                pro_pic = request.FILES['pro_pic']
+                code_length = 3  # Customize the length of the code
+                x = datetime.datetime.now()
+                salt = x.strftime("%f")[3:].upper()
+                pro_cod = 'PRO-' + salt + \
+                    ''.join(random.choices(string.ascii_uppercase +
+                            string.digits, k=code_length))
                 for_key = Category.objects.get(id=pro_cat)
-                pro_add = Product.objects.get(id=id)
-                pro_add.product_name = pro_name
-                pro_add.product_code = pro_cod
-                pro_add.date_added = current_time
-                pro_add.brand = pro_brand
-                pro_add.quantity = pro_qty
-                pro_add.description = pro_des
-                pro_add.price = mod_price
-                pro_add.status = True
-                pro_add.special = True
-                pro_add.product_image = pro_pic
-                pro_add.category = for_key
+                for_brnd = Brands.objects.get(id=pro_brand)
+                pro_add = Product(product_name=pro_name, product_code=pro_cod, date_added=x, brand=for_brnd, quantity=pro_qty,
+                                description=pro_des, price=mod_price, status=True, special=False, product_image=pro_pic, category=for_key)
                 pro_add.save()
                 added = f"{pro_name}"
-                pro_list = Product.objects.all()
-                return render(request, 'AdminTemplates/productList.html', {'added': added, 'pro_list': pro_list})
+                cat_list = Category.objects.all()
+                brnd_list = Brands.objects.all()
+                count = 'add'
+            return render(request, 'AdminTemplates/addProduct.html', {'added': added, 'cat_list': cat_list, 'count': count, 'brnd_list': brnd_list})
+        else:
+            print('something wrong!')
     else:
-        return redirect('productList')
+        return redirect('/')
 
+def editProductForm(request, id):
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                pro_list = Product.objects.get(id=id)
+                pro_name = request.POST['pro_name'].capitalize()
+                pro_cat = request.POST['pro_cat']
+                pro_brand = request.POST['pro_brand']
+                pro_qty = request.POST['pro_qty']
+                pro_des = request.POST['pro_des']
+                pro_price = request.POST['pro_price']
+                empty_fields = []
+                if pro_name.strip() == '':
+                    empty_fields.append('Product Name')
+                if pro_cat.strip() == '':
+                    empty_fields.append('Category')
+                if pro_brand.strip() == '':
+                    empty_fields.append('Brand')
+                if pro_qty.strip() == '':
+                    empty_fields.append('Quantity')
+                if pro_des.strip() == '':
+                    empty_fields.append('Description')
+                if pro_price.strip() == '':
+                    empty_fields.append('Price')
+
+                if empty_fields:
+                    cat_list = Category.objects.all()
+                    pro_list = Product.objects.filter(id=id)
+                    pro_list_price = Product.objects.get(id=id)
+                    pro_price = pro_list_price.price[:-3]
+                    count = 'edit'
+                    fill_all = "" + ", ".join(empty_fields)
+                    return render(request, 'AdminTemplates/addProduct.html', {'cat_list': cat_list, 'count': count, 'pro_list': pro_list, 'pro_price': pro_price, 'fill_all': fill_all})
+                else:
+                    price = int(pro_price.replace(',', ''))
+                    locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
+                    mod_price = locale.currency(price, grouping=True, symbol=False)
+                    if request.FILES.get('pro_pic') is not None:
+                        pro_pic = request.FILES.get('pro_pic')
+                    else:
+                        pro_pic = pro_list.product_image
+                        current_date = datetime.datetime.now()
+                        current_time = current_date.date()
+                        pro_cod = pro_list.product_code
+                        for_key = Category.objects.get(id=pro_cat)
+                        pro_add = Product.objects.get(id=id)
+                        pro_add.product_name = pro_name
+                        pro_add.product_code = pro_cod
+                        pro_add.date_added = current_time
+                        pro_add.brand = pro_brand
+                        pro_add.quantity = pro_qty
+                        pro_add.description = pro_des
+                        pro_add.price = mod_price
+                        pro_add.status = True
+                        pro_add.special = True
+                        pro_add.product_image = pro_pic
+                        pro_add.category = for_key
+                        pro_add.save()
+                        added = f"{pro_name}"
+                        pro_list = Product.objects.all()
+                        return render(request, 'AdminTemplates/productList.html', {'added': added, 'pro_list': pro_list})
+            else:
+                return redirect('productList')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def categoryList(request):
-    categoryList = Category.objects.all()
-    return render(request, 'AdminTemplates/categoryList.html', {'categoryList': categoryList})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            categoryList = Category.objects.all()
+            return render(request, 'AdminTemplates/categoryList.html', {'categoryList': categoryList})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def addCategory(request):
-    code_length = 3  # Customize the length of the code
-    x = datetime.datetime.now()
-    salt = x.strftime("%f")[3:].upper()
-    code = 'CAT-' + salt + \
-        ''.join(random.choices(string.ascii_uppercase +
-                string.digits, k=code_length))
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            code_length = 3  # Customize the length of the code
+            x = datetime.datetime.now()
+            salt = x.strftime("%f")[3:].upper()
+            code = 'CAT-' + salt + \
+                ''.join(random.choices(string.ascii_uppercase +
+                        string.digits, k=code_length))
 
-    existingOptions = Category.objects.all()
-    categories = ["RAM", "ROM", "SSD", "Monitor", "GPU", "PreBuilt"]
-    newOptions = []
-    for category in categories:
-        if not existingOptions.filter(category_name=category).exists():
-            newOptions.append(category)
-    if len(newOptions) == 0:
-        return render(request, 'AdminTemplates/addCategory.html', {'code': code})
+            existingOptions = Category.objects.all()
+            categories = ["RAM", "ROM", "SSD", "Monitor", "GPU", "PreBuilt"]
+            newOptions = []
+            for category in categories:
+                if not existingOptions.filter(category_name=category).exists():
+                    newOptions.append(category)
+            if len(newOptions) == 0:
+                return render(request, 'AdminTemplates/addCategory.html', {'code': code})
+            else:
+                return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions})
+        else:
+            print('something wrong!')
     else:
-        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions})
-
+        return redirect('/')
 
 def addcategory_form(request):
-    if request.method == 'POST':
-        cat_name = request.POST['cat_name'].capitalize()
-        mydata = Category.objects.filter(category_name=cat_name).values()
-        if mydata:
-            name_exists = f"{cat_name}"
-            code_length = 3  # Customize the length of the code
-            x = datetime.datetime.now()
-            salt = x.strftime("%f")[3:].upper()
-            code = 'CAT-' + salt + \
-                ''.join(random.choices(string.ascii_uppercase +
-                        string.digits, k=code_length))
-            existingOptions = Category.objects.all()
-            categories = ["RAM", "ROM", "SSD", "Monitor", "GPU", "PreBuilt"]
-            newOptions = []
-            for category in categories:
-                if not existingOptions.filter(category_name=category).exists():
-                    newOptions.append(category)
-            if len(newOptions) == 0:
-                return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'name_exists': name_exists})
-            else:
-                return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions, 'name_exists': name_exists})
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                cat_name = request.POST['cat_name'].capitalize()
+                mydata = Category.objects.filter(category_name=cat_name).values()
+                if mydata:
+                    name_exists = f"{cat_name}"
+                    code_length = 3  # Customize the length of the code
+                    x = datetime.datetime.now()
+                    salt = x.strftime("%f")[3:].upper()
+                    code = 'CAT-' + salt + \
+                        ''.join(random.choices(string.ascii_uppercase +
+                                string.digits, k=code_length))
+                    existingOptions = Category.objects.all()
+                    categories = ["RAM", "ROM", "SSD", "Monitor", "GPU", "PreBuilt"]
+                    newOptions = []
+                    for category in categories:
+                        if not existingOptions.filter(category_name=category).exists():
+                            newOptions.append(category)
+                    if len(newOptions) == 0:
+                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'name_exists': name_exists})
+                    else:
+                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions, 'name_exists': name_exists})
+                else:
+                    cat_name = request.POST['cat_name'].capitalize()
+                    cat_code = request.POST['cat_code']
+                    cat_desc = request.POST['cat_desc']
+                    cat_img = request.FILES['cat_img']
+                    category = Category(category_name=cat_name, category_code=cat_code,
+                                        description=cat_desc, category_image=cat_img)
+                    category.save()
+                    added = f"{cat_name}"
+                    code_length = 3  # Customize the length of the code
+                    x = datetime.datetime.now()
+                    salt = x.strftime("%f")[3:].upper()
+                    code = 'CAT-' + salt + \
+                        ''.join(random.choices(string.ascii_uppercase +
+                                string.digits, k=code_length))
+                    existingOptions = Category.objects.all()
+                    categories = ["RAM", "ROM", "SSD", "Monitor", "GPU", "PreBuilt"]
+                    newOptions = []
+                    for category in categories:
+                        if not existingOptions.filter(category_name=category).exists():
+                            newOptions.append(category)
+                    if len(newOptions) == 0:
+                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'added': added})
+                    else:
+                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions, 'added': added})
+            return redirect('addCategory')
         else:
-            cat_name = request.POST['cat_name'].capitalize()
-            cat_code = request.POST['cat_code']
-            cat_desc = request.POST['cat_desc']
-            cat_img = request.FILES['cat_img']
-            category = Category(category_name=cat_name, category_code=cat_code,
-                                description=cat_desc, category_image=cat_img)
-            category.save()
-            added = f"{cat_name}"
-            code_length = 3  # Customize the length of the code
-            x = datetime.datetime.now()
-            salt = x.strftime("%f")[3:].upper()
-            code = 'CAT-' + salt + \
-                ''.join(random.choices(string.ascii_uppercase +
-                        string.digits, k=code_length))
-            existingOptions = Category.objects.all()
-            categories = ["RAM", "ROM", "SSD", "Monitor", "GPU", "PreBuilt"]
-            newOptions = []
-            for category in categories:
-                if not existingOptions.filter(category_name=category).exists():
-                    newOptions.append(category)
-            if len(newOptions) == 0:
-                return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'added': added})
-            else:
-                return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions, 'added': added})
-    return redirect('addCategory')
-
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def productDetails(request, id):
-    product_id = Product.objects.filter(id=id)
-    to_get_raw = Product.objects.get(id=id)
-    raw_name = os.path.basename(to_get_raw.product_image.name)
-    raw_size = os.stat(to_get_raw.product_image.path)
-    raw_mb_size = str(raw_size.st_size / (1024 * 1024))[:5]
-    return render(request, 'AdminTemplates/productDetails.html', {'product_id': product_id, 'raw_name': raw_name, 'raw_mb_size': raw_mb_size})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            product_id = Product.objects.filter(id=id)
+            to_get_raw = Product.objects.get(id=id)
+            raw_name = os.path.basename(to_get_raw.product_image.name)
+            raw_size = os.stat(to_get_raw.product_image.path)
+            raw_mb_size = str(raw_size.st_size / (1024 * 1024))[:5]
+            return render(request, 'AdminTemplates/productDetails.html', {'product_id': product_id, 'raw_name': raw_name, 'raw_mb_size': raw_mb_size})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def adminProfile(request):
-    return render(request, 'AdminTemplates/adminProfile.html')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            return render(request, 'AdminTemplates/adminProfile.html')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def editSales(request):
-    return render(request, 'AdminTemplates/editSales.html')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            return render(request, 'AdminTemplates/editSales.html')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def salesDetails(request,id):
-    order_cart = Cart.objects.filter(customer_id=id)
-    sales_det = Sale.objects.select_related('customer').get(customer_id=id)
-    cart_price_list = Cart.objects.filter(
-        customer_id=id).values('price')
-    prices = [item['price'] for item in cart_price_list]
-    total = int(sum(float(price.replace(',', ''))
-                for price in prices))
-    locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
-    total_price = locale.currency(
-        total, grouping=True, symbol=False)
-    return render(request, 'AdminTemplates/salesDetails.html',{'order_cart':order_cart,'sales_det':sales_det,'total_price':total_price})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            order_cart = Cart.objects.filter(customer_id=id)
+            sales_det = Sale.objects.select_related('customer').get(customer_id=id)
+            cart_price_list = Cart.objects.filter(
+                customer_id=id).values('price')
+            prices = [item['price'] for item in cart_price_list]
+            total = int(sum(float(price.replace(',', ''))
+                        for price in prices))
+            locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
+            total_price = locale.currency(
+                total, grouping=True, symbol=False)
+            return render(request, 'AdminTemplates/salesDetails.html',{'order_cart':order_cart,'sales_det':sales_det,'total_price':total_price})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def salesList(request):
-    order_cart = Cart.objects.filter(status="Ordered").values('customer_id').distinct()
-    all_order_cart = list([item['customer_id'] for item in order_cart])
-    sales_list = Sale.objects.select_related('customer').all()
-    all_order_cus = CustomBuilt.objects.filter(status="Ordered")
-    if order_cart.exists():
-        if all_order_cus.exists():
-            return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'all_order_cus':all_order_cus,'sales_list':sales_list})
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            order_cart = Cart.objects.filter(status="Ordered").values('customer_id').distinct()
+            all_order_cart = list([item['customer_id'] for item in order_cart])
+            sales_list = Sale.objects.select_related('customer').all()
+            all_order_cus = CustomBuilt.objects.filter(status="Ordered")
+            if order_cart.exists():
+                if all_order_cus.exists():
+                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'all_order_cus':all_order_cus,'sales_list':sales_list})
+                else:
+                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_car,'sales_list':sales_listt})
+            else:
+                return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list})
         else:
-            return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_car,'sales_list':sales_listt})
+            print('something wrong!')
     else:
-        return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list})
-
+        return redirect('/')
 
 def edit_category_form(request, id):
-    banners = Category.objects.get(id=id)
-    cat_name = request.POST['cat_name']
-    cat_code = request.POST['cat_code']
-    cat_desc = request.POST['cat_desc']
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            banners = Category.objects.get(id=id)
+            cat_name = request.POST['cat_name']
+            cat_code = request.POST['cat_code']
+            cat_desc = request.POST['cat_desc']
 
-    if request.FILES.get('cat_img') is not None:
-        cat_img = request.FILES.get('cat_img')
+            if request.FILES.get('cat_img') is not None:
+                cat_img = request.FILES.get('cat_img')
+            else:
+                cat_img = banners.category_image
+            banners.category_name = cat_name
+            banners.category_code = cat_code
+            banners.description = cat_desc
+            banners.category_image = cat_img
+            banners.save()
+            banners = Category.objects.filter(id=id)
+            to_get_raw = Category.objects.get(id=id)
+            raw_name = os.path.basename(to_get_raw.category_image.name)
+            raw_size = os.stat(to_get_raw.category_image.path)
+            raw_mb_size = str(raw_size.st_size / (1024 * 1024))[:5]
+            edit_saved = 'The changes has been saved'
+            return render(request, 'AdminTemplates/editCategory.html', {'edit_saved': edit_saved, 'banners': banners, 'raw_name': raw_name, 'raw_mb_size': raw_mb_size})
+        else:
+            print('something wrong!')
     else:
-        cat_img = banners.category_image
-    banners.category_name = cat_name
-    banners.category_code = cat_code
-    banners.description = cat_desc
-    banners.category_image = cat_img
-    banners.save()
-    banners = Category.objects.filter(id=id)
-    to_get_raw = Category.objects.get(id=id)
-    raw_name = os.path.basename(to_get_raw.category_image.name)
-    raw_size = os.stat(to_get_raw.category_image.path)
-    raw_mb_size = str(raw_size.st_size / (1024 * 1024))[:5]
-    edit_saved = 'The changes has been saved'
-    return render(request, 'AdminTemplates/editCategory.html', {'edit_saved': edit_saved, 'banners': banners, 'raw_name': raw_name, 'raw_mb_size': raw_mb_size})
-
+        return redirect('/')
 
 def editCategory(request, id):
-    banners = Category.objects.filter(id=id)
-    to_get_raw = Category.objects.get(id=id)
-    raw_name = os.path.basename(to_get_raw.category_image.name)
-    raw_size = os.stat(to_get_raw.category_image.path)
-    raw_mb_size = str(raw_size.st_size / (1024 * 1024))[:5]
-    return render(request, 'AdminTemplates/editCategory.html', {'banners': banners, 'raw_name': raw_name, 'raw_mb_size': raw_mb_size})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            banners = Category.objects.filter(id=id)
+            to_get_raw = Category.objects.get(id=id)
+            raw_name = os.path.basename(to_get_raw.category_image.name)
+            raw_size = os.stat(to_get_raw.category_image.path)
+            raw_mb_size = str(raw_size.st_size / (1024 * 1024))[:5]
+            return render(request, 'AdminTemplates/editCategory.html', {'banners': banners, 'raw_name': raw_name, 'raw_mb_size': raw_mb_size})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def sideBanners(request):
-    banners = Banners.objects.all()
-    return render(request, 'AdminTemplates/sideBanners.html', {'banners': banners})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            banners = Banners.objects.all()
+            return render(request, 'AdminTemplates/sideBanners.html', {'banners': banners})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def add_sideBanners_form(request, id):
-    if request.method == 'POST':
-        banners = Banners.objects.all()
-        if banners:
-            if id == str(1):
-                banner_id = request.session['banner_id']
-                add_banner = request.FILES['add_banner']
-                new_banner = Banners.objects.get(id=banner_id)
-                new_banner.top_left_banner = add_banner
-                new_banner.save()
-            elif id == str(2):
-                banner_id = request.session['banner_id']
-                add_banner = request.FILES['add_banner']
-                new_banner = Banners.objects.get(id=banner_id)
-                new_banner.top_right_banner = add_banner
-                new_banner.save()
-            elif id == str(3):
-                banner_id = request.session['banner_id']
-                add_banner = request.FILES['add_banner']
-                new_banner = Banners.objects.get(id=banner_id)
-                new_banner.bottom_right_banner = add_banner
-                new_banner.save()
-            else:
-                return redirect('sideBanners')
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                banners = Banners.objects.all()
+                if banners:
+                    if id == str(1):
+                        banner_id = request.session['banner_id']
+                        add_banner = request.FILES['add_banner']
+                        new_banner = Banners.objects.get(id=banner_id)
+                        new_banner.top_left_banner = add_banner
+                        new_banner.save()
+                    elif id == str(2):
+                        banner_id = request.session['banner_id']
+                        add_banner = request.FILES['add_banner']
+                        new_banner = Banners.objects.get(id=banner_id)
+                        new_banner.top_right_banner = add_banner
+                        new_banner.save()
+                    elif id == str(3):
+                        banner_id = request.session['banner_id']
+                        add_banner = request.FILES['add_banner']
+                        new_banner = Banners.objects.get(id=banner_id)
+                        new_banner.bottom_right_banner = add_banner
+                        new_banner.save()
+                    else:
+                        return redirect('sideBanners')
 
-        else:
-            add_banner = request.FILES['add_banner']
-            banners = Banners(top_left_banner=add_banner,
-                              top_right_banner=add_banner, bottom_right_banner=add_banner)
-            banners.save()
-            request.session['banner_id'] = banners.id
+                else:
+                    add_banner = request.FILES['add_banner']
+                    banners = Banners(top_left_banner=add_banner,
+                                    top_right_banner=add_banner, bottom_right_banner=add_banner)
+                    banners.save()
+                    request.session['banner_id'] = banners.id
+                    return redirect('sideBanners')
             return redirect('sideBanners')
-    return redirect('sideBanners')
-
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def delete_sideBanners(request, id):
-    banner_id = request.session['banner_id']
-    mainpost = Banners.objects.get(id=banner_id)
-    if id == str(1):
-        os.remove(mainpost.top_left_banner.path)
-        mainpost.top_left_banner.delete()
-        top_left_banner = 'top_left_banner'
-        mainpost.top_left_banner = top_left_banner
-        mainpost.save()
-        return redirect('sideBanners')
-    if id == str(2):
-        os.remove(mainpost.top_right_banner.path)
-        mainpost.top_right_banner.delete()
-        top_right_banner = 'top_right_banner'
-        mainpost.top_right_banner = top_right_banner
-        mainpost.save()
-        return redirect('sideBanners')
-    if id == str(3):
-        os.remove(mainpost.bottom_right_banner.path)
-        mainpost.bottom_right_banner.delete()
-        bottom_right_banner = 'bottom_right_banner'
-        mainpost.bottom_right_banner = bottom_right_banner
-        mainpost.save()
-        return redirect('sideBanners')
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            banner_id = request.session['banner_id']
+            mainpost = Banners.objects.get(id=banner_id)
+            if id == str(1):
+                os.remove(mainpost.top_left_banner.path)
+                mainpost.top_left_banner.delete()
+                top_left_banner = 'top_left_banner'
+                mainpost.top_left_banner = top_left_banner
+                mainpost.save()
+                return redirect('sideBanners')
+            if id == str(2):
+                os.remove(mainpost.top_right_banner.path)
+                mainpost.top_right_banner.delete()
+                top_right_banner = 'top_right_banner'
+                mainpost.top_right_banner = top_right_banner
+                mainpost.save()
+                return redirect('sideBanners')
+            if id == str(3):
+                os.remove(mainpost.bottom_right_banner.path)
+                mainpost.bottom_right_banner.delete()
+                bottom_right_banner = 'bottom_right_banner'
+                mainpost.bottom_right_banner = bottom_right_banner
+                mainpost.save()
+                return redirect('sideBanners')
+            else:
+                return redirect('sideBanners')
+        else:
+            print('something wrong!')
     else:
-        return redirect('sideBanners')
-
+        return redirect('/')
 
 def addBanner(request):
-    carousals = Carousal.objects.all()
-    return render(request, 'AdminTemplates/addBanner.html', {'carousals': carousals})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            carousals = Carousal.objects.all()
+            return render(request, 'AdminTemplates/addBanner.html', {'carousals': carousals})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def msg_banner(request):
-    carousals = Carousal.objects.all()
-    msg = 'You are only allowed to add 2 carousals...please delete one to add new'
-    return render(request, 'AdminTemplates/addBanner.html', {'carousals': carousals, 'msg': msg})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            carousals = Carousal.objects.all()
+            msg = 'You are only allowed to add 2 carousals...please delete one to add new'
+            return render(request, 'AdminTemplates/addBanner.html', {'carousals': carousals, 'msg': msg})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def add_carousal_form(request):
-    if request.method == 'POST':
-        # my_total = Carousal.objects.count()
-        # if my_total >= 2:
-        #     return redirect('msg_banner')
-        # else:
-        carousal_img = request.FILES['carousal']
-        db = Carousal(carousal_home_main=carousal_img)
-        db.save()
-        return redirect('addBanner')
-    return redirect('addBanner')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                # my_total = Carousal.objects.count()
+                # if my_total >= 2:
+                #     return redirect('msg_banner')
+                # else:
+                carousal_img = request.FILES['carousal']
+                db = Carousal(carousal_home_main=carousal_img)
+                db.save()
+                return redirect('addBanner')
+            return redirect('addBanner')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def deleteBanner(request, id):
-    mainpost = Carousal.objects.get(id=id)
-    os.remove(mainpost.carousal_home_main.path)
-    mainpost.delete()
-    return redirect('addBanner')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = Carousal.objects.get(id=id)
+            os.remove(mainpost.carousal_home_main.path)
+            mainpost.delete()
+            return redirect('addBanner')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def deleteBrand(request, id):
-    mainpost = Brands.objects.get(id=id)
-    os.remove(mainpost.brand_image.path)
-    mainpost.delete()
-    return redirect('addBrand')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = Brands.objects.get(id=id)
+            os.remove(mainpost.brand_image.path)
+            mainpost.delete()
+            return redirect('addBrand')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def cat_del_msg(request):
-    categoryList = Category.objects.all()
-    cat_deleted = request.session['cat_deleted']
-    return render(request, 'AdminTemplates/categoryList.html', {'cat_deleted': cat_deleted, 'categoryList': categoryList})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            categoryList = Category.objects.all()
+            cat_deleted = request.session['cat_deleted']
+            return render(request, 'AdminTemplates/categoryList.html', {'cat_deleted': cat_deleted, 'categoryList': categoryList})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def pro_del_msg(request):
-    pro_list = Product.objects.all()
-    pro_deleted = request.session['pro_deleted']
-    return render(request, 'AdminTemplates/productList.html', {'pro_list': pro_list, 'pro_deleted': pro_deleted})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            pro_list = Product.objects.all()
+            pro_deleted = request.session['pro_deleted']
+            return render(request, 'AdminTemplates/productList.html', {'pro_list': pro_list, 'pro_deleted': pro_deleted})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def blog_del_msg(request):
-    blog_list = Blogs.objects.all()
-    blog_deleted = request.session['blog_deleted']
-    return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list, 'blog_deleted': blog_deleted})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            blog_list = Blogs.objects.all()
+            blog_deleted = request.session['blog_deleted']
+            return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list, 'blog_deleted': blog_deleted})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def deleteCategory(request, id):
-    mainpost = Category.objects.get(id=id)
-    os.remove(mainpost.category_image.path)
-    mainpost.delete()
-    cat_deleted = f"{mainpost.category_name}"
-    request.session['cat_deleted'] = cat_deleted
-    return redirect('cat_del_msg')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = Category.objects.get(id=id)
+            os.remove(mainpost.category_image.path)
+            mainpost.delete()
+            cat_deleted = f"{mainpost.category_name}"
+            request.session['cat_deleted'] = cat_deleted
+            return redirect('cat_del_msg')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def deleteProduct(request, id):
-    mainpost = Product.objects.get(id=id)
-    os.remove(mainpost.product_image.path)
-    mainpost.delete()
-    pro_deleted = f"{mainpost.product_name}"
-    request.session['pro_deleted'] = pro_deleted
-    return redirect('pro_del_msg')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = Product.objects.get(id=id)
+            os.remove(mainpost.product_image.path)
+            mainpost.delete()
+            pro_deleted = f"{mainpost.product_name}"
+            request.session['pro_deleted'] = pro_deleted
+            return redirect('pro_del_msg')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def deletePreBuilt(request, id):
-    mainpost = PreBuilt.objects.get(id=id)
-    os.remove(mainpost.product_image.path)
-    if mainpost.product_image_1 == "":
-        pass
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = PreBuilt.objects.get(id=id)
+            os.remove(mainpost.product_image.path)
+            if mainpost.product_image_1 == "":
+                pass
+            else:
+                os.remove(mainpost.product_image_1.path)
+            if mainpost.product_image_2 == "":
+                pass
+            else:
+                os.remove(mainpost.product_image_2.path)
+            if mainpost.product_image_3 == "":
+                pass
+            else:
+                os.remove(mainpost.product_image_3.path)
+            if mainpost.product_image_4 == "":
+                pass
+            else:
+                os.remove(mainpost.product_image_4.path)
+            if mainpost.product_image_5 == "":
+                pass
+            else:
+                os.remove(mainpost.product_image_5.path)
+            mainpost.delete()
+            return redirect('viewpreBuilt')
+        else:
+            print('something wrong!')
     else:
-        os.remove(mainpost.product_image_1.path)
-    if mainpost.product_image_2 == "":
-        pass
-    else:
-        os.remove(mainpost.product_image_2.path)
-    if mainpost.product_image_3 == "":
-        pass
-    else:
-        os.remove(mainpost.product_image_3.path)
-    if mainpost.product_image_4 == "":
-        pass
-    else:
-        os.remove(mainpost.product_image_4.path)
-    if mainpost.product_image_5 == "":
-        pass
-    else:
-        os.remove(mainpost.product_image_5.path)
-    mainpost.delete()
-    return redirect('viewpreBuilt')
-
+        return redirect('/')
 
 def deleteBlog(request, id):
-    mainpost = Blogs.objects.get(id=id)
-    mainpost.delete()
-    blog_deleted = f"{mainpost.blog_name}"
-    request.session['blog_deleted'] = blog_deleted
-    return redirect('blog_del_msg')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = Blogs.objects.get(id=id)
+            mainpost.delete()
+            blog_deleted = f"{mainpost.blog_name}"
+            request.session['blog_deleted'] = blog_deleted
+            return redirect('blog_del_msg')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def actdea(request):
-    if request.method == 'POST':
-        activedea = request.POST['activedea']
-        db = Product.objects.get(id=activedea)
-        if db.special == 1:
-            db.special = 0
-            db.save()
-            thisdict = {
-                "success": f"{db.product_name} is Not Special",
-                "html": "NotSpl",
-                "key": activedea,
-                "class": "btn-danger"
-            }
-            new1 = json.dumps(thisdict)
-            return HttpResponse(new1)
-        if db.special == 0:
-            db.special = 1
-            db.save()
-            thisdict = {
-                "success": f"{db.product_name} is Special",
-                "html": "Special",
-                "key": activedea,
-                "class": "btn-success"
-            }
-            new1 = json.dumps(thisdict)
-            return HttpResponse(new1)
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                activedea = request.POST['activedea']
+                db = Product.objects.get(id=activedea)
+                if db.special == 1:
+                    db.special = 0
+                    db.save()
+                    thisdict = {
+                        "success": f"{db.product_name} is Not Special",
+                        "html": "NotSpl",
+                        "key": activedea,
+                        "class": "btn-danger"
+                    }
+                    new1 = json.dumps(thisdict)
+                    return HttpResponse(new1)
+                if db.special == 0:
+                    db.special = 1
+                    db.save()
+                    thisdict = {
+                        "success": f"{db.product_name} is Special",
+                        "html": "Special",
+                        "key": activedea,
+                        "class": "btn-success"
+                    }
+                    new1 = json.dumps(thisdict)
+                    return HttpResponse(new1)
+                else:
+                    print('something wrong')
+            else:
+                print('Im out')
         else:
-            print('something wrong')
+            print('something wrong!')
     else:
-        print('Im out')
-
+        return redirect('/')
 
 def pre_actdea(request):
-    if request.method == 'POST':
-        activedea = request.POST['activedea']
-        db = PreBuilt.objects.get(id=activedea)
-        if db.status == 1:
-            db.status = 0
-            db.save()
-            thisdict = {
-                "success": f"{db.modal_name} is Deactivated",
-                "html": "Inactive",
-                "key": activedea,
-                "class": "btn-danger"
-            }
-            new1 = json.dumps(thisdict)
-            return HttpResponse(new1)
-        if db.status == 0:
-            db.status = 1
-            db.save()
-            thisdict = {
-                "success": f"{db.modal_name} is Activated",
-                "html": "Active",
-                "key": activedea,
-                "class": "btn-success"
-            }
-            new1 = json.dumps(thisdict)
-            return HttpResponse(new1)
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                activedea = request.POST['activedea']
+                db = PreBuilt.objects.get(id=activedea)
+                if db.status == 1:
+                    db.status = 0
+                    db.save()
+                    thisdict = {
+                        "success": f"{db.modal_name} is Deactivated",
+                        "html": "Inactive",
+                        "key": activedea,
+                        "class": "btn-danger"
+                    }
+                    new1 = json.dumps(thisdict)
+                    return HttpResponse(new1)
+                if db.status == 0:
+                    db.status = 1
+                    db.save()
+                    thisdict = {
+                        "success": f"{db.modal_name} is Activated",
+                        "html": "Active",
+                        "key": activedea,
+                        "class": "btn-success"
+                    }
+                    new1 = json.dumps(thisdict)
+                    return HttpResponse(new1)
+                else:
+                    print('something wrong')
+            else:
+                print('Im out')
         else:
-            print('something wrong')
+            print('something wrong!')
     else:
-        print('Im out')
-
+        return redirect('/')
 
 def actsts(request):
-    if request.method == 'POST':
-        activedea = request.POST['activedea']
-        db = Product.objects.get(id=activedea)
-        if db.status == 1:
-            db.status = 0
-            db.save()
-            thisdict = {
-                "success": f"{db.product_name} is Deactivated",
-                "html": "Inactive",
-                "key": activedea,
-                "class": "btn-danger"
-            }
-            new1 = json.dumps(thisdict)
-            return HttpResponse(new1)
-        if db.status == 0:
-            db.status = 1
-            db.save()
-            thisdict = {
-                "success": f"{db.product_name} is Activated",
-                "html": "Active",
-                "key": activedea,
-                "class": "btn-success"
-            }
-            new1 = json.dumps(thisdict)
-            return HttpResponse(new1)
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                activedea = request.POST['activedea']
+                db = Product.objects.get(id=activedea)
+                if db.status == 1:
+                    db.status = 0
+                    db.save()
+                    thisdict = {
+                        "success": f"{db.product_name} is Deactivated",
+                        "html": "Inactive",
+                        "key": activedea,
+                        "class": "btn-danger"
+                    }
+                    new1 = json.dumps(thisdict)
+                    return HttpResponse(new1)
+                if db.status == 0:
+                    db.status = 1
+                    db.save()
+                    thisdict = {
+                        "success": f"{db.product_name} is Activated",
+                        "html": "Active",
+                        "key": activedea,
+                        "class": "btn-success"
+                    }
+                    new1 = json.dumps(thisdict)
+                    return HttpResponse(new1)
+                else:
+                    print('something wrong')
+            else:
+                print('Im out')
         else:
-            print('something wrong')
+            print('something wrong!')
     else:
-        print('Im out')
-
+        return redirect('/')
 
 def addBrand(request):
-    brands = Brands.objects.all()
-    return render(request, 'AdminTemplates/addBrand.html', {'brands': brands})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            brands = Brands.objects.all()
+            return render(request, 'AdminTemplates/addBrand.html', {'brands': brands})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def addBrand_Form(request):
-    if request.method == 'POST':
-        bnd_name = request.POST['bnd_name'].capitalize()
-        mydata = Brands.objects.filter(brand_name=bnd_name).values()
-        if mydata:
-            name_exists = f"{bnd_name}"
-            brands = Brands.objects.all()
-            return render(request, 'AdminTemplates/addBrand.html', {'name_exists': name_exists, 'brands': brands})
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                bnd_name = request.POST['bnd_name'].capitalize()
+                mydata = Brands.objects.filter(brand_name=bnd_name).values()
+                if mydata:
+                    name_exists = f"{bnd_name}"
+                    brands = Brands.objects.all()
+                    return render(request, 'AdminTemplates/addBrand.html', {'name_exists': name_exists, 'brands': brands})
+                else:
+                    bnd_name = request.POST['bnd_name'].capitalize()
+                    bnd_img = request.FILES['bnd_img']
+                    brand = Brands(brand_name=bnd_name, brand_image=bnd_img)
+                    brand.save()
+                    added = f"{bnd_name}"
+                    brands = Brands.objects.all()
+                    return render(request, 'AdminTemplates/addBrand.html', {'added': added, 'brands': brands})
+            return redirect('addBrand')
         else:
-            bnd_name = request.POST['bnd_name'].capitalize()
-            bnd_img = request.FILES['bnd_img']
-            brand = Brands(brand_name=bnd_name, brand_image=bnd_img)
-            brand.save()
-            added = f"{bnd_name}"
-            brands = Brands.objects.all()
-            return render(request, 'AdminTemplates/addBrand.html', {'added': added, 'brands': brands})
-    return redirect('addBrand')
-
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def preBuilt(request):
-    prebuilts = PreBuilt.objects.all()
-    count = 'add'
-    return render(request, 'AdminTemplates/preBuilt.html', {'count': count, 'prebuilts': prebuilts})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            prebuilts = PreBuilt.objects.all()
+            count = 'add'
+            return render(request, 'AdminTemplates/preBuilt.html', {'count': count, 'prebuilts': prebuilts})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def pre_img_del(request, id):
-    mainpost = PreBuilt.objects.get(id=id)
-    os.remove(mainpost.product_image.path)
-    mainpost.product_image = ""
-    mainpost.save()
-    request.session['pre_id'] = id
-    return redirect('editPreBuilt_post_del')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = PreBuilt.objects.get(id=id)
+            os.remove(mainpost.product_image.path)
+            mainpost.product_image = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editPreBuilt_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def pre_img_del_1(request, id):
-    mainpost = PreBuilt.objects.get(id=id)
-    os.remove(mainpost.product_image_1.path)
-    mainpost.product_image_1 = ""
-    mainpost.save()
-    request.session['pre_id'] = id
-    return redirect('editPreBuilt_post_del')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = PreBuilt.objects.get(id=id)
+            os.remove(mainpost.product_image_1.path)
+            mainpost.product_image_1 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editPreBuilt_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def pre_img_del_2(request, id):
-    mainpost = PreBuilt.objects.get(id=id)
-    os.remove(mainpost.product_image_2.path)
-    mainpost.product_image_2 = ""
-    mainpost.save()
-    request.session['pre_id'] = id
-    return redirect('editPreBuilt_post_del')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = PreBuilt.objects.get(id=id)
+            os.remove(mainpost.product_image_2.path)
+            mainpost.product_image_2 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editPreBuilt_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def pre_img_del_3(request, id):
-    mainpost = PreBuilt.objects.get(id=id)
-    os.remove(mainpost.product_image_3.path)
-    mainpost.product_image_3 = ""
-    mainpost.save()
-    request.session['pre_id'] = id
-    return redirect('editPreBuilt_post_del')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = PreBuilt.objects.get(id=id)
+            os.remove(mainpost.product_image_3.path)
+            mainpost.product_image_3 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editPreBuilt_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def pre_img_del_4(request, id):
-    mainpost = PreBuilt.objects.get(id=id)
-    os.remove(mainpost.product_image_4.path)
-    mainpost.product_image_4 = ""
-    mainpost.save()
-    request.session['pre_id'] = id
-    return redirect('editPreBuilt_post_del')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = PreBuilt.objects.get(id=id)
+            os.remove(mainpost.product_image_4.path)
+            mainpost.product_image_4 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editPreBuilt_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def pre_img_del_5(request, id):
-    mainpost = PreBuilt.objects.get(id=id)
-    os.remove(mainpost.product_image_5.path)
-    mainpost.product_image_5 = ""
-    mainpost.save()
-    request.session['pre_id'] = id
-    return redirect('editPreBuilt_post_del')
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            mainpost = PreBuilt.objects.get(id=id)
+            os.remove(mainpost.product_image_5.path)
+            mainpost.product_image_5 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editPreBuilt_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def editPreBuilt_post_del(request):
-    id = request.session['pre_id']
-    prebuilts = PreBuilt.objects.filter(id=id)
-    pro_list_price = PreBuilt.objects.get(id=id)
-    pro_price = pro_list_price.price[:-3]
-    count = 'edit'
-    return render(request, 'AdminTemplates/preBuilt.html', {'prebuilts': prebuilts, 'count': count, 'pro_price': pro_price})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            id = request.session['pre_id']
+            prebuilts = PreBuilt.objects.filter(id=id)
+            pro_list_price = PreBuilt.objects.get(id=id)
+            pro_price = pro_list_price.price[:-3]
+            count = 'edit'
+            return render(request, 'AdminTemplates/preBuilt.html', {'prebuilts': prebuilts, 'count': count, 'pro_price': pro_price})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def editPreBuilt(request, id):
-    prebuilts = PreBuilt.objects.filter(id=id)
-    pro_list_price = PreBuilt.objects.get(id=id)
-    pro_price = pro_list_price.price[:-3]
-    count = 'edit'
-    return render(request, 'AdminTemplates/preBuilt.html', {'prebuilts': prebuilts, 'count': count, 'pro_price': pro_price})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            prebuilts = PreBuilt.objects.filter(id=id)
+            pro_list_price = PreBuilt.objects.get(id=id)
+            pro_price = pro_list_price.price[:-3]
+            count = 'edit'
+            return render(request, 'AdminTemplates/preBuilt.html', {'prebuilts': prebuilts, 'count': count, 'pro_price': pro_price})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def viewPrebuiltDetails(request, id):
-    prebuilts = PreBuilt.objects.filter(id=id)
-    to_get_raw = PreBuilt.objects.get(id=id)
-    raw_name = os.path.basename(to_get_raw.product_image.name)
-    raw_name1 = os.path.basename(to_get_raw.product_image_1.name)
-    raw_name2 = os.path.basename(to_get_raw.product_image_2.name)
-    raw_name3 = os.path.basename(to_get_raw.product_image_3.name)
-    raw_name4 = os.path.basename(to_get_raw.product_image_4.name)
-    raw_name5 = os.path.basename(to_get_raw.product_image_5.name)
-    return render(request, 'AdminTemplates/viewPrebuiltDetails.html', {'prebuilts': prebuilts, 'raw_name': raw_name, 'raw_name1': raw_name1, 'raw_name2': raw_name2,
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            prebuilts = PreBuilt.objects.filter(id=id)
+            to_get_raw = PreBuilt.objects.get(id=id)
+            raw_name = os.path.basename(to_get_raw.product_image.name)
+            raw_name1 = os.path.basename(to_get_raw.product_image_1.name)
+            raw_name2 = os.path.basename(to_get_raw.product_image_2.name)
+            raw_name3 = os.path.basename(to_get_raw.product_image_3.name)
+            raw_name4 = os.path.basename(to_get_raw.product_image_4.name)
+            raw_name5 = os.path.basename(to_get_raw.product_image_5.name)
+            return render(request, 'AdminTemplates/viewPrebuiltDetails.html', {'prebuilts': prebuilts, 'raw_name': raw_name, 'raw_name1': raw_name1, 'raw_name2': raw_name2,
                                                                        'raw_name3': raw_name3, 'raw_name4': raw_name4, 'raw_name5': raw_name5})
-
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def viewpreBuilt(request):
-    prebuilts = PreBuilt.objects.all()
-    return render(request, 'AdminTemplates/viewpreBuilt.html', {'prebuilts': prebuilts})
-
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            prebuilts = PreBuilt.objects.all()
+            return render(request, 'AdminTemplates/viewpreBuilt.html', {'prebuilts': prebuilts})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
 def addpreBuiltForm(request):
-    if request.method == 'POST':
-        pre_name = request.POST['pre_name'].capitalize()
-        pre_cpu = request.POST['pre_cpu']
-        pre_mntr = request.POST['pre_mntr']
-        pre_mtrbrd = request.POST['pre_mtrbrd']
-        pre_gpu = request.POST['pre_gpu']
-        pre_ssd = request.POST['pre_ssd']
-        pre_rom = request.POST['pre_rom']
-        pre_ram = request.POST['pre_ram']
-        pre_smps = request.POST['pre_smps']
-        pre_des = request.POST['pre_des']
-        pre_pic = request.FILES['pre_pic']
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                pre_name = request.POST['pre_name'].capitalize()
+                pre_cpu = request.POST['pre_cpu']
+                pre_mntr = request.POST['pre_mntr']
+                pre_mtrbrd = request.POST['pre_mtrbrd']
+                pre_gpu = request.POST['pre_gpu']
+                pre_ssd = request.POST['pre_ssd']
+                pre_rom = request.POST['pre_rom']
+                pre_ram = request.POST['pre_ram']
+                pre_smps = request.POST['pre_smps']
+                pre_des = request.POST['pre_des']
+                pre_pic = request.FILES['pre_pic']
 
-        if request.FILES.get('pre_pic1') is not None:
-            pre_pic1 = request.FILES.get('pre_pic1')
+                if request.FILES.get('pre_pic1') is not None:
+                    pre_pic1 = request.FILES.get('pre_pic1')
+                else:
+                    pre_pic1 = ""
+
+                if request.FILES.get('pre_pic2') is not None:
+                    pre_pic2 = request.FILES.get('pre_pic2')
+                else:
+                    pre_pic2 = ""
+
+                if request.FILES.get('pre_pic3') is not None:
+                    pre_pic3 = request.FILES.get('pre_pic3')
+                else:
+                    pre_pic3 = ""
+
+                if request.FILES.get('pre_pic4') is not None:
+                    pre_pic4 = request.FILES.get('pre_pic4')
+                else:
+                    pre_pic4 = ""
+
+                if request.FILES.get('pre_pic5') is not None:
+                    pre_pic5 = request.FILES.get('pre_pic5')
+                else:
+                    pre_pic5 = ""
+
+                pre_price = request.POST['pre_price']
+                mod_price = pre_price + '.00'
+                code_length = 3  # Customize the length of the code
+                x = datetime.datetime.now()
+                salt = x.strftime("%f")[3:].upper()
+                pre_cod = 'PRE-' + salt + \
+                    ''.join(random.choices(string.ascii_uppercase +
+                            string.digits, k=code_length))
+                pre_add = PreBuilt(modal_name=pre_name, modal_code=pre_cod, modal_cpu=pre_cpu, modal_monitor=pre_mntr, modal_ram=pre_ram,
+                                modal_motherbrd=pre_mtrbrd, modal_gpu=pre_gpu, modal_ssd=pre_ssd, modal_storage_rom=pre_rom, modal_smps=pre_smps,
+                                modal_offer='Special', date_added=x, description=pre_des, price=mod_price, status=1, product_image=pre_pic,
+                                product_image_1=pre_pic1, product_image_2=pre_pic2, product_image_3=pre_pic3, product_image_4=pre_pic4, product_image_5=pre_pic5)
+                pre_add.save()
+                added = f"{pre_name}"
+                prebuilts = PreBuilt.objects.all()
+                return redirect('viewpreBuilt')
+            else:
+                return redirect('preBuilt')
         else:
-            pre_pic1 = ""
-
-        if request.FILES.get('pre_pic2') is not None:
-            pre_pic2 = request.FILES.get('pre_pic2')
-        else:
-            pre_pic2 = ""
-
-        if request.FILES.get('pre_pic3') is not None:
-            pre_pic3 = request.FILES.get('pre_pic3')
-        else:
-            pre_pic3 = ""
-
-        if request.FILES.get('pre_pic4') is not None:
-            pre_pic4 = request.FILES.get('pre_pic4')
-        else:
-            pre_pic4 = ""
-
-        if request.FILES.get('pre_pic5') is not None:
-            pre_pic5 = request.FILES.get('pre_pic5')
-        else:
-            pre_pic5 = ""
-
-        pre_price = request.POST['pre_price']
-        mod_price = pre_price + '.00'
-        code_length = 3  # Customize the length of the code
-        x = datetime.datetime.now()
-        salt = x.strftime("%f")[3:].upper()
-        pre_cod = 'PRE-' + salt + \
-            ''.join(random.choices(string.ascii_uppercase +
-                    string.digits, k=code_length))
-        pre_add = PreBuilt(modal_name=pre_name, modal_code=pre_cod, modal_cpu=pre_cpu, modal_monitor=pre_mntr, modal_ram=pre_ram,
-                           modal_motherbrd=pre_mtrbrd, modal_gpu=pre_gpu, modal_ssd=pre_ssd, modal_storage_rom=pre_rom, modal_smps=pre_smps,
-                           modal_offer='Special', date_added=x, description=pre_des, price=mod_price, status=1, product_image=pre_pic,
-                           product_image_1=pre_pic1, product_image_2=pre_pic2, product_image_3=pre_pic3, product_image_4=pre_pic4, product_image_5=pre_pic5)
-        pre_add.save()
-        added = f"{pre_name}"
-        prebuilts = PreBuilt.objects.all()
-        return redirect('viewpreBuilt')
+            print('something wrong!')
     else:
-        return redirect('preBuilt')
-
+        return redirect('/')
 
 def editpreBuiltForm(request, id):
-    if request.method == 'POST':
-        pre_name = request.POST['pre_name'].capitalize()
-        pre_cpu = request.POST['pre_cpu']
-        pre_mntr = request.POST['pre_mntr']
-        pre_mtrbrd = request.POST['pre_mtrbrd']
-        pre_gpu = request.POST['pre_gpu']
-        pre_ssd = request.POST['pre_ssd']
-        pre_rom = request.POST['pre_rom']
-        pre_ram = request.POST['pre_ram']
-        pre_smps = request.POST['pre_smps']
-        pre_des = request.POST['pre_des']
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            if request.method == 'POST':
+                pre_name = request.POST['pre_name'].capitalize()
+                pre_cpu = request.POST['pre_cpu']
+                pre_mntr = request.POST['pre_mntr']
+                pre_mtrbrd = request.POST['pre_mtrbrd']
+                pre_gpu = request.POST['pre_gpu']
+                pre_ssd = request.POST['pre_ssd']
+                pre_rom = request.POST['pre_rom']
+                pre_ram = request.POST['pre_ram']
+                pre_smps = request.POST['pre_smps']
+                pre_des = request.POST['pre_des']
 
-        pre_price = request.POST['pre_price']
-        mod_price = pre_price + '.00'
-        pre_add = PreBuilt.objects.get(id=id)
-        if request.FILES.get('pre_pic') is not None:
-            pre_pic = request.FILES.get('pre_pic')
+                pre_price = request.POST['pre_price']
+                mod_price = pre_price + '.00'
+                pre_add = PreBuilt.objects.get(id=id)
+                if request.FILES.get('pre_pic') is not None:
+                    pre_pic = request.FILES.get('pre_pic')
+                else:
+                    pre_pic = pre_add.product_image
+
+                if request.FILES.get('pre_pic1') is not None:
+                    pre_pic1 = request.FILES.get('pre_pic1')
+                else:
+                    pre_pic1 = pre_add.product_image_1
+
+                if request.FILES.get('pre_pic2') is not None:
+                    pre_pic2 = request.FILES.get('pre_pic2')
+                else:
+                    pre_pic2 = pre_add.product_image_2
+
+                if request.FILES.get('pre_pic3') is not None:
+                    pre_pic3 = request.FILES.get('pre_pic3')
+                else:
+                    pre_pic3 = pre_add.product_image_3
+
+                if request.FILES.get('pre_pic4') is not None:
+                    pre_pic4 = request.FILES.get('pre_pic4')
+                else:
+                    pre_pic4 = pre_add.product_image_4
+
+                if request.FILES.get('pre_pic5') is not None:
+                    pre_pic5 = request.FILES.get('pre_pic5')
+                else:
+                    pre_pic5 = pre_add.product_image_5
+
+                pre_add.modal_name = pre_name
+                pre_add.modal_code = pre_add.modal_code
+                pre_add.modal_cpu = pre_cpu
+                pre_add.modal_monitor = pre_mntr
+                pre_add.modal_ram = pre_ram
+                pre_add.modal_motherbrd = pre_mtrbrd
+                pre_add.modal_gpu = pre_gpu
+                pre_add.modal_ssd = pre_ssd
+                pre_add.modal_storage_rom = pre_rom
+                pre_add.modal_smps = pre_smps
+                pre_add.modal_offer = pre_add.modal_offer
+                pre_add.date_added = pre_add.date_added
+                pre_add.description = pre_des
+                pre_add.price = mod_price
+                pre_add.status = pre_add.status
+                pre_add.product_image = pre_pic
+                pre_add.product_image_1 = pre_pic1
+                pre_add.product_image_2 = pre_pic2
+                pre_add.product_image_3 = pre_pic3
+                pre_add.product_image_4 = pre_pic4
+                pre_add.product_image_5 = pre_pic5
+
+                pre_add.save()
+                edited = f"{pre_name}"
+                prebuilts = PreBuilt.objects.all()
+                return render(request, 'AdminTemplates/viewpreBuilt.html', {'prebuilts': prebuilts, 'edited': edited})
+            else:
+                return redirect('preBuilt')
         else:
-            pre_pic = pre_add.product_image
-
-        if request.FILES.get('pre_pic1') is not None:
-            pre_pic1 = request.FILES.get('pre_pic1')
-        else:
-            pre_pic1 = pre_add.product_image_1
-
-        if request.FILES.get('pre_pic2') is not None:
-            pre_pic2 = request.FILES.get('pre_pic2')
-        else:
-            pre_pic2 = pre_add.product_image_2
-
-        if request.FILES.get('pre_pic3') is not None:
-            pre_pic3 = request.FILES.get('pre_pic3')
-        else:
-            pre_pic3 = pre_add.product_image_3
-
-        if request.FILES.get('pre_pic4') is not None:
-            pre_pic4 = request.FILES.get('pre_pic4')
-        else:
-            pre_pic4 = pre_add.product_image_4
-
-        if request.FILES.get('pre_pic5') is not None:
-            pre_pic5 = request.FILES.get('pre_pic5')
-        else:
-            pre_pic5 = pre_add.product_image_5
-
-        pre_add.modal_name = pre_name
-        pre_add.modal_code = pre_add.modal_code
-        pre_add.modal_cpu = pre_cpu
-        pre_add.modal_monitor = pre_mntr
-        pre_add.modal_ram = pre_ram
-        pre_add.modal_motherbrd = pre_mtrbrd
-        pre_add.modal_gpu = pre_gpu
-        pre_add.modal_ssd = pre_ssd
-        pre_add.modal_storage_rom = pre_rom
-        pre_add.modal_smps = pre_smps
-        pre_add.modal_offer = pre_add.modal_offer
-        pre_add.date_added = pre_add.date_added
-        pre_add.description = pre_des
-        pre_add.price = mod_price
-        pre_add.status = pre_add.status
-        pre_add.product_image = pre_pic
-        pre_add.product_image_1 = pre_pic1
-        pre_add.product_image_2 = pre_pic2
-        pre_add.product_image_3 = pre_pic3
-        pre_add.product_image_4 = pre_pic4
-        pre_add.product_image_5 = pre_pic5
-
-        pre_add.save()
-        edited = f"{pre_name}"
-        prebuilts = PreBuilt.objects.all()
-        return render(request, 'AdminTemplates/viewpreBuilt.html', {'prebuilts': prebuilts, 'edited': edited})
+            print('something wrong!')
     else:
-        return redirect('preBuilt')
+        return redirect('/')
