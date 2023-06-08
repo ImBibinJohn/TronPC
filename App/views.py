@@ -119,7 +119,7 @@ def uregister(request):
 
                         udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
                                                   username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
-                                                  district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=password)
+                                                  district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
                         udetailsadd.save()
                         return render(request, 'UserTemplates/login.html')
                 else:
