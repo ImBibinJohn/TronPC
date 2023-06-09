@@ -1,32 +1,32 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User, auth
-from App.models import *
-from django.contrib import messages
-from django.views.decorators.cache import cache_control
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
 import os
 import json
+import uuid
 import random
 import string
-import datetime
-import uuid
-import hashlib
 import locale
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from googleapiclient.discovery import build
+import hashlib
+import datetime
+from App.models import *
 from django.db.models import Q
+from django.urls import reverse
+from django.conf import settings
+from django.contrib import messages
+from django.core.mail import send_mail
+from googleapiclient.discovery import build
+from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User, auth
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import send_mail
-from django.conf import settings
-
+from django.views.decorators.cache import cache_control
+from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 
 # -------------------USER VIEWS------------------------------#
 
 # @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 
+def error_404(request, *args, **kwargs):
+    return render(request, 'UserTemplates/404_robo.html', status=404)
 
 def uregister(request):
     if 'userid' in request.session:
@@ -34,10 +34,8 @@ def uregister(request):
             userid = request.session['userid']
             username = request.POST['username']
             email = request.POST['email']
-            username = request.POST['username']
             firstname = request.POST['firstname']
             lastname = request.POST['lastname']
-            email = request.POST['email']
             dob = request.POST['dob']
             gen = request.POST['gen']
             addr = request.POST['addr']
@@ -49,34 +47,54 @@ def uregister(request):
             confirm_pass = request.POST['confirm']
             if 'Guest' in userid:
                 if request.method == 'POST':
-                    if UserDetails.objects.filter(username=username).exists():
-                        username_taken = 'This Username is Taken'
-                        return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
-                    elif UserDetails.objects.filter(email=email).exists():
-                        email_taken = 'This Email is already registered'
-                        return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                    if email == 'admin@admin.tronpc':
+                        if UserDetails.objects.filter(username=username).exists():
+                            username_taken = 'This Username is Taken'
+                            return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                        elif UserDetails.objects.filter(email=email).exists():
+                            email_taken = 'This Email is already registered'
+                            return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                        else:
+                            password = str(confirm_pass)
+                            salt = uuid.uuid4().hex
+                            enc_pass = hashlib.sha256(
+                                salt.encode() + password.encode()).hexdigest() + ':' + salt
+
+                            adetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
+                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
+                                                    district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=False)
+                            adetailsadd.save()
+                            return render(request, 'UserTemplates/login.html')
                     else:
-                        password = str(confirm_pass)
-                        salt = uuid.uuid4().hex
-                        enc_pass = hashlib.sha256(
-                            salt.encode() + password.encode()).hexdigest() + ':' + salt
+                        if UserDetails.objects.filter(username=username).exists():
+                            username_taken = 'This Username is Taken'
+                            return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                        elif UserDetails.objects.filter(email=email).exists():
+                            email_taken = 'This Email is already registered'
+                            return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                        else:
+                            password = str(confirm_pass)
+                            salt = uuid.uuid4().hex
+                            enc_pass = hashlib.sha256(
+                                salt.encode() + password.encode()).hexdigest() + ':' + salt
 
-                        udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
-                                                  username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
-                                                  district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
-                        udetailsadd.save()
-                        cart_add_Guest = Cart.objects.filter(
-                            customer_id=userid)
-                        for cart in cart_add_Guest:
-                            cart.customer_id = udetailsadd.id
-                            cart.save()
+                            udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
+                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
+                                                    district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
+                            udetailsadd.save()
+                            cart_add_Guest = Cart.objects.filter(
+                                customer_id=userid)
+                            for cart in cart_add_Guest:
+                                cart.customer_id = udetailsadd.id
+                                cart.save()
 
-                        cus_add_Guest = CustomBuilt.objects.filter(
-                            cus_id=userid)
-                        for cus in cus_add_Guest:
-                            cus.cus_id = udetailsadd.id
-                            cus.save()
-                        return render(request, 'UserTemplates/login.html')
+                            cus_add_Guest = CustomBuilt.objects.filter(
+                                cus_id=userid)
+                            for cus in cus_add_Guest:
+                                cus.cus_id = udetailsadd.id
+                                cus.save()
+                            return render(request, 'UserTemplates/login.html')
+
             else:
                 if request.method == 'POST':
                     udetails = UserDetails.objects.all()
@@ -1544,7 +1562,7 @@ def salesList(request):
                 if all_order_cus.exists():
                     return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'all_order_cus':all_order_cus,'sales_list':sales_list})
                 else:
-                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_car,'sales_list':sales_listt})
+                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list})
             else:
                 return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list})
         else:
