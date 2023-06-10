@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-eva_d@^1w$0k5sruwe-3=7o&s3k4+&4m48jo=64uns9ru-ozyw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.tronpc.com','tronpc.com','127.0.0.1']
 
 
 # Application definition
@@ -77,7 +77,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'TronPCDB',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'tronpc@123',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -120,6 +120,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/files')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
