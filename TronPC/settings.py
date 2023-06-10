@@ -12,9 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-eva_d@^1w$0k5sruwe-3=7o&s3k4+&4m48jo=64uns9ru-ozyw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['www.tronpc.com','tronpc.com','127.0.0.1']
+DEBUG = False
+
+ALLOWED_HOSTS = ['www.tronpc.com','tronpc.com']
 
 
 # Application definition
@@ -58,18 +59,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TronPC.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 
 DATABASES = {
