@@ -167,7 +167,7 @@ def loginform(request):
                 checked = bool(providedText == hashlib.sha256(
                     salt.encode() + user_pass.encode()).hexdigest())
                 if checked == True:
-                    request.session['userid'] = unew.id
+                    request.session['adminid'] = unew.id
                     return redirect('adminIndex')
                 else:
                     user_email = request.POST['user_email']
@@ -1167,9 +1167,9 @@ def adminDash(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def adminIndex(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid = request.session['adminid']
             return render(request, 'AdminTemplates/adminIndex.html')
         else:
             print('something wrong!')
@@ -1178,9 +1178,9 @@ def adminIndex(request):
 
 
 def addBlogs(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            userid = request.session['adminid']
             blog_list = Blogs.objects.all()
             return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list})
         else:
@@ -1190,9 +1190,9 @@ def addBlogs(request):
 
 
 def addBlogsForm(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            userid = request.session['adminid']
             if request.method == 'POST':
                 blog_name = request.POST['blog_name'].capitalize()
                 blog_link = request.POST['blog_link']
@@ -1261,9 +1261,9 @@ def editBlogsForm(request, id):
         return redirect('/')
 
 def productList(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             pro_list = Product.objects.all()
             brnd_list = Brands.objects.all()
             return render(request, 'AdminTemplates/productList.html', {'pro_list': pro_list, 'brnd_list': brnd_list})
@@ -1273,9 +1273,9 @@ def productList(request):
         return redirect('/')
 
 def addProduct(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             cat_list = Category.objects.all()
             brnd_list = Brands.objects.all()
             count = 'add'
@@ -1286,9 +1286,9 @@ def addProduct(request):
         return redirect('/')
 
 def editProduct(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             cat_list = Category.objects.all()
             pro_list = Product.objects.filter(id=id)
             pro_list_price = Product.objects.get(id=id)
@@ -1301,9 +1301,9 @@ def editProduct(request, id):
         return redirect('/')
 
 def addProductForm(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 pro_name = request.POST['pro_name'].capitalize()
                 pro_cat = request.POST['pro_cat']
@@ -1337,9 +1337,9 @@ def addProductForm(request):
         return redirect('/')
 
 def editProductForm(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 pro_list = Product.objects.get(id=id)
                 pro_name = request.POST['pro_name'].capitalize()
@@ -1406,9 +1406,9 @@ def editProductForm(request, id):
         return redirect('/')
 
 def categoryList(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             categoryList = Category.objects.all()
             return render(request, 'AdminTemplates/categoryList.html', {'categoryList': categoryList})
         else:
@@ -1417,9 +1417,9 @@ def categoryList(request):
         return redirect('/')
 
 def addCategory(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             code_length = 3  # Customize the length of the code
             x = datetime.datetime.now()
             salt = x.strftime("%f")[3:].upper()
@@ -1443,9 +1443,9 @@ def addCategory(request):
         return redirect('/')
 
 def addcategory_form(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 cat_name = request.POST['cat_name'].capitalize()
                 mydata = Category.objects.filter(category_name=cat_name).values()
@@ -1499,9 +1499,9 @@ def addcategory_form(request):
         return redirect('/')
 
 def productDetails(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             product_id = Product.objects.filter(id=id)
             to_get_raw = Product.objects.get(id=id)
             raw_name = os.path.basename(to_get_raw.product_image.name)
@@ -1514,9 +1514,9 @@ def productDetails(request, id):
         return redirect('/')
 
 def adminProfile(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             return render(request, 'AdminTemplates/adminProfile.html')
         else:
             print('something wrong!')
@@ -1524,9 +1524,9 @@ def adminProfile(request):
         return redirect('/')
 
 def editSales(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             return render(request, 'AdminTemplates/editSales.html')
         else:
             print('something wrong!')
@@ -1534,9 +1534,9 @@ def editSales(request):
         return redirect('/')
 
 def salesDetails(request,id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             order_cart = Cart.objects.filter(customer_id=id)
             sales_det = Sale.objects.select_related('customer').get(customer_id=id)
             cart_price_list = Cart.objects.filter(
@@ -1554,9 +1554,9 @@ def salesDetails(request,id):
         return redirect('/')
 
 def salesList(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             order_cart = Cart.objects.filter(status="Ordered").values('customer_id').distinct()
             all_order_cart = list([item['customer_id'] for item in order_cart])
             sales_list = Sale.objects.select_related('customer').all()
@@ -1574,9 +1574,9 @@ def salesList(request):
         return redirect('/')
 
 def edit_category_form(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             banners = Category.objects.get(id=id)
             cat_name = request.POST['cat_name']
             cat_code = request.POST['cat_code']
@@ -1604,9 +1604,9 @@ def edit_category_form(request, id):
         return redirect('/')
 
 def editCategory(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             banners = Category.objects.filter(id=id)
             to_get_raw = Category.objects.get(id=id)
             raw_name = os.path.basename(to_get_raw.category_image.name)
@@ -1619,9 +1619,9 @@ def editCategory(request, id):
         return redirect('/')
 
 def sideBanners(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             banners = Banners.objects.all()
             return render(request, 'AdminTemplates/sideBanners.html', {'banners': banners})
         else:
@@ -1630,9 +1630,9 @@ def sideBanners(request):
         return redirect('/')
 
 def add_sideBanners_form(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 banners = Banners.objects.all()
                 if banners:
@@ -1671,9 +1671,9 @@ def add_sideBanners_form(request, id):
         return redirect('/')
 
 def delete_sideBanners(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             banner_id = request.session['banner_id']
             mainpost = Banners.objects.get(id=banner_id)
             if id == str(1):
@@ -1705,9 +1705,9 @@ def delete_sideBanners(request, id):
         return redirect('/')
 
 def addBanner(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             carousals = Carousal.objects.all()
             return render(request, 'AdminTemplates/addBanner.html', {'carousals': carousals})
         else:
@@ -1716,9 +1716,9 @@ def addBanner(request):
         return redirect('/')
 
 def msg_banner(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             carousals = Carousal.objects.all()
             msg = 'You are only allowed to add 2 carousals...please delete one to add new'
             return render(request, 'AdminTemplates/addBanner.html', {'carousals': carousals, 'msg': msg})
@@ -1728,9 +1728,9 @@ def msg_banner(request):
         return redirect('/')
 
 def add_carousal_form(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid = request.session['adminid']
             if request.method == 'POST':
                 # my_total = Carousal.objects.count()
                 # if my_total >= 2:
@@ -1747,9 +1747,9 @@ def add_carousal_form(request):
         return redirect('/')
 
 def deleteBanner(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = Carousal.objects.get(id=id)
             os.remove(mainpost.carousal_home_main.path)
             mainpost.delete()
@@ -1760,9 +1760,9 @@ def deleteBanner(request, id):
         return redirect('/')
 
 def deleteBrand(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = Brands.objects.get(id=id)
             os.remove(mainpost.brand_image.path)
             mainpost.delete()
@@ -1773,9 +1773,9 @@ def deleteBrand(request, id):
         return redirect('/')
 
 def cat_del_msg(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             categoryList = Category.objects.all()
             cat_deleted = request.session['cat_deleted']
             return render(request, 'AdminTemplates/categoryList.html', {'cat_deleted': cat_deleted, 'categoryList': categoryList})
@@ -1785,9 +1785,9 @@ def cat_del_msg(request):
         return redirect('/')
 
 def pro_del_msg(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             pro_list = Product.objects.all()
             pro_deleted = request.session['pro_deleted']
             return render(request, 'AdminTemplates/productList.html', {'pro_list': pro_list, 'pro_deleted': pro_deleted})
@@ -1797,9 +1797,9 @@ def pro_del_msg(request):
         return redirect('/')
 
 def blog_del_msg(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             blog_list = Blogs.objects.all()
             blog_deleted = request.session['blog_deleted']
             return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list, 'blog_deleted': blog_deleted})
@@ -1809,9 +1809,9 @@ def blog_del_msg(request):
         return redirect('/')
 
 def deleteCategory(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = Category.objects.get(id=id)
             os.remove(mainpost.category_image.path)
             mainpost.delete()
@@ -1824,9 +1824,9 @@ def deleteCategory(request, id):
         return redirect('/')
 
 def deleteProduct(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = Product.objects.get(id=id)
             os.remove(mainpost.product_image.path)
             mainpost.delete()
@@ -1839,9 +1839,9 @@ def deleteProduct(request, id):
         return redirect('/')
 
 def deletePreBuilt(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = PreBuilt.objects.get(id=id)
             os.remove(mainpost.product_image.path)
             if mainpost.product_image_1 == "":
@@ -1872,9 +1872,9 @@ def deletePreBuilt(request, id):
         return redirect('/')
 
 def deleteBlog(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = Blogs.objects.get(id=id)
             mainpost.delete()
             blog_deleted = f"{mainpost.blog_name}"
@@ -1886,9 +1886,9 @@ def deleteBlog(request, id):
         return redirect('/')
 
 def actdea(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 activedea = request.POST['activedea']
                 db = Product.objects.get(id=activedea)
@@ -1924,9 +1924,9 @@ def actdea(request):
         return redirect('/')
 
 def pre_actdea(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 activedea = request.POST['activedea']
                 db = PreBuilt.objects.get(id=activedea)
@@ -1962,9 +1962,9 @@ def pre_actdea(request):
         return redirect('/')
 
 def actsts(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 activedea = request.POST['activedea']
                 db = Product.objects.get(id=activedea)
@@ -2000,9 +2000,9 @@ def actsts(request):
         return redirect('/')
 
 def addBrand(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             brands = Brands.objects.all()
             return render(request, 'AdminTemplates/addBrand.html', {'brands': brands})
         else:
@@ -2011,9 +2011,9 @@ def addBrand(request):
         return redirect('/')
 
 def addBrand_Form(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 bnd_name = request.POST['bnd_name'].capitalize()
                 mydata = Brands.objects.filter(brand_name=bnd_name).values()
@@ -2036,9 +2036,9 @@ def addBrand_Form(request):
         return redirect('/')
 
 def preBuilt(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             prebuilts = PreBuilt.objects.all()
             count = 'add'
             return render(request, 'AdminTemplates/preBuilt.html', {'count': count, 'prebuilts': prebuilts})
@@ -2048,9 +2048,9 @@ def preBuilt(request):
         return redirect('/')
 
 def pre_img_del(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = PreBuilt.objects.get(id=id)
             os.remove(mainpost.product_image.path)
             mainpost.product_image = ""
@@ -2063,9 +2063,9 @@ def pre_img_del(request, id):
         return redirect('/')
 
 def pre_img_del_1(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = PreBuilt.objects.get(id=id)
             os.remove(mainpost.product_image_1.path)
             mainpost.product_image_1 = ""
@@ -2078,9 +2078,9 @@ def pre_img_del_1(request, id):
         return redirect('/')
 
 def pre_img_del_2(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = PreBuilt.objects.get(id=id)
             os.remove(mainpost.product_image_2.path)
             mainpost.product_image_2 = ""
@@ -2093,9 +2093,9 @@ def pre_img_del_2(request, id):
         return redirect('/')
 
 def pre_img_del_3(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = PreBuilt.objects.get(id=id)
             os.remove(mainpost.product_image_3.path)
             mainpost.product_image_3 = ""
@@ -2108,9 +2108,9 @@ def pre_img_del_3(request, id):
         return redirect('/')
 
 def pre_img_del_4(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = PreBuilt.objects.get(id=id)
             os.remove(mainpost.product_image_4.path)
             mainpost.product_image_4 = ""
@@ -2123,9 +2123,9 @@ def pre_img_del_4(request, id):
         return redirect('/')
 
 def pre_img_del_5(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             mainpost = PreBuilt.objects.get(id=id)
             os.remove(mainpost.product_image_5.path)
             mainpost.product_image_5 = ""
@@ -2138,9 +2138,9 @@ def pre_img_del_5(request, id):
         return redirect('/')
 
 def editPreBuilt_post_del(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             id = request.session['pre_id']
             prebuilts = PreBuilt.objects.filter(id=id)
             pro_list_price = PreBuilt.objects.get(id=id)
@@ -2153,9 +2153,9 @@ def editPreBuilt_post_del(request):
         return redirect('/')
 
 def editPreBuilt(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             prebuilts = PreBuilt.objects.filter(id=id)
             pro_list_price = PreBuilt.objects.get(id=id)
             pro_price = pro_list_price.price[:-3]
@@ -2167,9 +2167,9 @@ def editPreBuilt(request, id):
         return redirect('/')
 
 def viewPrebuiltDetails(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             prebuilts = PreBuilt.objects.filter(id=id)
             to_get_raw = PreBuilt.objects.get(id=id)
             raw_name = os.path.basename(to_get_raw.product_image.name)
@@ -2186,9 +2186,9 @@ def viewPrebuiltDetails(request, id):
         return redirect('/')
 
 def viewpreBuilt(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             prebuilts = PreBuilt.objects.all()
             return render(request, 'AdminTemplates/viewpreBuilt.html', {'prebuilts': prebuilts})
         else:
@@ -2197,9 +2197,9 @@ def viewpreBuilt(request):
         return redirect('/')
 
 def addpreBuiltForm(request):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 pre_name = request.POST['pre_name'].capitalize()
                 pre_cpu = request.POST['pre_cpu']
@@ -2262,9 +2262,9 @@ def addpreBuiltForm(request):
         return redirect('/')
 
 def editpreBuiltForm(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
             if request.method == 'POST':
                 pre_name = request.POST['pre_name'].capitalize()
                 pre_cpu = request.POST['pre_cpu']
