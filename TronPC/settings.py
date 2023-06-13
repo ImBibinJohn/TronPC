@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-eva_d@^1w$0k5sruwe-3=7o&s3k4+&4m48jo=64uns9ru-ozyw
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.tronpc.com','tronpc.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -66,7 +66,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'TronPCDB',
         'USER': 'root',
-        'PASSWORD': 'tronpc@123',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }

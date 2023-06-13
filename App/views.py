@@ -28,6 +28,9 @@ from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 def error_404(request, *args, **kwargs):
     return render(request, 'UserTemplates/404_robo.html', status=404)
 
+def under_maintenance(request):
+    return render(request, 'UserTemplates/404.html')
+
 def uregister(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):

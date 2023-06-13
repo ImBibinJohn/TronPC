@@ -103,13 +103,13 @@
             {% else %}
             <!-- logo left -->
             <div id="logo" class="col-md-4">
-              <a href="{% url 'index' %}"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
+              <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
                   alt="Your Store" class="img-responsive" /></a>
             </div>
           </div>
           <!-- logo middle -->
           <div id="logo" class="col-md-4">
-            <a href="{% url 'index' %}"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
+            <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="Your Store"
                 alt="Your Store" class="img-responsive tronlogo" /></a>
           </div>
           {% endif %}
@@ -256,7 +256,7 @@
 
                 {% elif 'Guest' in userid %}
                 <li class="menulist home">
-                  <a id="home" href="{% url 'index' %}">Home</a>
+                  <a id="home" href="/">Home</a>
                 </li>
                 <li class="menulist">
                   <a href="{% url 'allProducts' %}">All Products</a>

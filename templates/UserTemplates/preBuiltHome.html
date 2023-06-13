@@ -251,10 +251,10 @@ a
         </div>
         {% else %}
         <div class="header-left border-0 ">
-            <a href="{% url 'index' %}" class="logo">
+            <a href="/" class="logo">
                 <img src="{% static 'images/tronpclogo.png' %}" alt="">
             </a>
-            <a href="{% url 'index' %}" class="logo-small">
+            <a href="/" class="logo-small">
                 <img src="{% static 'images/tronpclogo.png' %}" alt="">
             </a>
             <span style="display: inline; font-weight: bold;">{{userid}}</span>
@@ -313,7 +313,7 @@ a
 
             {% elif 'Guest' in userid %}
             <li class="menulist">
-                <a href="{% url 'index' %}">Home</a>
+                <a href="/">Home</a>
             </li>
             <li class="menulist">
                 <a href="{% url 'allProducts' %}">All Products</a>
