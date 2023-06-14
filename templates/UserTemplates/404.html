@@ -29,6 +29,21 @@
             overflow: hidden;
         }
 
+        @media (max-width: 768px) {
+            .flex-w {
+                flex-wrap: wrap;
+            }
+
+            .flex-w .size3 {
+                font-size: 16px;
+            }
+
+            .flex-w .how-social {
+                margin: 5px;
+            }
+        }
+
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .size1 {
@@ -61,34 +76,6 @@
             .size3 {
                 font-size: 18px;
             }
-
-            /* Additional styles for mobile view */
-            .flex-w.flex-c-m {
-                justify-content: center;
-                align-items: center;
-            }
-
-            .flex-w.flex-c-m .size3 {
-                font-size: 16px;
-            }
-
-            .flex-w.flex-c-m .how-social {
-                margin: 5px;
-            }
-        }
-
-        /* Responsive adjustments for small devices */
-        @media (max-width: 576px) {
-            .l1-txt1 {
-                font-size: 18px;
-            }
-        }
-
-        /* Responsive adjustments for 412x914 mobile view */
-        @media (max-width: 412px) and (min-height: 914px) {
-            .l1-txt1 {
-                font-size: 16px;
-            }
         }
     </style>
 </head>
@@ -111,6 +98,7 @@
                     <i class="fa fa-youtube-play"></i>
                 </a>
             </div>
+
         </div>
     </div>
 
