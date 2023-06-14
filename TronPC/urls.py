@@ -8,7 +8,7 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name='main'),
-    path('App/', include('App.urls')),
+    path('', include('App.urls')),
 ]
 
 if settings.DEBUG:

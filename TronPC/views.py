@@ -1,5 +1,4 @@
-from django.shortcuts import redirect
-
+from django.shortcuts import redirect,render
 
 def main(request):
-    return redirect('/App/')
+    return render(request, 'UserTemplates/404.html')    
