@@ -20,6 +20,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['www.tronpc.com','tronpc.com']
 
 
+
 # Application definition
 
 INSTALLED_APPS = [

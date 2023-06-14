@@ -29,7 +29,30 @@ def error_404(request, *args, **kwargs):
     return render(request, 'UserTemplates/404_robo.html', status=404)
 
 def under_maintenance(request):
-    return render(request, 'UserTemplates/404.html')
+    current_date = datetime.datetime.now()
+
+    sYear = current_date.year
+    eYear = '2023'
+
+    sMonth = current_date.month
+    eMonth = '06'
+
+    sDay = current_date.day
+    eDay = '25'
+
+    sHour = current_date.hour
+    eHour = '11'
+
+    sMinute = current_date.minute
+    eMinute = '45'
+
+    sSecond = current_date.second
+    eSecond = '05'
+
+    context = {'sYear':sYear,'eYear':eYear,'sMonth':sMonth,'eMonth':eMonth,'sDay':sDay,
+               'eDay':eDay,'sHour':sHour,'eHour':eHour,'sMinute':sMinute,'eMinute':eMinute,
+               'sSecond':sSecond,'eSecond':eSecond}
+    return render(request, 'UserTemplates/404.html',context)
 
 def uregister(request):
     if 'userid' in request.session:
