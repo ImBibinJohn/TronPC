@@ -23,12 +23,75 @@
     <link rel="stylesheet" type="text/css" href="{% static 'maintanence/css/util.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'maintanence/css/main.css' %}">
     <!--===============================================================================================-->
+
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .size1 {
+                padding: 10px;
+            }
+
+            .p-t-10,
+            .p-b-215 {
+                padding: 10px;
+            }
+
+            .p-t-30 {
+                padding-top: 15px;
+            }
+
+            .p-b-100 {
+                padding-bottom: 15px;
+            }
+
+            .l1-txt1 {
+                font-size: 24px;
+            }
+
+            .m-r-3,
+            .m-l-3,
+            .m-b-5 {
+                margin: 5px;
+            }
+
+            .size3 {
+                font-size: 18px;
+            }
+
+            /* Additional styles for mobile view */
+            .flex-w.flex-c-m {
+                justify-content: center;
+                align-items: center;
+            }
+
+            .flex-w.flex-c-m .size3 {
+                font-size: 16px;
+            }
+
+            .flex-w.flex-c-m .how-social {
+                margin: 5px;
+            }
+        }
+
+        /* Responsive adjustments for small devices */
+        @media (max-width: 576px) {
+            .l1-txt1 {
+                font-size: 18px;
+            }
+        }
+
+        /* Responsive adjustments for 412x914 mobile view */
+        @media (max-width: 412px) and (min-height: 914px) {
+            .l1-txt1 {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
-<style>
-    body {
-        overflow: hidden;
-    }
-</style>
 
 <body>
     <div class="bg-img1 size1 p-l-15 p-r-15">
@@ -83,9 +146,9 @@
             endtimeMinutes: 1,
             endtimeSeconds: 0,
             timeZone: ""
-    // ex: timeZone: "America/New_York"
-    // go to "http://momentjs.com/timezone/" to get timezone
-});
+            // ex: timeZone: "America/New_York"
+            // go to "http://momentjs.com/timezone/" to get timezone
+        });
     </script>
     <!--===============================================================================================-->
     <script src="{% static 'maintanence/vendor/tilt/tilt.jquery.min.js' %}"></script>
