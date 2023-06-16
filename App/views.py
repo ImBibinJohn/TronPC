@@ -69,7 +69,7 @@ def uregister(request):
             confirm_pass = request.POST['confirm']
             if 'Guest' in userid:
                 if request.method == 'POST':
-                    if email == 'admin@tronpcweb':
+                    if email == 'admin@tronpc.web':
                         if UserDetails.objects.filter(username=username).exists():
                             username_taken = 'This Username is Taken'
                             return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
