@@ -210,35 +210,6 @@ def loginform(request):
     else:
         return redirect('login')
 
-
-def indexZero(request):
-    total_customers = Cart.objects.filter(
-        customer_id__contains='Guest').count()
-    if total_customers > 15:
-        customer_ids_to_delete = Cart.objects.filter(
-            customer_id__contains='Guest').order_by('-id').values_list('id', flat=True)[15:]
-        for customer_id in customer_ids_to_delete:
-            Cart.objects.filter(id=customer_id).delete()
-
-        code_length = 3
-        x = datetime.datetime.now()
-        salt = x.strftime("%f")[3:]
-        pro_cod = 'Guest-' + salt + \
-            ''.join(random.choices(string.ascii_letters +
-                    string.digits, k=code_length))
-        request.session['userid'] = pro_cod
-        return redirect('index')
-    else:
-        code_length = 3
-        x = datetime.datetime.now()
-        salt = x.strftime("%f")[3:]
-        pro_cod = 'Guest-' + salt + \
-            ''.join(random.choices(string.ascii_letters +
-                    string.digits, k=code_length))
-        request.session['userid'] = pro_cod
-        return redirect('index')
-
-
 def index(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -275,7 +246,31 @@ def index(request):
         else:
             return render(request, 'UserTemplates/login.html')
     else:
-        return render(request, 'UserTemplates/index.html')
+        total_customers = Cart.objects.filter(
+        customer_id__contains='Guest').count()
+    if total_customers > 15:
+        customer_ids_to_delete = Cart.objects.filter(
+            customer_id__contains='Guest').order_by('-id').values_list('id', flat=True)[15:]
+        for customer_id in customer_ids_to_delete:
+            Cart.objects.filter(id=customer_id).delete()
+
+        code_length = 3
+        x = datetime.datetime.now()
+        salt = x.strftime("%f")[3:]
+        pro_cod = 'Guest-' + salt + \
+            ''.join(random.choices(string.ascii_letters +
+                    string.digits, k=code_length))
+        request.session['userid'] = pro_cod
+        return redirect('index')
+    else:
+        code_length = 3
+        x = datetime.datetime.now()
+        salt = x.strftime("%f")[3:]
+        pro_cod = 'Guest-' + salt + \
+            ''.join(random.choices(string.ascii_letters +
+                    string.digits, k=code_length))
+        request.session['userid'] = pro_cod
+        return redirect('index')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
