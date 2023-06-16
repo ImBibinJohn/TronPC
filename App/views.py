@@ -47,6 +47,9 @@ def under_maintenance(request):
     #            'sSecond':sSecond,'eSecond':eSecond}
     return render(request, 'UserTemplates/404.html')
 
+def maintanence(request):
+    return render(request, 'AdminTemplates/maintanence.html')
+
 def uregister(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
