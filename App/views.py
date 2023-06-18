@@ -164,7 +164,7 @@ def uregister(request):
                                                     username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender="", address=addr,
                                                     district=dis, city='live', state=state, postal_code=pos, phone_number=contact, account_type=False)
                             adetailsadd.save()
-                            return render(request, 'UserTemplates/login.html')
+                            return redirect('main')
                     else:
                         if UserDetails.objects.filter(username=username).exists():
                             username_taken = 'This Username is Taken'
@@ -194,7 +194,6 @@ def uregister(request):
                                 cus.cus_id = udetailsadd.id
                                 cus.save()
                             return render(request, 'UserTemplates/login.html')
-
             else:
                 if request.method == 'POST':
                     udetails = UserDetails.objects.all()
