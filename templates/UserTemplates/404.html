@@ -7,21 +7,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="{% static 'maintanence/images/icons/favicon.ico' %}" />
+    <link rel="icon" type="image/png" href="{% static 'maintenance/images/icons/favicon.ico' %}" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{% static 'maintanence/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maintenance/vendor/bootstrap/css/bootstrap.min.css' %}">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-        href="{% static 'maintanence/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+        href="{% static 'maintenance/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{% static 'maintanence/vendor/animate/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maintenance/vendor/animate/animate.css' %}">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{% static 'maintanence/vendor/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maintenance/vendor/select2/select2.min.css' %}">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{% static 'maintanence/vendor/countdowntime/flipclock.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maintenance/vendor/countdowntime/flipclock.css' %}">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{% static 'maintanence/css/util.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'maintanence/css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maintenance/css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maintenance/css/main.css' %}">
     <!--===============================================================================================-->
 
     <style>
@@ -103,50 +103,50 @@
     </div>
 
     <!--===============================================================================================-->
-    <script src="{% static 'maintanence/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
     <!--===============================================================================================-->
-    <script src="{% static 'maintanence/vendor/bootstrap/js/popper.js' %}"></script>
-    <script src="{% static 'maintanence/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
     <!--===============================================================================================-->
-    <script src="{% static 'maintanence/vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/select2/select2.min.js' %}"></script>
     <!--===============================================================================================-->
-    <script src="{% static 'maintanence/vendor/countdowntime/flipclock.min.js' %}"></script>
-    <script src="{% static 'maintanence/vendor/countdowntime/moment.min.js' %}"></script>
-    <script src="{% static 'maintanence/vendor/countdowntime/moment-timezone.min.js' %}"></script>
-    <script src="{% static 'maintanence/vendor/countdowntime/moment-timezone-with-data.min.js' %}"></script>
-    <script src="{% static 'maintanence/vendor/countdowntime/countdowntime.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/countdowntime/flipclock.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/countdowntime/moment.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/countdowntime/moment-timezone.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/countdowntime/moment-timezone-with-data.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/countdowntime/countdowntime.js' %}"></script>
     <script>
         $('.cd100').countdown100({
             /* Set Starttime here */
             /* Starttime must be < current time */
-            starttimeYear: 2023,
-            starttimeMonth: 6,
-            starttimeDate: 14,
-            starttimeHours: 19,
-            starttimeMinutes: 1,
-            starttimeSeconds: 0,
+            starttimeYear: {{sYear}},
+            starttimeMonth: {{sMonth}},
+            starttimeDate: {{sDay}},
+            starttimeHours: {{sHour}},
+            starttimeMinutes: {{sMinute}},
+            starttimeSeconds: {{sSecond}},
             /* Set Endtime here */
             /* Endtime must be > current time */
-            endtimeYear: 2023,
-            endtimeMonth: 6,
-            endtimeDate: 25,
-            endtimeHours: 19,
-            endtimeMinutes: 1,
-            endtimeSeconds: 0,
+            endtimeYear: {{eYear}},
+            endtimeMonth: {{eMonth}},
+            endtimeDate: {{eDay}},
+            endtimeHours: {{eHour}},
+            endtimeMinutes: {{eMinute}},
+            endtimeSeconds: {{eSecond}},
             timeZone: ""
             // ex: timeZone: "America/New_York"
             // go to "http://momentjs.com/timezone/" to get timezone
         });
     </script>
     <!--===============================================================================================-->
-    <script src="{% static 'maintanence/vendor/tilt/tilt.jquery.min.js' %}"></script>
+    <script src="{% static 'maintenance/vendor/tilt/tilt.jquery.min.js' %}"></script>
     <script>
         $('.js-tilt').tilt({
             scale: 1.1
         })
     </script>
     <!--===============================================================================================-->
-    <script src="{% static 'maintanence/js/main.js' %}"></script>
+    <script src="{% static 'maintenance/js/main.js' %}"></script>
 
 </body>
 

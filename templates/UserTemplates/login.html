@@ -7,10 +7,7 @@
 <div id="account-login" class="container">
   <ul class="breadcrumb">
     <li>
-      <a href="#">Home</a>
-    </li>
-    <li>
-      <a href="#">Account</a>
+      <a href="/">Home</a>
     </li>
     <li>
       <a href="{% url 'login' %}">Login</a>
@@ -30,39 +27,6 @@
           <li>
             <a href="{% url 'register' %}" class="list-group-item">Register</a>
           </li>
-          <li>
-            <a href="#" class="list-group-item">Forgotten Password</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">My Account</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Address Book</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Wish List</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Order History</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Downloads</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Recurring payments</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Reward Points</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Returns</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Transactions</a>
-          </li>
-          <li>
-            <a href="#" class="list-group-item">Newsletter</a>
-          </li>
         </ul>
       </div>
     </div>
@@ -76,19 +40,13 @@
           <a href="#">About Us</a>
         </li>
         <li>
-          <a href="#">Delivery Information</a>
-        </li>
-        <li>
           <a href="#">Privacy Policy</a>
         </li>
         <li>
           <a href="#">Terms &amp; Conditions</a>
         </li>
         <li>
-          <a href="#">Contact Us</a>
-        </li>
-        <li>
-          <a href="#">Site Map</a>
+          <a href="{% url 'contact' %}">Contact Us</a>
         </li>
       </ul>
     </div>

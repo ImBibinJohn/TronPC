@@ -1,11 +1,12 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,re_path
 from App import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('change_init_page/', views.change_init_page, name='change_init_page'),
+    path('change_init_page_to_online/', views.change_init_page_to_online, name='change_init_page_to_online'),
     path('under_maintenance/', views.under_maintenance, name='under_maintenance'),
-    path('maintanence/', views.maintanence, name='maintanence'),
     path('allProducts/', views.allProducts, name='allProducts'),
     path('contact/', views.contact, name='contact'),
     path('register/', views.register, name='register'),
@@ -89,8 +90,9 @@ urlpatterns = [
 
     path('pcb/', views.pcb, name='pcb'),
     path('pcbCustom/', views.pcbCustom, name='pcbCustom'),
-
-    # keep this path always at the bottom....
+    re_path(r'^maintenance_login/$', views.maintenance_login, name='maintenance_login'),
     path('<path:invalid_path>', views.error_404),
-    # ............................................................
+
+
+
 ]

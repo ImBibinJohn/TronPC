@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+{% load static %}
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>TronPC</title>
+  <meta name="description" content="My Store" />
+  <script src="{% static 'catalog/view/javascript/jquery/jquery-2.1.1.min.js' %}"></script>
+  <link href="{% static 'catalog/view/javascript/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen" />
+  <script src="{% static 'catalog/view/javascript/bootstrap/js/bootstrap.min.js' %}"></script>
+  <link href="{% static 'catalog/view/javascript/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet"
+    type="text/css" />
+  <script src="{% static 'catalog/view/javascript/custom/jquery.elevateZoom.min.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/owl.carousel.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'catalog/view/javascript/custom/quickview.js' %}"></script>
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/custom-font.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/animate.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/owl.carousel.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/owl.theme.default.min.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" />
+
+  <script src="{% static 'catalog/view/javascript/custom/custom_search.js' %}"></script>
+  <style>
+    :root {
+      --primary-color: #111111;
+      --primary-hover-color: #ffffff;
+      --secondary-color: #16202c;
+      --secondary-hover-color: #4d94ff;
+      --secondary-light-color: #777777;
+      --background-color: #f7f7f7;
+      --border-color: #e5e5e5
+    }
+
+    @media screen and (min-width: 766px) {
+      .tronlogo {
+        display: none;
+      }
+    }
+  </style>
+  <link href="{% static 'catalog/view/theme/custom/stylesheet/stylesheet.css' %}" rel="stylesheet" />
+  <link href="{% static 'catalog/view/javascript/jquery/swiper/css/swiper.min.css' %}" type="text/css" rel="stylesheet"
+    media="screen" />
+  <link href="{% static 'catalog/view/javascript/jquery/swiper/css/opencart.css' %}" type="text/css" rel="stylesheet"
+    media="screen" />
+  <script src="{% static 'catalog/view/javascript/jquery/swiper/js/swiper.jquery.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/jquery.cookie.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/countdown.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/common.js' %}"></script>
+  <script src="{% static 'catalog/view/javascript/custom/jquery-ui.min.js' %}"></script>
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'catalog/view/theme/custom/stylesheet/custom/jquery-ui.min.css' %}" />
+  <script src="{% static 'catalog/view/javascript/custom/custom.js' %}"></script>
+  <link href="{% static 'images/tronpclogo.png' %}" rel="icon" />
+  <script>
+    (function () {
+      window.onpageshow = function (event) {
+        if (event.persisted) {
+          window.location.reload();
+        }
+      };
+    })();
+  </script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .well {
+      margin-bottom: 20px;
+    }
+
+    .error {
+      color: red;
+    }
+
+    /* Media queries for responsiveness */
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 10px;
+      }
+    }
+
+    /* Responsive form styles */
+    .well {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    form {
+      width: 100%;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body class="common-home">
+  <div class="loader"></div>
+  <div class="container">
+    <div id="content">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="well">
+            <h2>Admin Maintenance Login</h2>
+            {% if msg %}
+            <p><strong style="color: red;">{{msg}}</strong></p>
+            {% endif %}
+
+            <form action="{% url 'maintenance_login' %}" method="post" enctype="multipart/form-data" name="Form" class="ajax">
+              {% csrf_token %}
+
+              {% if msg %}
+              <div class="form-group">
+                <label class="control-label" for="input-email">E-Mail Address</label>
+                <input type="text" name="user_email" value="{{user_email}}" placeholder="E-Mail Address" id="user_email"
+                  class="form-control" />
+                <div class="error" id="emailErr"></div>
+              </div>
+              {% elif pas %}
+              <div class="form-group">
+                <label class="control-label" for="input-email">E-Mail Address</label>
+                <input type="text" name="user_email" value="{{user_email}}" placeholder="E-Mail Address" id="user_email"
+                  class="form-control" />
+                <div class="error" id="emailErr"></div>
+              </div>
+              {% else %}
+              <div class="form-group">
+                <label class="control-label" for="input-email">E-Mail Address</label>
+                <input type="text" name="user_email" placeholder="E-Mail Address" id="user_email"
+                  class="form-control" />
+                <div class="error" id="emailErr"></div>
+              </div>
+              {% endif %}
+
+              <div class="form-group">
+                <label class="control-label" for="input-password">Password</label>
+                <input type="password" name="user_pass" placeholder="Password" id="user_pass" class="form-control" />
+                {% if pas %}
+                <div class="error" id="passErr">{{pas}}</div>
+                {% endif %}
+                <div class="error" id="passErr"></div>
+                <a href="#">Forgotten Password</a>
+              </div>
+              <input type="submit" value="Login" class="btn btn-primary" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $("body").on("submit", "form.ajax", function (e) {
+      e.preventDefault();
+
+      $form = $(this);
+      $url = $form.attr("action");
+      var regex = /^\S+@\S+\.\S+$/;
+      if (regex.test(document.Form.user_email.value) === false) {
+        printError("emailErr", "Please enter a valid email");
+      } else if (!$.trim(document.Form.user_pass.value)) {
+        printError("passErr", "Enter Password!");
+      } else {
+        e.currentTarget.submit();
+      }
+    });
+
+    $("body").on("change keyup", "input,select,textarea", function (e) {
+      if ($.trim($(this).val())) {
+        $(this).nextAll("div.error").html("");
+      }
+    });
+
+    function printError(Id, Msg) {
+      document.getElementById(Id).innerHTML = Msg;
+    }
+  </script>
+</body>
+
+</html>

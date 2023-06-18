@@ -2,259 +2,318 @@
 {% block body %}
 <div class="page-wrapper">
     <div class="content">
-        <div class="row">
-            <div class="col-lg-3 col-sm-6 col-12">
-                <div class="dash-widget">
-                    <div class="dash-widgetimg">
-                        <span><img src="{% static 'assets/img/icons/dash1.svg' %}" alt="img"></span>
-                    </div>
-                    <div class="dash-widgetcontent">
-                        <h5>$<span class="counters" data-count="307144.00">$307,144.00</span></h5>
-                        <h6>Total Purchase Due</h6>
-                    </div>
-                </div>
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Sales List</h4>
+                <h6>Manage your sales</h6>
             </div>
-            <div class="col-lg-3 col-sm-6 col-12">
-                <div class="dash-widget dash1">
-                    <div class="dash-widgetimg">
-                        <span><img src="{% static 'assets/img/icons/dash2.svg' %}" alt="img"></span>
-                    </div>
-                    <div class="dash-widgetcontent">
-                        <h5>$<span class="counters" data-count="4385.00">$4,385.00</span></h5>
-                        <h6>Total Sales Due</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 col-12">
-                <div class="dash-widget dash2">
-                    <div class="dash-widgetimg">
-                        <span><img src="{% static 'assets/img/icons/dash3.svg' %}" alt="img"></span>
-                    </div>
-                    <div class="dash-widgetcontent">
-                        <h5>$<span class="counters" data-count="385656.50">385,656.50</span></h5>
-                        <h6>Total Sale Amount</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 col-12">
-                <div class="dash-widget dash3">
-                    <div class="dash-widgetimg">
-                        <span><img src="{% static 'assets/img/icons/dash4.svg' %}" alt="img"></span>
-                    </div>
-                    <div class="dash-widgetcontent">
-                        <h5>$<span class="counters" data-count="40000.00">400.00</span></h5>
-                        <h6>Total Sale Amount</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                <div class="dash-count">
-                    <div class="dash-counts">
-                        <h4>100</h4>
-                        <h5>Customers</h5>
-                    </div>
-                    <div class="dash-imgs">
-                        <i data-feather="user"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                <div class="dash-count das1">
-                    <div class="dash-counts">
-                        <h4>100</h4>
-                        <h5>Suppliers</h5>
-                    </div>
-                    <div class="dash-imgs">
-                        <i data-feather="user-check"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                <div class="dash-count das2">
-                    <div class="dash-counts">
-                        <h4>100</h4>
-                        <h5>Purchase Invoice</h5>
-                    </div>
-                    <div class="dash-imgs">
-                        <i data-feather="file-text"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                <div class="dash-count das3">
-                    <div class="dash-counts">
-                        <h4>105</h4>
-                        <h5>Sales Invoice</h5>
-                    </div>
-                    <div class="dash-imgs">
-                        <i data-feather="file"></i>
-                    </div>
-                </div>
-            </div>
+            <!-- <div class="page-btn">
+                <a href="add-sales.html" class="btn btn-added"><img src="{% static 'assets/img/icons/plus.svg' %}"
+                        alt="img" class="me-1">Add Sales</a>
+            </div> -->
         </div>
-<!--
-        <div class="row">
-            <div class="col-lg-7 col-sm-12 col-12 d-flex">
-                <div class="card flex-fill">
-                        <div class="card mb-0">
-                            <div class="card-body">
-                                <h4 class="card-title">Expired Products</h4>
-                                <div class="table-responsive dataview">
-                                    <table class="table datatable ">
-                                        <thead>
-                                            <tr>
-                                                <th>SNo</th>
-                                                <th>Product Code</th>
-                                                <th>Product Name</th>
-                                                <th>Brand Name</th>
-                                                <th>Category Name</th>
-                                                <th>Expiry Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td><a href="#">IT0001</a></td>
-                                                <td class="productimgname">
-                                                    <a class="product-img" href="productList.html">
-                                                        <img src="{% static 'assets/img/product/product2.jpg' %}"
-                                                            alt="product">
-                                                    </a>
-                                                    <a href="productList.html">Orange</a>
-                                                </td>
-                                                <td>N/D</td>
-                                                <td>Fruits</td>
-                                                <td>12-12-2022</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td><a href="#">IT0002</a></td>
-                                                <td class="productimgname">
-                                                    <a class="product-img" href="productList.html">
-                                                        <img src="{% static 'assets/img/product/product3.jpg' %}"
-                                                            alt="product">
-                                                    </a>
-                                                    <a href="productList.html">Pineapple</a>
-                                                </td>
-                                                <td>N/D</td>
-                                                <td>Fruits</td>
-                                                <td>25-11-2022</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td><a href="#">IT0003</a></td>
-                                                <td class="productimgname">
-                                                    <a class="product-img" href="productList.html">
-                                                        <img src="{% static 'assets/img/product/product4.jpg' %}"
-                                                            alt="product">
-                                                    </a>
-                                                    <a href="productList.html">Stawberry</a>
-                                                </td>
-                                                <td>N/D</td>
-                                                <td>Fruits</td>
-                                                <td>19-11-2022</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td><a href="#">IT0004</a></td>
-                                                <td class="productimgname">
-                                                    <a class="product-img" href="productList.html">
-                                                        <img src="{% static 'assets/img/product/product5.jpg' %}"
-                                                            alt="product">
-                                                    </a>
-                                                    <a href="productList.html">Avocat</a>
-                                                </td>
-                                                <td>N/D</td>
-                                                <td>Fruits</td>
-                                                <td>20-11-2022</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-top">
+                    <div class="search-set">
+                        <div class="search-path">
+                        </div>
+                        <div class="search-input">
+                            <a class="btn btn-searchset"><img src="{% static 'assets/img/icons/search-white.svg' %}"
+                                    alt="img"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="filter_inputs">
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter Name">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter Reference No">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <select class="select">
+                                        <option>Completed</option>
+                                        <option>Paid</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <a class="btn btn-filters ms-auto"><img
+                                            src="{% static 'assets/img/icons/search-whites.svg' %}" alt="img"></a>
                                 </div>
                             </div>
                         </div>
-                </div>
-            </div>
-            <div class="col-lg-5 col-sm-12 col-12 d-flex">
-                <div class="card flex-fill">
-                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                        <h4 class="card-title mb-0">Recently Added Products</h4>
-                        <div class="dropdown">
-                            <a href="#" data-bs-toggle="dropdown" aria-expanded="false"
-                                class="dropset">
-                                <i class="fa fa-ellipsis-v"></i>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li>
-                                    <a href="{% url 'productList' %}" class="dropdown-item">Product List</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'addProduct' %}" class="dropdown-item">Product Add</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive dataview">
-                            <table class="table datatable ">
-                                <thead>
-                                    <tr>
-                                        <th>Sno</th>
-                                        <th>Products</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td class="productimgname">
-                                            <a href="productList.html" class="product-img">
-                                                <img src="{% static 'assets/img/product/product22.jpg' %}"
-                                                    alt="product">
-                                            </a>
-                                            <a href="productList.html">Apple Earpods</a>
-                                        </td>
-                                        <td>$891.2</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td class="productimgname">
-                                            <a href="productList.html" class="product-img">
-                                                <img src="{% static 'assets/img/product/product23.jpg' %}"
-                                                    alt="product">
-                                            </a>
-                                            <a href="productList.html">iPhone 11</a>
-                                        </td>
-                                        <td>$668.51</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td class="productimgname">
-                                            <a href="productList.html" class="product-img">
-                                                <img src="{% static 'assets/img/product/product24.jpg' %}"
-                                                    alt="product">
-                                            </a>
-                                            <a href="productList.html">samsung</a>
-                                        </td>
-                                        <td>$522.29</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td class="productimgname">
-                                            <a href="productList.html" class="product-img">
-                                                <img src="{% static 'assets/img/product/product6.jpg' %}" alt="product">
-                                            </a>
-                                            <a href="productList.html">Macbook Pro</a>
-                                        </td>
-                                        <td>$291.01</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
+
+                {% if all_order_cart %}
+                <div class="table-responsive">
+                    <table class="table datanew">
+                        <thead>
+                            <tr>
+                                <th>Ordered Date</th>
+                                <th>Customer Name</th>
+                                <th>Status</th>
+                                <th>Order Category</th>
+                                <th>Total</th>
+                                <th>Biller</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cart_id in all_order_cart %}
+                            {% for i in sales_list %}
+                            {% if i.customer_id == cart_id|add:0 %}
+                            <tr>
+                                <td>{{ i.order_date }}</td>
+                                <td>{{ i.customer.first_name }} {{ i.customer.last_name }}</td>
+                                <td><span class="badges bg-lightgreen">{{ i.status }}</span></td>
+                                <td>{{ i.product_type}}</td>
+                                <td>{{ i.sub_total }}</td>
+                                <td>{{ i.biller }}</td>
+                                <td class="text-center">
+                                    <a class="action-set" href="#" data-bs-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{% url 'salesDetails' cart_id %}" class="dropdown-item">
+                                                <img src="{% static 'assets/img/icons/eye1.svg' %}" class="me-2"
+                                                    alt="img">
+                                                Sale Detail
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'editSales' %}" class="dropdown-item">
+                                                <img src="{% static 'assets/img/icons/edit.svg' %}" class="me-2"
+                                                    alt="img">
+                                                Edit Sale
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item">
+                                                <img src="{% static 'assets/img/icons/download.svg' %}" class="me-2"
+                                                    alt="img">
+                                                Download pdf
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item confirm-text">
+                                                <img src="{% static 'assets/img/icons/delete1.svg' %}" class="me-2"
+                                                    alt="img">
+                                                Delete Sale
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                        </tbody>
+
+
+                    </table>
+                </div>
+                {% else %}
+                No Orders yet
+                {% endif %}
+
             </div>
-        </div> -->
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="showpayment" tabindex="-1" aria-labelledby="showpayment" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Show Payments</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Reference</th>
+                                <th>Amount </th>
+                                <th>Paid By </th>
+                                <th>Paid By </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bor-b1">
+                                <td>2022-03-07 </td>
+                                <td>INV/SL0101</td>
+                                <td>$ 0.00 </td>
+                                <td>Cash</td>
+                                <td>
+                                    <a class="me-2" href="#">
+                                        <img src="assets/img/icons/printer.svg" alt="img">
+                                    </a>
+                                    <a class="me-2" href="#" data-bs-target="#editpayment" data-bs-toggle="modal"
+                                        data-bs-dismiss="modal">
+                                        <img src="assets/img/icons/edit.svg" alt="img">
+                                    </a>
+                                    <a class="me-2 confirm-text" href="#">
+                                        <img src="assets/img/icons/delete.svg" alt="img">
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="createpayment" tabindex="-1" aria-labelledby="createpayment" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Customer</label>
+                            <div class="input-groupicon">
+                                <input type="text" value="2022-03-07" class="datetimepicker">
+                                <div class="addonset">
+                                    <img src="assets/img/icons/calendars.svg" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Reference</label>
+                            <input type="text" value="INV/SL0101">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Received Amount</label>
+                            <input type="text" value="0.00">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Paying Amount</label>
+                            <input type="text" value="0.00">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Payment type</label>
+                            <select class="select">
+                                <option>Cash</option>
+                                <option>Online</option>
+                                <option>Inprogress</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group mb-0">
+                            <label>Note</label>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-submit">Submit</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editpayment" tabindex="-1" aria-labelledby="editpayment" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Payment</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Customer</label>
+                            <div class="input-groupicon">
+                                <input type="text" value="2022-03-07" class="datetimepicker">
+                                <div class="addonset">
+                                    <img src="assets/img/icons/datepicker.svg" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Reference</label>
+                            <input type="text" value="INV/SL0101">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Received Amount</label>
+                            <input type="text" value="0.00">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Paying Amount</label>
+                            <input type="text" value="0.00">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <label>Payment type</label>
+                            <select class="select">
+                                <option>Cash</option>
+                                <option>Online</option>
+                                <option>Inprogress</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group mb-0">
+                            <label>Note</label>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-submit">Submit</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock body %}

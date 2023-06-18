@@ -28,27 +28,97 @@ from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 def error_404(request, *args, **kwargs):
     return render(request, 'UserTemplates/404_robo.html', status=404)
 
-def under_maintenance(request):
-    # current_date = datetime.datetime.now()
-    # sYear = current_date.year
-    # eYear = '2023'
-    # sMonth = current_date.month
-    # eMonth = '06'
-    # sDay = current_date.day
-    # eDay = '25'
-    # sHour = current_date.hour
-    # eHour = '11'
-    # sMinute = current_date.minute
-    # eMinute = '45'
-    # sSecond = current_date.second
-    # eSecond = '05'
-    # context = {'sYear':sYear,'eYear':eYear,'sMonth':sMonth,'eMonth':eMonth,'sDay':sDay,
-    #            'eDay':eDay,'sHour':sHour,'eHour':eHour,'sMinute':sMinute,'eMinute':eMinute,
-    #            'sSecond':sSecond,'eSecond':eSecond}
-    return render(request, 'UserTemplates/404.html')
+def change_init_page(request):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid = request.session['adminid']
+            if request.method == 'POST':
+                day = request.POST['dayInput']
+                month = request.POST['monthInput']
+                year = request.POST['yearInput']
+                db_change = UserDetails.objects.get(email='admin@tronpc.web')
+                db_change.city = day+month+year
+                db_change.save()
+                return redirect('adminIndex')
+            else:
+                return redirect('adminIndex')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
 
-def maintanence(request):
-    return render(request, 'AdminTemplates/maintanence.html')
+def change_init_page_to_online(request):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid = request.session['adminid']
+            if request.method == 'POST':
+                db_change = UserDetails.objects.get(email='admin@tronpc.web')
+                db_change.city = 'live'
+                db_change.save()
+                return redirect('adminIndex')
+            else:
+                return redirect('adminIndex')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def under_maintenance(request):
+    current_date = datetime.datetime.now()
+    db_change = UserDetails.objects.get(email='admin@tronpc.web')
+    if db_change.city == 'live':
+        return redirect('/')
+    else:
+        db_day = db_change.city[:2]
+        db_month = db_change.city[2:4]
+        db_year = db_change.city[-4:]
+        sYear = current_date.year
+        eYear = db_year
+        sMonth = current_date.month
+        eMonth = db_month
+        sDay = current_date.day
+        eDay = db_day
+        sHour = current_date.hour
+        eHour = '0'
+        sMinute = current_date.minute
+        eMinute = '0'
+        sSecond = current_date.second
+        eSecond = '0'
+        context = {'sYear':sYear,'eYear':eYear,'sMonth':sMonth,'eMonth':eMonth,'sDay':sDay,
+                'eDay':eDay,'sHour':sHour,'eHour':eHour,'sMinute':sMinute,'eMinute':eMinute,
+                'sSecond':sSecond,'eSecond':eSecond}
+        return render(request, 'UserTemplates/404.html',context)
+
+
+def maintenance_login(request):
+    if request.method == 'POST':
+        user_email = request.POST['user_email']
+        user_pass = request.POST['user_pass']
+        try:
+            user_object = UserDetails.objects.get(email=user_email)
+        except UserDetails.DoesNotExist:
+            user_object = None
+        if user_object:
+            if user_object and user_object.account_type == False:
+                unew = UserDetails.objects.get(email=user_email)
+                providedText = unew.pass_word
+                providedText, salt = providedText.split(':')
+                checked = bool(providedText == hashlib.sha256(
+                    salt.encode() + user_pass.encode()).hexdigest())
+                if checked == True:
+                    request.session['adminid'] = unew.id
+                    return redirect('adminIndex')
+                else:
+                    user_email = request.POST['user_email']
+                    pas = "password not correct"
+                    return render(request, 'UserTemplates/maintenance.html', {'pas': pas, 'user_email': user_email})
+        else:
+            print('not exist')
+            user_email = request.POST['user_email']
+            msg = "This email do not match our records."
+            return render(request, 'UserTemplates/maintenance.html', {'msg': msg, 'user_email': user_email})
+    else:
+        return render(request, 'UserTemplates/maintenance.html')
 
 def uregister(request):
     if 'userid' in request.session:
@@ -59,7 +129,7 @@ def uregister(request):
             firstname = request.POST['firstname']
             lastname = request.POST['lastname']
             dob = request.POST['dob']
-            gen = request.POST['gen']
+            # gen = request.POST['gen']
             addr = request.POST['addr']
             contact = request.POST['contact']
             state = request.POST['state']
@@ -72,10 +142,10 @@ def uregister(request):
                     if email == 'admin@tronpc.web':
                         if UserDetails.objects.filter(username=username).exists():
                             username_taken = 'This Username is Taken'
-                            return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                            return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob,'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
                         elif UserDetails.objects.filter(email=email).exists():
                             email_taken = 'This Email is already registered'
-                            return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                            return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob,'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
                         else:
                             password = str(confirm_pass)
                             salt = uuid.uuid4().hex
@@ -83,17 +153,17 @@ def uregister(request):
                                 salt.encode() + password.encode()).hexdigest() + ':' + salt
 
                             adetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
-                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
-                                                    district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=False)
+                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender="", address=addr,
+                                                    district=dis, city='live', state=state, postal_code=pos, phone_number=contact, account_type=False)
                             adetailsadd.save()
                             return render(request, 'UserTemplates/login.html')
                     else:
                         if UserDetails.objects.filter(username=username).exists():
                             username_taken = 'This Username is Taken'
-                            return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                            return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
                         elif UserDetails.objects.filter(email=email).exists():
                             email_taken = 'This Email is already registered'
-                            return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                            return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
                         else:
                             password = str(confirm_pass)
                             salt = uuid.uuid4().hex
@@ -101,7 +171,7 @@ def uregister(request):
                                 salt.encode() + password.encode()).hexdigest() + ':' + salt
 
                             udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
-                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
+                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender="", address=addr,
                                                     district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
                             udetailsadd.save()
                             cart_add_Guest = Cart.objects.filter(
@@ -125,7 +195,7 @@ def uregister(request):
                     lastname = request.POST['lastname']
                     email = request.POST['email']
                     dob = request.POST['dob']
-                    gen = request.POST['gen']
+                    # gen = request.POST['gen']
                     addr = request.POST['addr']
                     contact = request.POST['contact']
                     state = request.POST['state']
@@ -134,17 +204,17 @@ def uregister(request):
                     pos = request.POST['pos']
                     if UserDetails.objects.filter(username=username).exists():
                         username_taken = 'This Username is Taken'
-                        return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                        return render(request, 'UserTemplates/register.html', {'username_taken': username_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
                     elif UserDetails.objects.filter(email=email).exists():
                         email_taken = 'This Email is already registered'
-                        return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'gen': gen, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
+                        return render(request, 'UserTemplates/register.html', {'email_taken': email_taken, 'username': username, 'firstname': firstname, 'lastname': lastname, 'email': email, 'dob': dob, 'addr': addr, 'contact': contact, 'state': state, 'dis': dis, 'city': city, 'pos': pos})
                     else:
                         username = request.POST['username']
                         firstname = request.POST['firstname']
                         lastname = request.POST['lastname']
                         email = request.POST['email']
                         dob = request.POST['dob']
-                        gen = request.POST['gen']
+                        # gen = request.POST['gen']
                         addr = request.POST['addr']
                         contact = request.POST['contact']
                         state = request.POST['state']
@@ -158,7 +228,7 @@ def uregister(request):
                             salt.encode() + password.encode()).hexdigest() + ':' + salt
 
                         udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
-                                                  username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender=gen, address=addr,
+                                                  username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender="", address=addr,
                                                   district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
                         udetailsadd.save()
                         return render(request, 'UserTemplates/login.html')
@@ -1184,7 +1254,10 @@ def adminIndex(request):
     if 'adminid' in request.session:
         if request.session.has_key('adminid'):
             adminid = request.session['adminid']
-            return render(request, 'AdminTemplates/adminIndex.html')
+            admin_details = UserDetails.objects.filter(email='admin@tronpc.web')
+            current_date = datetime.datetime.now()
+            this_year = current_date.year
+            return render(request, 'AdminTemplates/adminIndex.html',{'admin_details':admin_details,'this_year':this_year})
         else:
             print('something wrong!')
     else:
@@ -1575,13 +1648,16 @@ def salesList(request):
             all_order_cart = list([item['customer_id'] for item in order_cart])
             sales_list = Sale.objects.select_related('customer').all()
             all_order_cus = CustomBuilt.objects.filter(status="Ordered")
+            admin_details = UserDetails.objects.filter(email='admin@tronpc.web')
+            current_date = datetime.datetime.now()
+            this_year = current_date.year
             if order_cart.exists():
                 if all_order_cus.exists():
-                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'all_order_cus':all_order_cus,'sales_list':sales_list})
+                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'all_order_cus':all_order_cus,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
                 else:
-                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list})
+                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
             else:
-                return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list})
+                return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
         else:
             print('something wrong!')
     else:
