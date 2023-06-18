@@ -64,30 +64,38 @@ def change_init_page_to_online(request):
         return redirect('/')
 
 def under_maintenance(request):
-    current_date = datetime.datetime.now()
-    db_change = UserDetails.objects.get(email='admin@tronpc.web')
-    if db_change.city == 'live':
-        return redirect('/')
+    try:
+        user_object = UserDetails.objects.get(email=user_email)
+    except UserDetails.DoesNotExist:
+        user_object = None
+    if user_object:
+        if db_change.city == 'live':
+            return redirect('/')
+        else:
+            current_date = datetime.datetime.now()
+            db_change = UserDetails.objects.get(email='admin@tronpc.web')
+            db_day = db_change.city[:2]
+            db_month = db_change.city[2:4]
+            db_year = db_change.city[-4:]
+            sYear = current_date.year
+            eYear = db_year
+            sMonth = current_date.month
+            eMonth = db_month
+            sDay = current_date.day
+            eDay = db_day
+            sHour = current_date.hour
+            eHour = '0'
+            sMinute = current_date.minute
+            eMinute = '0'
+            sSecond = current_date.second
+            eSecond = '0'
+            context = {'sYear':sYear,'eYear':eYear,'sMonth':sMonth,'eMonth':eMonth,'sDay':sDay,
+                    'eDay':eDay,'sHour':sHour,'eHour':eHour,'sMinute':sMinute,'eMinute':eMinute,
+                    'sSecond':sSecond,'eSecond':eSecond}
+            return render(request, 'UserTemplates/404.html',context)
     else:
-        db_day = db_change.city[:2]
-        db_month = db_change.city[2:4]
-        db_year = db_change.city[-4:]
-        sYear = current_date.year
-        eYear = db_year
-        sMonth = current_date.month
-        eMonth = db_month
-        sDay = current_date.day
-        eDay = db_day
-        sHour = current_date.hour
-        eHour = '0'
-        sMinute = current_date.minute
-        eMinute = '0'
-        sSecond = current_date.second
-        eSecond = '0'
-        context = {'sYear':sYear,'eYear':eYear,'sMonth':sMonth,'eMonth':eMonth,'sDay':sDay,
-                'eDay':eDay,'sHour':sHour,'eHour':eHour,'sMinute':sMinute,'eMinute':eMinute,
-                'sSecond':sSecond,'eSecond':eSecond}
-        return render(request, 'UserTemplates/404.html',context)
+        return redirect('login')
+    
 
 
 def maintenance_login(request):
