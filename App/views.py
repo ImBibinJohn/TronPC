@@ -431,7 +431,7 @@ def add_to_cart_form(request, id):
                 cart_fk.product_quantity = total_qua
                 cart_fk.save()
                 if 'Guest' in str(userid):
-                    return redirect('specials')
+                    return redirect('allProducts')
                 else:
                     return redirect('productsHome')
             else:
@@ -439,7 +439,7 @@ def add_to_cart_form(request, id):
                     cart_add = Cart(product_code=proid.product_code, product_quantity=1,
                                     product=proid, price=proid.price, customer_id=userid)
                     cart_add.save()
-                    return redirect('specials')
+                    return redirect('allProducts')
                 else:
                     cart_add = Cart(product_code=proid.product_code, product_quantity=1,
                                     product=proid, price=proid.price, customer_id=userid)

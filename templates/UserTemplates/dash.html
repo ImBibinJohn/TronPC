@@ -385,7 +385,7 @@
                 {% for cat in category %}
                 <li class="menu-item">
                   <a href="{% url 'categoryFilter' cat.id %}">
-                    <span class="category-img hidden-sm hidden-xs"><img src="{{cat.category_image.url}}" alt="shop"
+                    <span class="category-img hidden-sm hidden-xs"><img src="{{cat.category_image.url}}" alt="img"
                         style="width: 30px; height: 30px;" /></span>
                     {{cat.category_name}}
                   </a>

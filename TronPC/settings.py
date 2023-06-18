@@ -17,7 +17,7 @@ DEBUG = True
 
 # allowed hosts
 
-ALLOWED_HOSTS = ['www.tronpc.com','tronpc.com']
+ALLOWED_HOSTS = []
 
 
 
@@ -69,7 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'TronPCDB',
         'USER': 'root',
-        'PASSWORD': 'tronpc@123',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -121,7 +121,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/files')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 MEDIA_URL = '/media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
