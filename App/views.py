@@ -65,7 +65,7 @@ def change_init_page_to_online(request):
 
 def under_maintenance(request):
     try:
-        user_object = UserDetails.objects.get(email=user_email)
+        user_object = UserDetails.objects.get(email='admin@tronpc.web')
     except UserDetails.DoesNotExist:
         user_object = None
     if user_object:
@@ -95,7 +95,7 @@ def under_maintenance(request):
             return render(request, 'UserTemplates/404.html',context)
     else:
         return redirect('login')
-    
+
 
 
 def maintenance_login(request):
@@ -137,7 +137,6 @@ def uregister(request):
             firstname = request.POST['firstname']
             lastname = request.POST['lastname']
             dob = request.POST['dob']
-            # gen = request.POST['gen']
             addr = request.POST['addr']
             contact = request.POST['contact']
             state = request.POST['state']
@@ -161,7 +160,7 @@ def uregister(request):
                                 salt.encode() + password.encode()).hexdigest() + ':' + salt
 
                             adetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
-                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender="", address=addr,
+                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", address=addr,
                                                     district=dis, city='live', state=state, postal_code=pos, phone_number=contact, account_type=False)
                             adetailsadd.save()
                             return redirect('main')
@@ -179,7 +178,7 @@ def uregister(request):
                                 salt.encode() + password.encode()).hexdigest() + ':' + salt
 
                             udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
-                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender="", address=addr,
+                                                    username=username, pass_word=enc_pass, dob=dob, profile_picture="", address=addr,
                                                     district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
                             udetailsadd.save()
                             cart_add_Guest = Cart.objects.filter(
@@ -202,7 +201,6 @@ def uregister(request):
                     lastname = request.POST['lastname']
                     email = request.POST['email']
                     dob = request.POST['dob']
-                    # gen = request.POST['gen']
                     addr = request.POST['addr']
                     contact = request.POST['contact']
                     state = request.POST['state']
@@ -221,7 +219,6 @@ def uregister(request):
                         lastname = request.POST['lastname']
                         email = request.POST['email']
                         dob = request.POST['dob']
-                        # gen = request.POST['gen']
                         addr = request.POST['addr']
                         contact = request.POST['contact']
                         state = request.POST['state']
@@ -235,7 +232,7 @@ def uregister(request):
                             salt.encode() + password.encode()).hexdigest() + ':' + salt
 
                         udetailsadd = UserDetails(first_name=firstname, last_name=lastname, email=email,
-                                                  username=username, pass_word=enc_pass, dob=dob, profile_picture="", gender="", address=addr,
+                                                  username=username, pass_word=enc_pass, dob=dob, profile_picture="", address=addr,
                                                   district=dis, city=city, state=state, postal_code=pos, phone_number=contact, account_type=True)
                         udetailsadd.save()
                         return render(request, 'UserTemplates/login.html')
