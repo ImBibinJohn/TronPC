@@ -93,6 +93,4 @@ urlpatterns = [
     re_path(r'^maintenance_login/$', views.maintenance_login, name='maintenance_login'),
     path('<path:invalid_path>', views.error_404),
 
-
-
 ]
