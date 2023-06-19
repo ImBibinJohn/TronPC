@@ -13,8 +13,6 @@ class UserDetails(models.Model):
     dob = models.DateField(blank=True, null=True)
     profile_picture = models.ImageField(
         upload_to='profile_pictures/', null=True, blank=True, default="")
-    gender = models.CharField(max_length=10, choices=[(
-        'M', 'Male'), ('F', 'Female')], blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     district = models.CharField(max_length=100, blank=True, null=True)
