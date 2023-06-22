@@ -57,6 +57,16 @@ class Product(models.Model):
     special = models.BooleanField(default=True)
     product_image = models.ImageField(
         upload_to='product_images/', null=True, blank=True, default="")
+    product_image_1 = models.ImageField(
+        upload_to='product_images/', null=True, blank=True, default="")
+    product_image_2 = models.ImageField(
+        upload_to='product_images/', null=True, blank=True, default="")
+    product_image_3 = models.ImageField(
+        upload_to='product_images/', null=True, blank=True, default="")
+    product_image_4 = models.ImageField(
+        upload_to='product_images/', null=True, blank=True, default="")
+    product_image_5 = models.ImageField(
+        upload_to='product_images/', null=True, blank=True, default="")
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 

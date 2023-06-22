@@ -118,9 +118,14 @@
                     <span class="fa fa-stack"></span>
                   </div>
 
-                  <a href="{% url 'add_to_cart_form' special.id %}" style="color: blue;">
-                    <u>ADD TO CART</u>
-                  </a>
+                  <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
+                    <a href="{% url 'add_to_cart_form' special.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                      onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                      onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
+                    >
+                      ADD TO CART
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -211,9 +216,14 @@
                         <span class="fa fa-stack"></span>
                       </div>
 
-                      <a href="{% url 'add_to_cart_form' product.id %}" style="color: blue;">
-                        <u>ADD TO CART</u>
-                      </a>
+                      <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
+                        <a href="{% url 'add_to_cart_form' product.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                          onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                          onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
+                        >
+                          ADD TO CART
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -478,9 +488,14 @@
                     <div class="rating">
                       <span class="fa fa-stack"></span>
                     </div>
-                    <a href="{% url 'add_to_cart_form' dotd.id %}" style="color: blue;">
-                      <u>ADD TO CART</u>
-                    </a>
+                    <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
+                      <a href="{% url 'add_to_cart_form' dotd.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                        onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
+                      >
+                        ADD TO CART
+                      </a>
+                    </div>
                     <p>
                       {{dotd.description}}
                     </p>

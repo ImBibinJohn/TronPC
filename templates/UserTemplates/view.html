@@ -48,9 +48,14 @@
                       <span class="fa fa-stack"></span>
                     </div>
 
-                    <a href="{% url 'add_to_cart_form' special.id %}" style="color: blue;">
-                      <u>ADD TO CART</u>
-                    </a>
+                    <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
+                      <a href="{% url 'add_to_cart_form' special.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                        onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
+                      >
+                        ADD TO CART
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -70,73 +75,77 @@
   <div id="content" class="col-sm-9">
 
 
-{% for pro in product %}
+    {% for pro in product %}
     <h2 class="page_title">{{pro.product_name}}</h2>
     <div class="pro-deatil row">
       <div class="col-sm-6 product-img">
         <div class="thumbnails">
           <div class="pro-image">
-            <a href="{{pro.product_image.url}}"
-              title="Microwaves" class="thumbnail">
-              <img src="{{pro.product_image.url}}"
-                title="Microwaves" alt="Microwaves"/>
+            <a href="{{pro.product_image.url}}" title="pro-image" class="thumbnail">
+              <img src="{{pro.product_image.url}}" title="pro-image" alt="pro-image" style="width: 300px; height: 400px;">
             </a>
           </div>
-
           <div class="product-additional">
             <div id="additional-carousel" class="owl-carousel owl-theme clearfix">
+
+              {% if pro.product_image_1 == "" %}
+              {% else %}
               <div class="image-additional">
-                <a href="{{pro.product_image.url}}"
-                  title="Microwaves" class="elevatezoom-gallery"
-                  data-image="{{pro.product_image.url}}"
-                  data-zoom-image="{{pro.product_image.url}}">
-                  <img src="{{pro.product_image.url}}"
-                    title="Microwaves" alt="Microwaves" width="80" height="80" />
+                <a href="{{pro.product_image_1.url}}" title="pro-image" class="elevatezoom-gallery"
+                  data-image="{{pro.product_image_1.url}}" data-zoom-image="{{pro.product_image_1.url}}">
+                  <img src="{{pro.product_image_1.url}}" title="pro-image" alt="pro-image" width="80" height="80" />
                 </a>
               </div>
+              {% endif %}
+
+              {% if pro.product_image_2 == "" %}
+
+              {% else %}
               <div class="image-additional">
-                <a href="{{pro.product_image.url}}"
-                  title="Microwaves" class="elevatezoom-gallery"
-                  data-image="{{pro.product_image.url}}"
-                  data-zoom-image="{{pro.product_image.url}}">
-                  <img src="{{pro.product_image.url}}"
-                    title="Microwaves" alt="Microwaves" width="80" height="80" />
+                <a href="{{pro.product_image_2.url}}" title="pro-image" class="elevatezoom-gallery"
+                  data-image="{{pro.product_image_2.url}}" data-zoom-image="{{pro.product_image_2.url}}">
+                  <img src="{{pro.product_image_2.url}}" title="pro-image" alt="pro-image" width="80" height="80" />
                 </a>
               </div>
+              {% endif %}
+
+              {% if pro.product_image_3 == "" %}
+
+              {% else %}
               <div class="image-additional">
-                <a href="{{pro.product_image.url}}"
-                  title="Microwaves" class="elevatezoom-gallery"
-                  data-image="{{pro.product_image.url}}"
-                  data-zoom-image="{{pro.product_image.url}}">
-                  <img src="{{pro.product_image.url}}"
-                    title="Microwaves" alt="Microwaves" width="80" height="80" />
+                <a href="{{pro.product_image_3.url}}" title="pro-image" class="elevatezoom-gallery"
+                  data-image="{{pro.product_image_3.url}}" data-zoom-image="{{pro.product_image_3.url}}">
+                  <img src="{{pro.product_image_3.url}}" title="pro-image" alt="pro-image" width="80" height="80" />
                 </a>
               </div>
+              {% endif %}
+
+              {% if pro.product_image_4 == "" %}
+
+              {% else %}
               <div class="image-additional">
-                <a href="{{pro.product_image.url}}"
-                  title="Microwaves" class="elevatezoom-gallery"
-                  data-image="{{pro.product_image.url}}"
-                  data-zoom-image="{{pro.product_image.url}}">
-                  <img src="{{pro.product_image.url}}"
-                    title="Microwaves" alt="Microwaves" width="80" height="80" />
+                <a href="{{pro.product_image_4.url}}" title="pro-image" class="elevatezoom-gallery"
+                  data-image="{{pro.product_image_4.url}}" data-zoom-image="{{pro.product_image_4.url}}">
+                  <img src="{{pro.product_image_4.url}}" title="pro-image" alt="pro-image" width="80" height="80" />
                 </a>
               </div>
+              {% endif %}
+
+              {% if pro.product_image_5 == "" %}
+
+              {% else %}
               <div class="image-additional">
-                <a href="{{pro.product_image.url}}"
-                  title="Microwaves" class="elevatezoom-gallery"
-                  data-image="{{pro.product_image.url}}"
-                  data-zoom-image="{{pro.product_image.url}}">
-                  <img src="{{pro.product_image.url}}"
-                    title="Microwaves" alt="Microwaves" width="80" height="80" />
+                <a href="{{pro.product_image_5.url}}" title="pro-image" class="elevatezoom-gallery"
+                  data-image="{{pro.product_image_5.url}}" data-zoom-image="{{pro.product_image_5.url}}">
+                  <img src="{{pro.product_image_5.url}}" title="pro-image" alt="pro-image" width="80" height="80" />
                 </a>
               </div>
+              {% endif %}
+
               <div class="image-additional">
-                <a href="{{pro.product_image.url}}"
-                  title="Microwaves" class="elevatezoom-gallery"
-                  data-image="{{pro.product_image.url}}"
-                  data-zoom-image="{{pro.product_image.url}}">
-                  <img src="{{pro.product_image.url}}"
-                    title="Microwaves" alt="Microwaves" width="80" height="80" />
+                <a href="{{pro.product_image.url}}" title="pro-image" class="elevatezoom-gallery"
+                  data-image="{{pro.product_image.url}}" data-zoom-image="{{pro.product_image.url}}">
+                  <img src="{{pro.product_image.url}}" title="pro-image" alt="pro-image" width="80" height="80" />
                 </a>
               </div>
             </div>
@@ -144,14 +153,13 @@
         </div>
       </div>
       <div class="col-sm-6 right_info">
-        <h1 class="">{{pro.product_name}}</h1>
+        <h1 class="" style="font-weight: bold;"><strong>{{pro.product_name}}</strong></h1>
         <hr>
         <ul class="list-unstyled">
           <li><span class="disc">Brand:</span>{{pro.brand}}
+          <li><span class="disc">Category:</span>{{pro.category}}
           </li>
-          <li><span class="disc">Product Code:</span><span class="disc1">{{pro.product_code}}</span></li>
-          <li><span class="disc">Reward Points:</span><span class="disc1">300</span></li>
-          <li><span class="disc">Availability:</span><span class="disc1">In Stock</span></li>
+          <li><span class="disc">Availability:</span><span class="disc1" style="color: green;">In Stock</span></li>
         </ul>
         <hr>
         <ul class="list-unstyled">
@@ -167,7 +175,7 @@
             <div class="product-btn-quantity">
               <div class="btn-groups pro-btns">
                 <a href="{% url 'add_to_cart_form' pro.id %}"><button type="button"
-                  class="btn btn-primary btn-lg btn-block">Add to Cart</button></a>
+                    class="btn btn-primary btn-lg btn-block">Add to Cart</button></a>
               </div>
             </div>
             <input type="hidden" name="product_id" value="47" />
@@ -316,8 +324,8 @@
 
 <!-- M-Custom script -->
 <script>
-// Additional images
-const direction = $('html').attr('dir');
+  // Additional images
+  const direction = $('html').attr('dir');
 
   $('#additional-carousel').each(function () {
     if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {

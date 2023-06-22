@@ -850,6 +850,7 @@ def view(request, id):
             userid_confirm = str(userid)
             if 'Guest' in userid_confirm:
                 category = Category.objects.all()
+                specials = Product.objects.filter(special=1, status=1)
                 cart = Cart.objects.filter(customer_id=userid)
                 cart_price_list = Cart.objects.filter(
                     customer_id=userid).values('price')
@@ -866,12 +867,13 @@ def view(request, id):
                 cart_list_count = int(sum(float(qua.replace(',', ''))
                                           for qua in quantity))
                 product = Product.objects.filter(id=id)
-                context = {'product': product, 'category': category, 'cart': cart,
+                context = {'specials':specials,'product': product, 'category': category, 'cart': cart,
                            'total_price': total_price, 'cart_list_count': cart_list_count, 'userid': userid}
                 return render(request, 'UserTemplates/view.html', context)
             else:
                 pro = UserDetails.objects.filter(id=userid)
                 category = Category.objects.all()
+                specials = Product.objects.filter(special=1, status=1)
                 cart = Cart.objects.filter(customer_id=userid)
                 cart_price_list = Cart.objects.filter(
                     customer_id=userid).values('price')
@@ -888,7 +890,7 @@ def view(request, id):
                 cart_list_count = int(sum(float(qua.replace(',', ''))
                                           for qua in quantity))
                 product = Product.objects.filter(id=id)
-                context = {'product': product, 'category': category, 'cart': cart,
+                context = {'specials':specials,'product': product, 'category': category, 'cart': cart,
                            'total_price': total_price, 'cart_list_count': cart_list_count, 'pro': pro}
                 return render(request, 'UserTemplates/view.html', context)
         else:
@@ -1406,6 +1408,30 @@ def addProductForm(request):
                 locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
                 mod_price = locale.currency(price, grouping=True, symbol=False)
                 pro_pic = request.FILES['pro_pic']
+                if request.FILES.get('pre_pic1') is not None:
+                    pre_pic1 = request.FILES.get('pre_pic1')
+                else:
+                    pre_pic1 = ""
+
+                if request.FILES.get('pre_pic2') is not None:
+                    pre_pic2 = request.FILES.get('pre_pic2')
+                else:
+                    pre_pic2 = ""
+
+                if request.FILES.get('pre_pic3') is not None:
+                    pre_pic3 = request.FILES.get('pre_pic3')
+                else:
+                    pre_pic3 = ""
+
+                if request.FILES.get('pre_pic4') is not None:
+                    pre_pic4 = request.FILES.get('pre_pic4')
+                else:
+                    pre_pic4 = ""
+
+                if request.FILES.get('pre_pic5') is not None:
+                    pre_pic5 = request.FILES.get('pre_pic5')
+                else:
+                    pre_pic5 = ""
                 code_length = 3  # Customize the length of the code
                 x = datetime.datetime.now()
                 salt = x.strftime("%f")[3:].upper()
@@ -1415,7 +1441,7 @@ def addProductForm(request):
                 for_key = Category.objects.get(id=pro_cat)
                 for_brnd = Brands.objects.get(id=pro_brand)
                 pro_add = Product(product_name=pro_name, product_code=pro_cod, date_added=x, brand=for_brnd, quantity=pro_qty,
-                                description=pro_des, price=mod_price, status=True, special=False, product_image=pro_pic, category=for_key)
+                                description=pro_des, price=mod_price, status=True, special=False, product_image=pro_pic,product_image_1=pre_pic1, product_image_2=pre_pic2, product_image_3=pre_pic3, product_image_4=pre_pic4, product_image_5=pre_pic5, category=for_key)
                 pro_add.save()
                 added = f"{pro_name}"
                 cat_list = Category.objects.all()
@@ -1469,6 +1495,32 @@ def editProductForm(request, id):
                         pro_pic = request.FILES.get('pro_pic')
                     else:
                         pro_pic = pro_list.product_image
+
+                    if request.FILES.get('pre_pic1') is not None:
+                        pre_pic1 = request.FILES.get('pre_pic1')
+                    else:
+                        pre_pic1 = pro_list.product_image_1
+
+                    if request.FILES.get('pre_pic2') is not None:
+                        pre_pic2 = request.FILES.get('pre_pic2')
+                    else:
+                        pre_pic2 = pro_list.product_image_2
+
+                    if request.FILES.get('pre_pic3') is not None:
+                        pre_pic3 = request.FILES.get('pre_pic3')
+                    else:
+                        pre_pic3 = pro_list.product_image_3
+
+                    if request.FILES.get('pre_pic4') is not None:
+                        pre_pic4 = request.FILES.get('pre_pic4')
+                    else:
+                        pre_pic4 = pro_list.product_image_4
+
+                    if request.FILES.get('pre_pic5') is not None:
+                        pre_pic5 = request.FILES.get('pre_pic5')
+                    else:
+                        pre_pic5 = pro_list.product_image_5
+
                         current_date = datetime.datetime.now()
                         current_time = current_date.date()
                         pro_cod = pro_list.product_code
@@ -1484,6 +1536,11 @@ def editProductForm(request, id):
                         pro_add.status = True
                         pro_add.special = True
                         pro_add.product_image = pro_pic
+                        pro_add.product_image_1 = pre_pic1
+                        pro_add.product_image_2 = pre_pic2
+                        pro_add.product_image_3 = pre_pic3
+                        pro_add.product_image_4 = pre_pic4
+                        pro_add.product_image_5 = pre_pic5
                         pro_add.category = for_key
                         pro_add.save()
                         added = f"{pro_name}"
@@ -1542,12 +1599,6 @@ def addcategory_form(request):
                 mydata = Category.objects.filter(category_name=cat_name).values()
                 if mydata:
                     name_exists = f"{cat_name}"
-                    code_length = 3  # Customize the length of the code
-                    x = datetime.datetime.now()
-                    salt = x.strftime("%f")[3:].upper()
-                    code = 'CAT-' + salt + \
-                        ''.join(random.choices(string.ascii_uppercase +
-                                string.digits, k=code_length))
                     existingOptions = Category.objects.all()
                     categories = ["RAM", "ROM", "SSD", "Monitor", "GPU", "PreBuilt"]
                     newOptions = []
@@ -1555,12 +1606,17 @@ def addcategory_form(request):
                         if not existingOptions.filter(category_name=category).exists():
                             newOptions.append(category)
                     if len(newOptions) == 0:
-                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'name_exists': name_exists})
+                        return render(request, 'AdminTemplates/addCategory.html', {'name_exists': name_exists})
                     else:
-                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions, 'name_exists': name_exists})
+                        return render(request, 'AdminTemplates/addCategory.html', {'newOptions': newOptions, 'name_exists': name_exists})
                 else:
                     cat_name = request.POST['cat_name'].capitalize()
-                    cat_code = request.POST['cat_code']
+                    code_length = 3  # Customize the length of the code
+                    x = datetime.datetime.now()
+                    salt = x.strftime("%f")[3:].upper()
+                    cat_code = 'CAT-' + salt + \
+                        ''.join(random.choices(string.ascii_uppercase +
+                                string.digits, k=code_length))
                     cat_desc = request.POST['cat_desc']
                     cat_img = request.FILES['cat_img']
                     category = Category(category_name=cat_name, category_code=cat_code,
@@ -1580,9 +1636,9 @@ def addcategory_form(request):
                         if not existingOptions.filter(category_name=category).exists():
                             newOptions.append(category)
                     if len(newOptions) == 0:
-                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'added': added})
+                        return render(request, 'AdminTemplates/addCategory.html', {'added': added})
                     else:
-                        return render(request, 'AdminTemplates/addCategory.html', {'code': code, 'newOptions': newOptions, 'added': added})
+                        return render(request, 'AdminTemplates/addCategory.html', {'newOptions': newOptions, 'added': added})
             return redirect('addCategory')
         else:
             print('something wrong!')
@@ -1673,7 +1729,6 @@ def edit_category_form(request, id):
             adminid= request.session['adminid']
             banners = Category.objects.get(id=id)
             cat_name = request.POST['cat_name']
-            cat_code = request.POST['cat_code']
             cat_desc = request.POST['cat_desc']
 
             if request.FILES.get('cat_img') is not None:
@@ -1681,7 +1736,7 @@ def edit_category_form(request, id):
             else:
                 cat_img = banners.category_image
             banners.category_name = cat_name
-            banners.category_code = cat_code
+            banners.category_code = banners.category_code
             banners.description = cat_desc
             banners.category_image = cat_img
             banners.save()
@@ -2231,6 +2286,96 @@ def pre_img_del_5(request, id):
     else:
         return redirect('/')
 
+def pro_img_del(request, id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            mainpost = Product.objects.get(id=id)
+            os.remove(mainpost.product_image.path)
+            mainpost.product_image = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editProduct_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def pro_img_del_1(request, id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            mainpost = Product.objects.get(id=id)
+            os.remove(mainpost.product_image_1.path)
+            mainpost.product_image_1 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editProduct_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def pro_img_del_2(request, id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            mainpost = Product.objects.get(id=id)
+            os.remove(mainpost.product_image_2.path)
+            mainpost.product_image_2 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editProduct_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def pro_img_del_3(request, id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            mainpost = Product.objects.get(id=id)
+            os.remove(mainpost.product_image_3.path)
+            mainpost.product_image_3 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editProduct_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def pro_img_del_4(request, id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            mainpost = Product.objects.get(id=id)
+            os.remove(mainpost.product_image_4.path)
+            mainpost.product_image_4 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editProduct_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def pro_img_del_5(request, id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            mainpost = Product.objects.get(id=id)
+            os.remove(mainpost.product_image_5.path)
+            mainpost.product_image_5 = ""
+            mainpost.save()
+            request.session['pre_id'] = id
+            return redirect('editProduct_post_del')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
 def editPreBuilt_post_del(request):
     if 'adminid' in request.session:
         if request.session.has_key('adminid'):
@@ -2241,6 +2386,22 @@ def editPreBuilt_post_del(request):
             pro_price = pro_list_price.price[:-3]
             count = 'edit'
             return render(request, 'AdminTemplates/preBuilt.html', {'prebuilts': prebuilts, 'count': count, 'pro_price': pro_price})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def editProduct_post_del(request):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            id = request.session['pre_id']
+            cat_list = Category.objects.all()
+            pro_list = Product.objects.filter(id=id)
+            pro_list_price = Product.objects.get(id=id)
+            pro_price = pro_list_price.price[:-3]
+            count = 'edit'
+            return render(request, 'AdminTemplates/addProduct.html', {'cat_list': cat_list, 'count': count, 'pro_list': pro_list, 'pro_price': pro_price})
         else:
             print('something wrong!')
     else:
