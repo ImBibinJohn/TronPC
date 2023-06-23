@@ -2184,6 +2184,44 @@ def addBrand_Form(request):
     else:
         return redirect('/')
 
+def editBrand(request,id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            brand = Brands.objects.get(id=id)
+            brands = Brands.objects.all()
+            edit = 'edit'
+            return render(request, 'AdminTemplates/addBrand.html', {'edit':edit,'brand': brand,'brands': brands})
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
+def editBrandFrom(request,id):
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid= request.session['adminid']
+            if request.method == 'POST':
+                bnd_name = request.POST['bnd_name'].capitalize()
+                brand = Brands.objects.get(id=id)
+                if request.FILES.get('bnd_img') is not None:
+                    bnd_img = request.FILES.get('bnd_img')
+                    brand.brand_name = bnd_name
+                    brand.brand_image = bnd_img
+                    brand.save()
+                    return redirect('addBrand')
+                else:
+                    brand.brand_name = bnd_name
+                    brand.brand_image = brand.brand_image
+                    brand.save()
+                    return redirect('addBrand')
+            else:
+                return redirect('addBrand')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
 def preBuilt(request):
     if 'adminid' in request.session:
         if request.session.has_key('adminid'):
