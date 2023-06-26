@@ -1714,11 +1714,11 @@ def salesList(request):
             this_year = current_date.year
             if order_cart.exists():
                 if all_order_cus.exists():
-                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'all_order_cus':all_order_cus,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
+                    return render(request, 'AdminTemplates/adminIndex.html',{'all_order_cart':all_order_cart,'all_order_cus':all_order_cus,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
                 else:
-                    return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
+                    return render(request, 'AdminTemplates/adminIndex.html',{'all_order_cart':all_order_cart,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
             else:
-                return render(request, 'AdminTemplates/salesList.html',{'all_order_cart':all_order_cart,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
+                return render(request, 'AdminTemplates/adminIndex.html',{'all_order_cart':all_order_cart,'sales_list':sales_list,'admin_details':admin_details,'this_year':this_year})
         else:
             print('something wrong!')
     else:
