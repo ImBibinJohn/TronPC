@@ -68,8 +68,9 @@ def under_maintenance(request):
         user_object = UserDetails.objects.get(email='admin@tronpc.web')
     except UserDetails.DoesNotExist:
         user_object = None
+        return redirect('login')
     if user_object:
-        if db_change.city == 'live':
+        if user_object.city == 'live':
             return redirect('/')
         else:
             current_date = datetime.datetime.now()
