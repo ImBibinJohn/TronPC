@@ -9,6 +9,7 @@
     <title>TronPC</title>
     <meta name="description" content="My Store" />
     <script src="{% static 'catalog/view/javascript/jquery/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/custom_search.js' %}"></script>
     <link href="{% static 'catalog/view/javascript/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"
         media="screen" />
     <script src="{% static 'catalog/view/javascript/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -26,7 +27,10 @@
     <link rel="stylesheet" type="text/css"
         href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" />
 
-    <script src="{% static 'catalog/view/javascript/custom/custom_search.js' %}"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <style>
         :root {
             --primary-color: #111111;
@@ -36,6 +40,207 @@
             --secondary-light-color: #777777;
             --background-color: #f7f7f7;
             --border-color: #e5e5e5
+        }
+
+        body {
+            background: white
+        }
+
+        .menulist {
+            display: inline-block;
+            margin-right: 15px;
+            /* Adjust the spacing between menu items */
+            vertical-align: 2em;
+
+        }
+
+        .menulist a {
+            color: white;
+            font-size: 16px;
+            /* Adjust the font size as desired */
+            text-transform: none;
+        }
+
+        .product-image {
+            width: 100%
+        }
+
+        .dot {
+            height: 7px;
+            width: 7px;
+            margin-left: 6px;
+            margin-right: 6px;
+            margin-top: 3px;
+            background-color: blue;
+            border-radius: 50%;
+            display: inline-block
+        }
+
+        .spec-1 {
+            color: #938787;
+            font-size: 15px
+        }
+
+        h5 {
+            font-weight: 400
+        }
+
+        .para {
+            font-size: 16px
+        }
+
+        .modal-dialog {
+            max-width: 700px;
+            max-height: 100px;
+        }
+
+        .modal-content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .containerz {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .fixed-size {
+            width: 100%;
+        }
+
+        @media screen and (max-width: 600px) {
+            .fixed-size {
+                width: 100%;
+            }
+        }
+
+        /* image slider style */
+        html {
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit;
+            margin: 0;
+            padding: 0;
+        }
+
+        .containerss {
+            display: flex;
+            justify-content: center;
+        }
+
+        .thumbnails {
+            display: flex;
+            flex-direction: column;
+            line-height: 0;
+        }
+
+        .thumbnails li {
+            flex: auto;
+        }
+
+        .thumbnails a {
+            display: block;
+        }
+
+        .thumbnails img {
+            width: 18vmin;
+            height: 10vmin;
+            object-fit: cover;
+            object-position: top;
+        }
+
+
+        .slides {
+            overflow: hidden;
+            width: 50vmin;
+            height: 10vmin;
+        }
+
+        .slides li {
+            width: 30vmin;
+            height: 10vmin;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .slides img {
+            height: 50vmin;
+            object-fit: cover;
+            object-position: top;
+        }
+
+
+        .slides li:target {
+            z-index: 3;
+            -webkit-animation: slide 1s 1;
+        }
+
+        .slides li:not(:target) {
+            -webkit-animation: hidden 1s 1;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(0%);
+            }
+        }
+
+        @keyframes hidden {
+            0% {
+                z-index: 2;
+            }
+
+            100% {
+                z-index: 2;
+            }
+        }
+
+        /* spinners */
+        .spinner-9 {
+            width: 50px;
+            aspect-ratio: 1;
+            display: grid;
+            color: #854f1d;
+            background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
+            -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
+            border-radius: 50%;
+            animation: s9 2s infinite linear;
+        }
+
+        .spinner-9::before,
+        .spinner-9::after {
+            content: "";
+            grid-area: 1/1;
+            background:
+                linear-gradient(currentColor 0 0) center,
+                linear-gradient(currentColor 0 0) center;
+            background-size: 100% 10px, 10px 100%;
+            background-repeat: no-repeat;
+        }
+
+        .spinner-9::after {
+            transform: rotate(45deg);
+        }
+
+        .cart-item-smaller {
+            font-size: 0.8em;
+            /* Adjust the size as needed */
+        }
+
+
+        @keyframes s9 {
+            100% {
+                transform: rotate(1turn)
+            }
         }
 
         @media screen and (min-width: 766px) {
@@ -226,7 +431,6 @@
                     </div>
                 </div>
                 <div class="header-center col-md-6 col-xs-3">
-                    <!-- start menu -->
                     <nav id="menu" class="navbar navbar_menu">
                         <div class="navbar-header">
                             <button type="button" class="btn btn-navbar navbar-toggle" id="btnMenuBar">
@@ -238,61 +442,65 @@
                                 <span id="category" class="">Menu</span><i class="icon-close"></i>
                             </div>
                             <ul class="nav navbar-nav">
-
                                 {% if pro %}
-                                <li class="menulist home">
-                                    <a id="home" href="{% url 'home' %}">Home</a>
-                                </li>
-                                <li class="menulist">
-                                    <a href="{% url 'productsHome' %}">All Products</a>
-                                </li>
-                                <!-- <li class="menulist">
-                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
-                </li> -->
-                                <li class="menulist">
-                                    <a href="{% url 'pcb' %}">Custom Built</a>
-                                </li>
-                                <li class="menulist">
-                                    <a href="{% url 'contactHome' %}">Contact</a>
-                                </li>
-
+                                <ul class="menu">
+                                    <li class="menulist home">
+                                        <a id="home" href="{% url 'home' %}">Home</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'productsHome' %}">All Products</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'pcb' %}">Custom Built</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'contactHome' %}">Contact</a>
+                                    </li>
+                                </ul>
                                 {% elif 'Guest' in userid %}
-                                <li class="menulist home">
-                                    <a id="home" href="/">Home</a>
-                                </li>
-                                <li class="menulist">
-                                    <a href="{% url 'allProducts' %}">All Products</a>
-                                </li>
-                                <!-- <li class="menulist">
-                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
-                </li> -->
-                                <li class="menulist">
-                                    <a href="{% url 'pcb' %}">Custom Built</a>
-                                </li>
-                                <li class="menulist">
-                                    <a href="{% url 'contact' %}">Contact</a>
-                                </li>
+                                <ul class="menu">
+                                    <li class="menulist home">
+                                        <a id="home" href="/">Home</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'allProducts' %}">All Products</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'pcb' %}">Custom Built</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'contact' %}">Contact</a>
+                                    </li>
+                                </ul>
                                 {% else %}
-                                <li class="menulist home">
-                                    <a id="home" href="{% url 'index' %}">Home</a>
-                                </li>
-                                <li class="menulist">
-                                    <a href="{% url 'allProducts' %}">All Products</a>
-                                </li>
-                                <!-- <li class="menulist">
-                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
-                </li> -->
-                                <li class="menulist">
-                                    <a href="{% url 'pcb' %}">Custom Built</a>
-                                </li>
-                                <li class="menulist">
-                                    <a href="{% url 'contact' %}">Contact</a>
-                                </li>
+                                <ul class="menu">
+                                    <li class="menulist home">
+                                        <a id="home" href="{% url 'index' %}">Home</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'allProducts' %}">All Products</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'pcb' %}">Custom Built</a>
+                                    </li>
+                                    <li class="menulist">
+                                        <a href="{% url 'contact' %}">Contact</a>
+                                    </li>
+                                </ul>
                                 {% endif %}
-
                             </ul>
                         </div>
                     </nav>
+
                 </div>
                 <div class="header-right col-md-3 col-xs-9">
                     <!-- start search -->
@@ -396,6 +604,72 @@
                         </div>
                     </div>
                 </div>
+                <div class="box all-products special left-vertical-product">
+                    <div class="box-heading">
+                        <div class="box-content">
+                            <div class="page-title toggled">
+                                <h3>Special Products</h3>
+                            </div>
+                            <div class="block_box">
+                                <div id="special-carousel" class="box-product vertical-carousel clearfix"
+                                    data-items="1">
+                                    {% if specials %}
+
+                                    {% for special in specials %}
+
+                                    <div class="product-layout col-xs-12">
+                                        <div class="product-thumb transition clearfix">
+                                            <div class="image">
+                                                <a href="#">
+                                                    <img src="{{special.product_image.url}}" alt="iPhone" title="iPhone"
+                                                        class="img-responsive" />
+                                                    <img class="img-responsive hover-img"
+                                                        src="{{special.product_image.url}}" title="iPhone"
+                                                        alt="iPhone" />
+                                                </a>
+                                                <div class="sale-text">
+                                                    <span class="section-sale">On Sale!</span>
+                                                </div>
+                                            </div>
+                                            <div class="thumb-description clearfix">
+                                                <div class="caption">
+                                                    <h4 class="product-title">
+                                                        <a
+                                                            href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                                                    </h4>
+                                                    <p class="price">
+                                                        <span class="price-new">{{special.price}}</span>
+                                                        <!-- <span class="price-old">{{special.price}}</span> -->
+                                                    </p>
+                                                    <div class="rating">
+                                                        <span class="fa fa-stack"></span>
+                                                    </div>
+
+                                                    <div class="btn-all"
+                                                        style="display: flex; justify-content: center; align-items: center;">
+                                                        <a href="{% url 'add_to_cart_form' special.id %}"
+                                                            style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                                                            onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                                                            onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
+                                                            ADD TO CART
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <center>
+                                        <h5>No Special Products</h5>
+                                    </center>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {% block body %}
 
                 {% endblock %}
