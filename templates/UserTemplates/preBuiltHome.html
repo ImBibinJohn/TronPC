@@ -1,648 +1,418 @@
-a
 <!DOCTYPE html>
-<html lang="en">
 {% load static %}
+<html dir="ltr" lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description" content="POS - Bootstrap Admin Template">
-    <meta name="keywords"
-        content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
-    <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Prebuilt PC's</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>TronPC</title>
+    <meta name="description" content="My Store" />
+    <script src="{% static 'catalog/view/javascript/jquery/jquery-2.1.1.min.js' %}"></script>
+    <link href="{% static 'catalog/view/javascript/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"
+        media="screen" />
+    <script src="{% static 'catalog/view/javascript/bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="{% static 'catalog/view/javascript/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet"
+        type="text/css" />
+    <script src="{% static 'catalog/view/javascript/custom/jquery.elevateZoom.min.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/owl.carousel.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'catalog/view/javascript/custom/quickview.js' %}"></script>
+    <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/custom-font.css' %}" rel="stylesheet" />
+    <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/animate.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/owl.carousel.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'catalog/view/theme/custom/stylesheet/custom/owl.theme.default.min.css' %}"
+        rel="stylesheet" />
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" />
 
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
+    <script src="{% static 'catalog/view/javascript/custom/custom_search.js' %}"></script>
+    <style>
+        :root {
+            --primary-color: #111111;
+            --primary-hover-color: #ffffff;
+            --secondary-color: #16202c;
+            --secondary-hover-color: #4d94ff;
+            --secondary-light-color: #777777;
+            --background-color: #f7f7f7;
+            --border-color: #e5e5e5
+        }
 
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-
-    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
-
-    <link rel="stylesheet" href="{% static 'assets/plugins/owlcarousel/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/plugins/owlcarousel/owl.theme.default.min.css' %}">
-
-    <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
-
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap-datetimepicker.min.css' %}">
-
-    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
-
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        @media screen and (min-width: 766px) {
+            .tronlogo {
+                display: none;
+            }
+        }
+    </style>
+    <link href="{% static 'catalog/view/theme/custom/stylesheet/stylesheet.css' %}" rel="stylesheet" />
+    <link href="{% static 'catalog/view/javascript/jquery/swiper/css/swiper.min.css' %}" type="text/css"
+        rel="stylesheet" media="screen" />
+    <link href="{% static 'catalog/view/javascript/jquery/swiper/css/opencart.css' %}" type="text/css" rel="stylesheet"
+        media="screen" />
+    <script src="{% static 'catalog/view/javascript/jquery/swiper/js/swiper.jquery.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/jquery.cookie.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/countdown.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/common.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/jquery-ui.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'catalog/view/theme/custom/stylesheet/custom/jquery-ui.min.css' %}" />
+    <script src="{% static 'catalog/view/javascript/custom/custom.js' %}"></script>
+    <link href="{% static 'images/tronpclogo.png' %}" rel="icon" />
+    <script>
+        (function () {
+            window.onpageshow = function (event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            };
+        })();
+    </script>
 </head>
-<style>
-    body {
-        background: #eee
-    }
-
-    z .ratings i {
-        font-size: 16px;
-        color: red
-    }
-
-    .strike-text {
-        color: red;
-        text-decoration: line-through
-    }
-
-    .product-image {
-        width: 100%
-    }
-
-    .dot {
-        height: 7px;
-        width: 7px;
-        margin-left: 6px;
-        margin-right: 6px;
-        margin-top: 3px;
-        background-color: blue;
-        border-radius: 50%;
-        display: inline-block
-    }
-
-    .spec-1 {
-        color: #938787;
-        font-size: 15px
-    }
-
-    h5 {
-        font-weight: 400
-    }
-
-    .para {
-        font-size: 16px
-    }
-
-    .modal-dialog {
-        max-width: 700px;
-        max-height: 100px;
-    }
-
-    .modal-content {
-        width: 100%;
-        height: 100%;
-    }
-
-    .containerz {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .fixed-size {
-        width: 100%;
-    }
-
-    @media screen and (max-width: 600px) {
-        .fixed-size {
-            width: 100%;
-        }
-    }
-
-    /* image slider style */
-    html {
-        box-sizing: border-box;
-        height: 100%;
-    }
-
-    *,
-    *::before,
-    *::after {
-        box-sizing: inherit;
-        margin: 0;
-        padding: 0;
-    }
-
-    .containerss {
-        display: flex;
-        justify-content: center;
-    }
-
-    .thumbnails {
-        display: flex;
-        flex-direction: column;
-        line-height: 0;
-    }
-
-    .thumbnails li {
-        flex: auto;
-    }
-
-    .thumbnails a {
-        display: block;
-    }
-
-    .thumbnails img {
-        width: 18vmin;
-        height: 10vmin;
-        object-fit: cover;
-        object-position: top;
-    }
 
 
-    .slides {
-        overflow: hidden;
-        width: 50vmin;
-        height: 10vmin;
-    }
-
-    .slides li {
-        width: 30vmin;
-        height: 10vmin;
-        position: absolute;
-        z-index: 1;
-    }
-
-    .slides img {
-        height: 50vmin;
-        object-fit: cover;
-        object-position: top;
-    }
+<link href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" type="text/css" rel="stylesheet"
+    media="screen" />
+<link href="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css' %}"
+    type="text/css" rel="stylesheet" media="screen" />
+<script src="{% static 'catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js' %}"></script>
+<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
 
 
-    .slides li:target {
-        z-index: 3;
-        -webkit-animation: slide 1s 1;
-    }
+<body class="common-home">
+    <div class="loader"></div>
+    <div class="top-header">
+        <nav id="top"></nav>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="header-top">
+                        <div class="customer-support col-md-4 hidden-xs">
 
-    .slides li:not(:target) {
-        -webkit-animation: hidden 1s 1;
-    }
-
-    @keyframes slide {
-        0% {
-            transform: translateY(-100%);
-        }
-
-        100% {
-            transform: translateY(0%);
-        }
-    }
-
-    @keyframes hidden {
-        0% {
-            z-index: 2;
-        }
-
-        100% {
-            z-index: 2;
-        }
-    }
-
-    /* spinners */
-    .spinner-9 {
-        width: 50px;
-        aspect-ratio: 1;
-        display: grid;
-        color: #854f1d;
-        background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
-        -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
-        border-radius: 50%;
-        animation: s9 2s infinite linear;
-    }
-
-    .spinner-9::before,
-    .spinner-9::after {
-        content: "";
-        grid-area: 1/1;
-        background:
-            linear-gradient(currentColor 0 0) center,
-            linear-gradient(currentColor 0 0) center;
-        background-size: 100% 10px, 10px 100%;
-        background-repeat: no-repeat;
-    }
-
-    .spinner-9::after {
-        transform: rotate(45deg);
-    }
-
-    .cart-item-smaller {
-        font-size: 0.8em;
-        /* Adjust the size as needed */
-    }
-
-
-    @keyframes s9 {
-        100% {
-            transform: rotate(1turn)
-        }
-    }
-</style>
-
-<div id="global-loader">
-    <div class="spinner-9"></div>
-</div>
-<div class="main-wrappers">
-    <div class="header">
-
-        {% if pro %}
-        <div class="header-left border-0 ">
-            <a href="{% url 'home' %}" class="logo">
-                <img src="{% static 'images/tronpclogo.png' %}" alt="">
-            </a>
-            <a href="{% url 'home' %}" class="logo-small">
-                <img src="{% static 'images/tronpclogo.png' %}" alt="">
-            </a>
-
-            {% for pr in pro %}
-            <span style="display: inline; font-weight: bold;">{{pr.username}}</span>
-            {% endfor %}
-
-        </div>
-        {% else %}
-        <div class="header-left border-0 ">
-            <a href="/" class="logo">
-                <img src="{% static 'images/tronpclogo.png' %}" alt="">
-            </a>
-            <a href="/" class="logo-small">
-                <img src="{% static 'images/tronpclogo.png' %}" alt="">
-            </a>
-            <!-- <span style="display: inline; font-weight: bold;">{{userid}}</span> -->
-        </div>
-        {% endif %}
-
-
-        <ul class="nav user-menu">
-            {% if pro %}
-            <li class="menulist home">
-                <a id="home" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'productsHome' %}">All Products</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'pcb' %}">Custom Built</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'contactHome' %}">Contact</a>
-            </li>
-            {% if cart_list_count %}
-            <a href="{% url 'cart' %}">
-                <div class="header_cart">
-                    <div id="cart" class="btn-group btn-block">
-                        <button type="button" class="btn btn-inverse btn-block btn-lg">
-                            <span id="cart-total">
-                                <span class="hidden-sm hidden-xs">My Cart</span><br>
-                                <span class="cart-item cart-item-smaller">
-                                    {{cart_list_count}}
-                                    <span class="hidden-sm hidden-xs">items ₹{{total_price}}</span>
-                                </span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </a>
-            {% else %}
-            <div class="header_cart">
-                <div id="cart" class="btn-group btn-block">
-                    <button type="button" data-toggle="dropdown" data-loading-text="Loading..."
-                        class="btn btn-inverse btn-block btn-lg dropdown-toggle">
-                        <span id="cart-total">
-                            <span class="hidden-sm hidden-xs">My Cart</span><br>
-                            <span class="cart-item cart-item-smaller">0
-                                <span class="hidden-sm hidden-xs">items ₹0.00</span>
-                            </span>
-                        </span>
-                    </button>
-                </div>
-            </div>
-            {% endif %}
-
-            {% elif 'Guest' in userid %}
-            <li class="menulist">
-                <a href="/">Home</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'allProducts' %}">All Products</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'pcb' %}">Custom Built</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'contact' %}">Contact</a>
-            </li>
-            {% if cart_list_count %}
-            <a href="{% url 'cart' %}">
-                <div class="header_cart">
-                    <div id="cart" class="btn-group btn-block">
-                        <button type="button" class="btn btn-inverse btn-block btn-lg">
-                            <span id="cart-total">
-                                <span class="hidden-sm hidden-xs">My Cart</span><br>
-                                <span class="cart-item cart-item-smaller">
-                                    {{cart_list_count}}
-                                    <span class="hidden-sm hidden-xs">items ₹{{total_price}}</span>
-                                </span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </a>
-            {% else %}
-            <div class="header_cart">
-                <div id="cart" class="btn-group btn-block">
-                    <button type="button" data-toggle="dropdown" data-loading-text="Loading..."
-                        class="btn btn-inverse btn-block btn-lg dropdown-toggle">
-                        <span id="cart-total">
-                            <span class="hidden-sm hidden-xs">My Cart</span><br>
-                            <span class="cart-item cart-item-smaller">0
-                                <span class="hidden-sm hidden-xs">items ₹0.00</span>
-                            </span>
-                        </span>
-                    </button>
-                </div>
-            </div>
-            {% endif %}
-
-            {% else %}
-            <li class="menulist home">
-                <a id="home" href="{% url 'index' %}">Home</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'allProducts' %}">All Products</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'pcb' %}">Custom Built</a>
-            </li>
-            <li class="menulist">
-                <a href="{% url 'contact' %}">Contact</a>
-            </li>
-            {% if cart_list_count %}
-            <a href="{% url 'cart' %}">
-                <div class="header_cart">
-                    <div id="cart" class="btn-group btn-block">
-                        <button type="button" class="btn btn-inverse btn-block btn-lg">
-                            <span id="cart-total">
-                                <span class="hidden-sm hidden-xs">My Cart</span><br>
-                                <span class="cart-item cart-item-smaller">
-                                    {{cart_list_count}}
-                                    <span class="hidden-sm hidden-xs">items ₹{{total_price}}</span>
-                                </span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </a>
-            {% else %}
-            <div class="header_cart">
-                <div id="cart" class="btn-group btn-block">
-                    <button type="button" data-toggle="dropdown" data-loading-text="Loading..."
-                        class="btn btn-inverse btn-block btn-lg dropdown-toggle">
-                        <span id="cart-total">
-                            <span class="hidden-sm hidden-xs">My Cart</span>
-                            <span class="cart-item cart-item-smaller">0
-                                <span class="hidden-sm hidden-xs">items $0.00</span>
-                            </span>
-                        </span>
-                    </button>
-                </div>
-            </div>
-            {% endif %}
-            {% endif %}
-        </ul>
-    </div>
-    <div class="page-wrapper ms-0">
-        <div class="content">
-            <div class="row">
-                <div class="col-lg-8 col-sm-12 tabs_wrapper">
-                    <div class="page-header ">
-                        <div class="page-title">
-                            <h4>PreBuilts</h4>
-                            <h6>prebuilt pc's list</h6>
-                        </div>
-                    </div>
-                    <div class="tabs_container">
-                        <div class="tab_content active">
-                            <div class="row">
-                                {% for pre in pre_built %}
-                                <div class="col-lg-3 col-sm-6 d-flex " data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal{{pre.id}}">
-                                    <div class="productset flex-fill">
-                                        <div class="productsetimg">
-                                            <img src="{{pre.product_image.url}}" alt="img">
-                                            <h6>RAM: {{pre.modal_ram}}<br>ROM: {{pre.modal_storage_rom}}<br>Graphics:
-                                                {{pre.modal_gpu}}<br>processor:
-                                                {{pre.modal_cpu}}</h6>
-                                        </div>
-                                        <div class="productsetcontent">
-                                            <h4>{{pre.modal_code}}</h4>
-                                            <h6>₹{{pre.price}}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                                {% for pre in pre_built %}
-                                <div class="modal fade" id="exampleModal{{pre.id}}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">{{pre.modal_code}}
-
-                                                </h5>
-                                                <span type="button" data-bs-dismiss="modal" aria-label="Close"
-                                                    style="font-size: 45px;font-weight: 600;">&times;</span>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="col-md-12">
-                                                    <div class="row pb-2 bg-white border rounded">
-                                                        <div class="col-md-6 mt-1">
-                                                            <div class="containerss">
-                                                                <ul class="slides">
-                                                                    <li id="{{pre.product_image}}"><img
-                                                                            src="{{pre.product_image.url}}" alt="" />
-                                                                    </li>
-                                                                    {% if pre.product_image_1 == "" %}
-                                                                    <li id="{{pre.product_image_1}}"><img src="#"
-                                                                            alt="" /></li>
-                                                                    {% else %}
-                                                                    <li id="{{pre.product_image_1}}"><img
-                                                                            src="{{pre.product_image_1.url}}" alt="" />
-                                                                    </li>
-                                                                    {% endif %}
-                                                                    {% if pre.product_image_2 == "" %}
-                                                                    <li id="{{pre.product_image_2}}"><img src="#"
-                                                                            alt="" /></li>
-                                                                    {% else %}
-                                                                    <li id="{{pre.product_image_2}}"><img
-                                                                            src="{{pre.product_image_2.url}}" alt="" />
-                                                                    </li>
-                                                                    {% endif %}
-                                                                    {% if pre.product_image_3 == "" %}
-                                                                    <li id="{{pre.product_image_3}}"><img src="#"
-                                                                            alt="" /></li>
-                                                                    {% else %}
-                                                                    <li id="{{pre.product_image_3}}"><img
-                                                                            src="{{pre.product_image_3.url}}" alt="" />
-                                                                    </li>
-                                                                    {% endif %}
-                                                                    {% if pre.product_image_4 == "" %}
-                                                                    <li id="{{pre.product_image_4}}"><img src="#"
-                                                                            alt="" /></li>
-                                                                    {% else %}
-                                                                    <li id="{{pre.product_image_4}}"><img
-                                                                            src="{{pre.product_image_4.url}}" alt="" />
-                                                                    </li>
-                                                                    {% endif %}
-                                                                </ul>
-
-                                                                <ul class="thumbnails">
-                                                                    <li>
-                                                                        <a href="#{{pre.product_image}}"><img
-                                                                                src="{{pre.product_image.url}}" /></a>
-                                                                    </li>
-                                                                    {% if pre.product_image_1 == "" %}
-                                                                    <li>
-                                                                        <a href="#"><img src="#" /></a>
-                                                                    </li>
-
-                                                                    {% else %}
-                                                                    <li>
-                                                                        <a href="#{{pre.product_image_1}}"><img
-                                                                                src="{{pre.product_image_1.url}}" /></a>
-                                                                    </li>
-                                                                    {% endif %}
-                                                                    {% if pre.product_image_2 == "" %}
-                                                                    <li>
-                                                                        <a href="#"><img src="#" /></a>
-                                                                    </li>
-                                                                    {% else %}
-                                                                    <li>
-                                                                        <a href="#{{pre.product_image_2}}"><img
-                                                                                src="{{pre.product_image_2.url}}" /></a>
-                                                                    </li>
-                                                                    {% endif %}
-                                                                    {% if pre.product_image_3 == "" %}
-                                                                    <li>
-                                                                        <a href="#"><img src="#" /></a>
-                                                                    </li>
-                                                                    {% else %}
-                                                                    <li>
-                                                                        <a href="#{{pre.product_image_3}}"><img
-                                                                                src="{{pre.product_image_3.url}}" /></a>
-                                                                    </li>
-                                                                    {% endif %}
-                                                                    {% if pre.product_image_4 == "" %}
-                                                                    <li>
-                                                                        <a href="#"><img src="#" /></a>
-                                                                    </li>
-                                                                    {% else %}
-                                                                    <li>
-                                                                        <a href="#{{pre.product_image_4}}"><img
-                                                                                src="{{pre.product_image_4.url}}" /></a>
-                                                                    </li>
-                                                                    {% endif %}
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 mt-1">
-                                                            <div class="container">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        <h4>{{pre.modal_name}}</h4>
-                                                                        <p>{{pre.modal_offer}}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="containerz pt-2">
-                                                                <table class="table border fixed-size">
-                                                                    <tr>
-                                                                        <th class="py-2">Display:</th>
-                                                                        <td class="py-2">13.3</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th class="py-2">Processor capacity:</th>
-                                                                        <td class="py-2">2.3GHz
-                                                                            i5</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th class="py-2">Camera quality:</th>
-                                                                        <td class="py-2">720p HD
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th class="py-2">Memory</th>
-                                                                        <td class="py-2">8 GB RAM</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th class="py-2">Graphics</th>
-                                                                        <td class="py-2">Intel Iris
-                                                                            640</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th class="py-2">Graphics</th>
-                                                                        <td class="py-2">Intel Iris
-                                                                            640</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th class="py-2">Price</th>
-                                                                        <td class="py-2">
-                                                                            <h3 style="color: green;">₹{{pre.price}}
-                                                                            </h3>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <h4>Bootstrap Heading</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                                                                elit. Sed auctor interdum nisl, ut accumsan lacus
-                                                                tristique eget. Curabitur feugiat metus vitae turpis
-                                                                dignissim interdum.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a href="{% url 'addToCartPreBuilt' pre.id %}"><button type="button" class="btn btn-primary">Add to Cart</button></a>
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
+                            {% if pro %}
+                            <!-- logo left -->
+                            <div id="logo" class="col-md-4">
+                                <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}"
+                                        title="TronPC" alt="TronPC" class="img-responsive" /></a>
                             </div>
                         </div>
+                        <!-- logo middle -->
+                        <div id="logo" class="col-md-4">
+                            <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC"
+                                    alt="TronPC" class="img-responsive tronlogo" /></a>
+                        </div>
+                        {% else %}
+                        <!-- logo left -->
+                        <div id="logo" class="col-md-4">
+                            <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC" alt="TronPC"
+                                    class="img-responsive" /></a>
+                        </div>
+                    </div>
+                    <!-- logo middle -->
+                    <div id="logo" class="col-md-4">
+                        <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC" alt="TronPC"
+                                class="img-responsive tronlogo" /></a>
+                    </div>
+                    {% endif %}
+
+                    <div class="header-links col-md-4">
+                        <!-- start account -->
+
+                        {% if pro %}
+                        <div id="header_ac" class="dropdown">
+                            <a href="{% static 'images/tronpclogo.png' %}" title="My Account" class="dropdown-toggle"
+                                data-toggle="dropdown">
+                                <i class="icon-user-2"></i>
+                                <span class="account-main hidden-sm hidden-xs">
+                                    <span>My Account</span>
+
+                                    {% for pr in pro %}
+                                    <span>{{pr.username}}</span>
+                                    {% endfor %}
+
+
+
+
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right account-link-toggle">
+                                <li>
+                                    <a href="#">My Account</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}">Logout</a>
+                                </li>
+                                <li>
+                                    <a href="#">Cart</a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <div id="header_ac" class="dropdown">
+                            <a href="{% static 'images/tronpclogo.png' %}" title="My Account" class="dropdown-toggle"
+                                data-toggle="dropdown">
+                                <i class="icon-user-2"></i>
+                                <span class="account-main hidden-sm hidden-xs">
+                                    <span>My Account</span>
+                                    {% if 'Guest' in userid %}
+                                    <!-- <span style="color: #fff;">{{userid}}</span><br> -->
+                                    {% endif %}
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right account-link-toggle">
+                                <li>
+                                    <a href="{% url 'register' %}">Register</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'login' %}">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+
+
+                        <!-- start cart -->
+
+                        {% if cart_list_count %}
+                        <a href="{% url 'cart' %}">
+                            <div class="header_cart">
+                                <div id="cart" class="btn-group btn-block">
+                                    <button type="button" class="btn btn-inverse btn-block btn-lg">
+
+                                        <span id="cart-total"><span class="hidden-sm hidden-xs">My Cart</span>
+                                            <span class="cart-item">
+                                                {{cart_list_count}}
+                                                <span class="hidden-sm hidden-xs">
+                                                    items ₹{{total_price}}</span></span></span>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </a>
+                        {% else %}
+
+                        <div class="header_cart">
+                            <div id="cart" class="btn-group btn-block">
+                                <button type="button" data-toggle="dropdown" data-loading-text="Loading..."
+                                    class="btn btn-inverse btn-block btn-lg dropdown-toggle">
+                                    <span id="cart-total"><span class="hidden-sm hidden-xs">My Cart</span>
+                                        <span class="cart-item">0<span class="hidden-sm hidden-xs">
+                                                items ₹0.00</span></span></span>
+                                </button>
+                                <ul class="dropdown-menu header-cart-toggle pull-right">
+                                    <li>
+                                        <p class="text-center product-cart-empty">
+                                            Your shopping cart is empty!
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="header-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="header-left col-lg-3 col-md-3 hidden-sm hidden-xs">
+                    <div class="menu-list">
+                        <div class="box-categories"><span>All Categories</span></div>
+                    </div>
+                </div>
+                <div class="header-center col-md-6 col-xs-3">
+                    <!-- start menu -->
+                    <nav id="menu" class="navbar navbar_menu">
+                        <div class="navbar-header">
+                            <button type="button" class="btn btn-navbar navbar-toggle" id="btnMenuBar">
+                                <span class="addcart-icon"></span>
+                            </button>
+                        </div>
+                        <div id="topCategoryList" class="main-menu menu-navbar clearfix" data-more="More">
+                            <div class="menu-close hidden-lg hidden-md">
+                                <span id="category" class="">Menu</span><i class="icon-close"></i>
+                            </div>
+                            <ul class="nav navbar-nav">
+
+                                {% if pro %}
+                                <li class="menulist home">
+                                    <a id="home" href="{% url 'home' %}">Home</a>
+                                </li>
+                                <li class="menulist">
+                                    <a href="{% url 'productsHome' %}">All Products</a>
+                                </li>
+                                <!-- <li class="menulist">
+                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                </li> -->
+                                <li class="menulist">
+                                    <a href="{% url 'pcb' %}">Custom Built</a>
+                                </li>
+                                <li class="menulist">
+                                    <a href="{% url 'contactHome' %}">Contact</a>
+                                </li>
+
+                                {% elif 'Guest' in userid %}
+                                <li class="menulist home">
+                                    <a id="home" href="/">Home</a>
+                                </li>
+                                <li class="menulist">
+                                    <a href="{% url 'allProducts' %}">All Products</a>
+                                </li>
+                                <!-- <li class="menulist">
+                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                </li> -->
+                                <li class="menulist">
+                                    <a href="{% url 'pcb' %}">Custom Built</a>
+                                </li>
+                                <li class="menulist">
+                                    <a href="{% url 'contact' %}">Contact</a>
+                                </li>
+                                {% else %}
+                                <li class="menulist home">
+                                    <a id="home" href="{% url 'index' %}">Home</a>
+                                </li>
+                                <li class="menulist">
+                                    <a href="{% url 'allProducts' %}">All Products</a>
+                                </li>
+                                <!-- <li class="menulist">
+                  <a href="{% url 'preBuiltHome' %}">Prebuilts</a>
+                </li> -->
+                                <li class="menulist">
+                                    <a href="{% url 'pcb' %}">Custom Built</a>
+                                </li>
+                                <li class="menulist">
+                                    <a href="{% url 'contact' %}">Contact</a>
+                                </li>
+                                {% endif %}
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="header-right col-md-3 col-xs-9">
+                    <!-- start search -->
+                    <div class="btn_search">
+                        <div class="header-search">
+                            <div id="customSearch" class="input-group custom-search">
+                                <input type="text" name="search" value="" placeholder="Search here..."
+                                    class="form-control input-lg ui-autocomplete-input" />
+                                <span class="btn-search input-group-btn">
+                                    <button type="button" class="btn btn-default btn-lg">
+                                        <i class="search-icon icon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <script type="text/javascript">
+                                $("#customSearch .btn-search button").bind(
+                                    "click",
+                                    function () {
+                                        url = "#";
+
+                                        var search = $(
+                                            "#customSearch input[name='search']"
+                                        ).prop("value");
+                                        if (search) {
+                                            url += "&search=" + encodeURIComponent(search);
+                                        }
+
+                                        var category_id = $(
+                                            "#customSearch select[name='category_id']"
+                                        ).prop("value");
+                                        if (category_id > 0) {
+                                            url +=
+                                                "&category_id=" + encodeURIComponent(category_id);
+                                            // url += '&sub_category=true';
+                                            // url += '&description=true';
+                                        }
+
+                                        location = url;
+                                    }
+                                );
+
+                                $("#customSearch input[name='search']").bind(
+                                    "keydown",
+                                    function (e) {
+                                        if (e.keyCode == 13) {
+                                            $("#customSearch .btn-search button").trigger(
+                                                "click"
+                                            );
+                                        }
+                                    }
+                                );
+                            </script>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    </header>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var headerfixed = 0;
+            if (headerfixed == 1) {
+                $(window).scroll(function () {
+                    if ($(window).width() > 991) {
+                        if ($(this).scrollTop() > 150) {
+                            $(".header-bottom").addClass("header-fixed");
+                        } else {
+                            $(".header-bottom").removeClass("header-fixed");
+                        }
+                    } else {
+                        $(".header-bottom").removeClass("header-fixed");
+                    }
+                });
+            } else {
+                $(".header-bottom").removeClass("header-fixed");
+            }
+        });
+    </script>
+    <div class="container">
+        <div class="row">
+            <aside id="column-left" class="col-sm-3 hidden-xs">
+                <div class="main-category left-column-main-category hidden-sm hidden-xs" style="display: none;">
+                    <div class="vertical-category-wrapper navbar-collapse navbar-ex2-collapse">
+                        <div class="vertical-category" data-more="More&nbsp;Categories"
+                            data-less="Less&nbsp;Categories">
+                            <ul class="category-list nav navbar-nav">
+                                {% for cat in category %}
+                                <li class="menu-item">
+                                    <a href="{% url 'categoryFilter' cat.id %}">
+                                        <span class="category-img hidden-sm hidden-xs"><img
+                                                src="{{cat.category_image.url}}" alt="img"
+                                                style="width: 30px; height: 30px;" /></span>
+                                        {{cat.category_name}}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% block body %}
 
-<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
-
-<script src="{% static 'assets/js/feather.min.js' %}"></script>
-
-<script src="{% static 'assets/js/jquery.slimscroll.min.js' %}"></script>
-
-<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
-
-<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'assets/js/dataTables.bootstrap4.min.js' %}"></script>
-
-<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
-
-<script src="{% static 'assets/plugins/owlcarousel/owl.carousel.min.js' %}"></script>
-
-<script src="{% static 'assets/plugins/sweetalert/sweetalert2.all.min.js' %}"></script>
-<script src="{% static 'assets/plugins/sweetalert/sweetalerts.min.js' %}"></script>
-
-<script src="{% static 'assets/js/script.js' %}"></script>
+                {% endblock %}
+                <footer
+                    style="background-color: black; color: white; position: fixed; left: 0; bottom: 0; width: 100%; padding: 10px; text-align: left;">
+                    <div>
+                        <p style="color: white;">
+                            All rights reserved &copy; 2023
+                        </p>
+                    </div>
+                </footer>
+                <!-- top scroll -->
+                <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i
+                        class="fa fa-caret-up"></i></a>
+            </aside>
+        </div>
+    </div>
 </body>
 
 </html>
