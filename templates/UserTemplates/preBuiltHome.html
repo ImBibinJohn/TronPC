@@ -31,6 +31,31 @@
 
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link href="{% static 'catalog/view/theme/custom/stylesheet/stylesheet.css' %}" rel="stylesheet" />
+    <link href="{% static 'catalog/view/javascript/jquery/swiper/css/swiper.min.css' %}" type="text/css"
+        rel="stylesheet" media="screen" />
+    <link href="{% static 'catalog/view/javascript/jquery/swiper/css/opencart.css' %}" type="text/css" rel="stylesheet"
+        media="screen" />
+    <script src="{% static 'catalog/view/javascript/jquery/swiper/js/swiper.jquery.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/jquery.cookie.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/countdown.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/common.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/custom/jquery-ui.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'catalog/view/theme/custom/stylesheet/custom/jquery-ui.min.css' %}" />
+    <script src="{% static 'catalog/view/javascript/custom/custom.js' %}"></script>
+    <link href="{% static 'images/tronpclogo.png' %}" rel="icon" />
+
+    <link href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" type="text/css"
+        rel="stylesheet" media="screen" />
+    <link href="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css' %}"
+        type="text/css" rel="stylesheet" media="screen" />
+    <script src="{% static 'catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js' %}"></script>
+    <script
+        src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js' %}"></script>
+    <script src="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
+
     <style>
         :root {
             --primary-color: #111111;
@@ -249,20 +274,8 @@
             }
         }
     </style>
-    <link href="{% static 'catalog/view/theme/custom/stylesheet/stylesheet.css' %}" rel="stylesheet" />
-    <link href="{% static 'catalog/view/javascript/jquery/swiper/css/swiper.min.css' %}" type="text/css"
-        rel="stylesheet" media="screen" />
-    <link href="{% static 'catalog/view/javascript/jquery/swiper/css/opencart.css' %}" type="text/css" rel="stylesheet"
-        media="screen" />
-    <script src="{% static 'catalog/view/javascript/jquery/swiper/js/swiper.jquery.js' %}"></script>
-    <script src="{% static 'catalog/view/javascript/custom/jquery.cookie.js' %}"></script>
-    <script src="{% static 'catalog/view/javascript/custom/countdown.js' %}"></script>
-    <script src="{% static 'catalog/view/javascript/common.js' %}"></script>
-    <script src="{% static 'catalog/view/javascript/custom/jquery-ui.min.js' %}"></script>
-    <link rel="stylesheet" type="text/css"
-        href="{% static 'catalog/view/theme/custom/stylesheet/custom/jquery-ui.min.css' %}" />
-    <script src="{% static 'catalog/view/javascript/custom/custom.js' %}"></script>
-    <link href="{% static 'images/tronpclogo.png' %}" rel="icon" />
+
+
     <script>
         (function () {
             window.onpageshow = function (event) {
@@ -273,17 +286,6 @@
         })();
     </script>
 </head>
-
-
-<link href="{% static 'catalog/view/javascript/jquery/magnific/magnific-popup.css' %}" type="text/css" rel="stylesheet"
-    media="screen" />
-<link href="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css' %}"
-    type="text/css" rel="stylesheet" media="screen" />
-<script src="{% static 'catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
-<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js' %}"></script>
-<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js' %}"></script>
-<script src="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
-
 
 <body class="common-home">
     <div class="loader"></div>
@@ -500,7 +502,6 @@
                             </ul>
                         </div>
                     </nav>
-
                 </div>
                 <div class="header-right col-md-3 col-xs-9">
                     <!-- start search -->
@@ -669,24 +670,83 @@
                         </div>
                     </div>
                 </div>
-
-                {% block body %}
-
-                {% endblock %}
-                <footer
-                    style="background-color: black; color: white; position: fixed; left: 0; bottom: 0; width: 100%; padding: 10px; text-align: left;">
-                    <div>
-                        <p style="color: white;">
-                            All rights reserved &copy; 2023
-                        </p>
-                    </div>
-                </footer>
-                <!-- top scroll -->
-                <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i
-                        class="fa fa-caret-up"></i></a>
             </aside>
-        </div>
-    </div>
+
+            {% block body %}
+            <div id="content" class="col-sm-9">
+                <div class="cat_info">
+                    <div class="row">
+                        <div class="col-sm-5" style="top: 10px;">
+                            <center>
+                                {% if category_name %}
+                                <h1 class="page_title">{{category_name}} List</h1>
+                                {% else %}
+                                <h1 class="page_title">PreBuilts</h1>
+                                {% endif %}
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <div class="row category-row">
+                    <div class="col-md-4 product-layout product-list">
+                        <div class="product-thumb transition clearfix">
+                            <div class="button-group">
+                                <button type="button" data-toggle="tooltip" class="quickview-button" title="Quickview"
+                                    onclick="quickView.ajaxView('?route=product/quickview&product_id=33');"><i
+                                        class="icon-eye-o"></i></button>
+                            </div>
+                            <div class="product-thumb">
+                                <div class="image">
+                                    <a href="#">
+                                        <img src="https://opencart.mahardhi.com/MT05/ecart/02/image/cache/catalog/products/7-258x258.jpg"
+                                            alt="image" title="image" class="img-responsive"
+                                            style="padding: 5px; width: 290px; height: 250px;" />
+                                    </a>
+                                    <div class="sale-text">
+                                        <span class="section-sale">On Sale!</span>
+                                    </div>
+                                </div>
+
+                                <div class="thumb-description clearfix">
+                                    <div class="caption">
+                                        <h4 class="product-title">
+                                            <a href=""><strong>product.product_name</strong></a>
+                                        </h4>
+                                        <p class="price">
+                                            <span class="price-new">₹ product.price</span>
+                                        </p>
+                                        <p class="price">
+                                            <span class="price-new">product.description</span>
+                                        </p><br>
+                                        <div class="btn-all"
+                                            style="display: flex; justify-content: center; align-items: center;">
+                                            <a href=""
+                                                style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                                                onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                                                onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
+                                                ADD TO CART
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+            <br><br>
+            <footer
+                style="background-color: black; color: white; position: fixed; left: 0; bottom: 0; width: 100%; padding: 10px; text-align: left;">
+                <div>
+                    <p style="color: white;">
+                        All rights reserved &copy; 2023
+                    </p>
+                </div>
+            </footer>
+            <!-- top scroll -->
+            <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i
+                    class="fa fa-caret-up"></i></a>
 </body>
 
 </html>
