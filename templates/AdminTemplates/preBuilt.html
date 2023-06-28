@@ -38,7 +38,7 @@
                 style="color: green;">Added</span></h3>
         {% endif %}
         <div class="card">
-            <form method="POST" action="{% url 'addpreBuiltForm' %}" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'addPreBuiltForm' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="card-body">
                     <div class="row">

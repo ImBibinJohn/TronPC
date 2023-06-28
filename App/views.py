@@ -1591,7 +1591,7 @@ def addCategory(request):
     else:
         return redirect('/')
 
-def addcategory_form(request):
+def addCategoryForm(request):
     if 'adminid' in request.session:
         if request.session.has_key('adminid'):
             adminid= request.session['adminid']
@@ -1877,7 +1877,7 @@ def msg_banner(request):
     else:
         return redirect('/')
 
-def add_carousal_form(request):
+def addCarousalForm(request):
     if 'adminid' in request.session:
         if request.session.has_key('adminid'):
             adminid = request.session['adminid']
@@ -2490,7 +2490,7 @@ def viewpreBuilt(request):
     else:
         return redirect('/')
 
-def addpreBuiltForm(request):
+def addPreBuiltForm(request):
     if 'adminid' in request.session:
         if request.session.has_key('adminid'):
             adminid= request.session['adminid']

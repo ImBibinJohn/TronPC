@@ -56,286 +56,7 @@
         src="{% static 'catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js' %}"></script>
     <script src="{% static 'catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
 
-    <style>
-        :root {
-            --primary-color: #111111;
-            --primary-hover-color: #ffffff;
-            --secondary-color: #16202c;
-            --secondary-hover-color: #4d94ff;
-            --secondary-light-color: #777777;
-            --background-color: #f7f7f7;
-            --border-color: #e5e5e5
-        }
 
-        body {
-            background: white;
-        }
-
-        .product-layout .section-sale-ico {
-            display: none;
-        }
-
-        .product-layout:hover .section-sale-ico {
-            display: block;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            color: #888;
-            cursor: pointer;
-        }
-
-        .hover-window {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            display: none;
-            width: 90%;
-            max-width: 600px;
-            /* Customize the max-width as desired */
-            height: auto;
-            /* Customize the height as desired */
-        }
-
-        .additional-info {
-            margin-top: 20px;
-            font-size: 16px;
-        }
-
-        .additional-info p {
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 767px) {
-            .col-sm-5 {
-                top: 0;
-            }
-
-            .product-layout {
-                margin-bottom: 20px;
-            }
-
-            .img-responsive {
-                width: 100%;
-                height: auto;
-            }
-
-            .hover-window {
-                width: 90%;
-            }
-        }
-
-        .menulist {
-            display: inline-block;
-            margin-right: 15px;
-            /* Adjust the spacing between menu items */
-            vertical-align: 2em;
-
-        }
-
-        .menulist a {
-            color: white;
-            font-size: 16px;
-            /* Adjust the font size as desired */
-            text-transform: none;
-        }
-
-        .product-image {
-            width: 100%
-        }
-
-        .dot {
-            height: 7px;
-            width: 7px;
-            margin-left: 6px;
-            margin-right: 6px;
-            margin-top: 3px;
-            background-color: blue;
-            border-radius: 50%;
-            display: inline-block
-        }
-
-        .spec-1 {
-            color: #938787;
-            font-size: 15px
-        }
-
-        h5 {
-            font-weight: 400
-        }
-
-        .para {
-            font-size: 16px
-        }
-
-        .modal-dialog {
-            max-width: 700px;
-            max-height: 100px;
-        }
-
-        .modal-content {
-            width: 100%;
-            height: 100%;
-        }
-
-        .containerz {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .fixed-size {
-            width: 100%;
-        }
-
-        @media screen and (max-width: 600px) {
-            .fixed-size {
-                width: 100%;
-            }
-        }
-
-        /* image slider style */
-        html {
-            box-sizing: border-box;
-            height: 100%;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: inherit;
-            margin: 0;
-            padding: 0;
-        }
-
-        .containerss {
-            display: flex;
-            justify-content: center;
-        }
-
-        .thumbnails {
-            display: flex;
-            flex-direction: column;
-            line-height: 0;
-        }
-
-        .thumbnails li {
-            flex: auto;
-        }
-
-        .thumbnails a {
-            display: block;
-        }
-
-        .thumbnails img {
-            width: 18vmin;
-            height: 10vmin;
-            object-fit: cover;
-            object-position: top;
-        }
-
-
-        .slides {
-            overflow: hidden;
-            width: 50vmin;
-            height: 10vmin;
-        }
-
-        .slides li {
-            width: 30vmin;
-            height: 10vmin;
-            position: absolute;
-            z-index: 1;
-        }
-
-        .slides img {
-            height: 50vmin;
-            object-fit: cover;
-            object-position: top;
-        }
-
-
-        .slides li:target {
-            z-index: 3;
-            -webkit-animation: slide 1s 1;
-        }
-
-        .slides li:not(:target) {
-            -webkit-animation: hidden 1s 1;
-        }
-
-        @keyframes slide {
-            0% {
-                transform: translateY(-100%);
-            }
-
-            100% {
-                transform: translateY(0%);
-            }
-        }
-
-        @keyframes hidden {
-            0% {
-                z-index: 2;
-            }
-
-            100% {
-                z-index: 2;
-            }
-        }
-
-        /* spinners */
-        .spinner-9 {
-            width: 50px;
-            aspect-ratio: 1;
-            display: grid;
-            color: #854f1d;
-            background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
-            -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
-            border-radius: 50%;
-            animation: s9 2s infinite linear;
-        }
-
-        .spinner-9::before,
-        .spinner-9::after {
-            content: "";
-            grid-area: 1/1;
-            background:
-                linear-gradient(currentColor 0 0) center,
-                linear-gradient(currentColor 0 0) center;
-            background-size: 100% 10px, 10px 100%;
-            background-repeat: no-repeat;
-        }
-
-        .spinner-9::after {
-            transform: rotate(45deg);
-        }
-
-        .cart-item-smaller {
-            font-size: 0.8em;
-            /* Adjust the size as needed */
-        }
-
-
-        @keyframes s9 {
-            100% {
-                transform: rotate(1turn)
-            }
-        }
-
-        @media screen and (min-width: 766px) {
-            .tronlogo {
-                display: none;
-            }
-        }
-    </style>
 
 
     <script>
@@ -348,6 +69,238 @@
         })();
     </script>
 </head>
+
+<style>
+    :root {
+        --primary-color: #111111;
+        --primary-hover-color: #ffffff;
+        --secondary-color: #16202c;
+        --secondary-hover-color: #4d94ff;
+        --secondary-light-color: #777777;
+        --background-color: #f7f7f7;
+        --border-color: #e5e5e5
+    }
+
+    body {
+        background: white;
+    }
+
+    .prestyle {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        position: relative;
+
+    }
+
+    .hover-text {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 12px;
+        background-color: lightgray;
+        padding: 2px;
+        border-radius: 3px;
+        visibility: hidden;
+    }
+
+    .prestyle:hover .hover-text {
+        visibility: visible;
+    }
+
+
+    /* CSS */
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .popup-content {
+        background-color: #fff;
+        max-width: 600px;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+    }
+
+    @media (max-width: 767px) {
+        .popup-content {
+            width: 90%;
+            padding: 10px;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+        .popup-content {
+            width: 70%;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .popup-content {
+            width: 50%;
+        }
+    }
+
+
+    .popup-content h3 {
+        margin-top: 0;
+    }
+
+    .popup-content p {
+        margin-bottom: 10px;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+
+    .product-layout .section-sale-ico {
+        display: none;
+    }
+
+    .product-layout:hover .section-sale-ico {
+        display: block;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        color: #888;
+        cursor: pointer;
+    }
+
+    .hover-window {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        width: 90%;
+        max-width: 600px;
+        /* Customize the max-width as desired */
+        height: auto;
+        /* Customize the height as desired */
+    }
+
+    .additional-info {
+        margin-top: 20px;
+        font-size: 16px;
+    }
+
+    .additional-info p {
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 767px) {
+        .col-sm-5 {
+            top: 0;
+        }
+
+        .product-layout {
+            margin-bottom: 20px;
+        }
+
+        .img-responsive {
+            width: 100%;
+            height: auto;
+        }
+
+        .hover-window {
+            width: 90%;
+        }
+    }
+
+    .menulist {
+        display: inline-block;
+        margin-right: 15px;
+        /* Adjust the spacing between menu items */
+        vertical-align: 2em;
+
+    }
+
+    .menulist a {
+        color: white;
+        font-size: 16px;
+        /* Adjust the font size as desired */
+        text-transform: none;
+    }
+
+    .product-image {
+        width: 100%
+    }
+
+    /* spinners */
+    .spinner-9 {
+        width: 50px;
+        aspect-ratio: 1;
+        display: grid;
+        color: #854f1d;
+        background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
+        mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
+        border-radius: 50%;
+        animation: s9 2s infinite linear;
+    }
+
+
+    .spinner-9::before,
+    .spinner-9::after {
+        content: "";
+        grid-area: 1/1;
+        background:
+            linear-gradient(currentColor 0 0) center,
+            linear-gradient(currentColor 0 0) center;
+        background-size: 100% 10px, 10px 100%;
+        background-repeat: no-repeat;
+    }
+
+    .spinner-9::after {
+        transform: rotate(45deg);
+    }
+
+    .cart-item-smaller {
+        font-size: 0.8em;
+        /* Adjust the size as needed */
+    }
+
+
+    @keyframes s9 {
+        100% {
+            transform: rotate(1turn)
+        }
+    }
+
+    @media screen and (min-width: 766px) {
+        .tronlogo {
+            display: none;
+        }
+    }
+</style>
 
 <body class="common-home">
     <div class="loader"></div>
@@ -733,168 +686,147 @@
                     </div>
                 </div>
             </aside>
-
             {% block body %}
             <div id="content" class="col-sm-9">
                 <div class="cat_info">
                     <div class="row">
-                        <div class="col-sm-5">
-                            <center>
-                                {% if category_name %}
-                                <h1 class="page_title">{{category_name}} List</h1>
-                                {% else %}
-                                <h1 class="page_title">PreBuilts</h1>
-                                {% endif %}
-                            </center>
+                        <div class="col-sm-12">
+                            <h1 style="text-align: center;">PreBuilts</h1>
                         </div>
                     </div>
                 </div>
                 <div class="row category-row">
-                    <div class="col-md-4 product-layout product-list">
-                        <div class="transition clearfix" id="hover_button">
-                            <div class="product-thumb">
-                                <div class="image">
-                                    <span class="section-sale-ico" type="button" data-toggle="tooltip"
-                                        class="quickview-button"><i class="icon-eye-o"></i></span><br>
-                                    <a href="#">
-                                        <img src="https://opencart.mahardhi.com/MT05/ecart/02/image/cache/catalog/products/7-258x258.jpg"
-                                            alt="image" title="image" class="img-responsive"
-                                            style="padding: 5%; width: 90%; height: auto;" />
-                                    </a>
-                                    <div class="sale-text">
-                                        <span class="section-sale">On Sale!</span><br>
-                                        <span class="section-sale">On Sale!</span><br>
-                                        <span class="section-sale">On Sale!</span><br>
-                                    </div>
+                    {% for pre in pre_built %}
+                    <div class="col-md-4 mt-4 col-sm-6 view-details-button" data-modal="{{pre.modal_name}}"
+                        data-image="{{pre.product_image.url}}" data-price="{{pre.price}}">
+                        <div class="prestyle">
+                            <div class="hover-text">Click to view more</div>
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="{{pre.product_image.url}}" alt="Product Image"
+                                        style="width: 250px; height: 300px; object-fit: cover; padding: 10px 5px 10px 10px;">
                                 </div>
 
-                                <div class="thumb-description clearfix">
-                                    <div class="caption">
-                                        <h4 class="product-title">
-                                            <a href="#"><strong>Product Name</strong></a>
-                                        </h4>
-                                        <p class="price">
-                                            <span class="price-new">₹ 99.99</span>
-                                        </p>
-                                        <p class="price">
-                                            <span class="price-new">Product Description</span>
-                                        </p><br>
-                                        <div class="btn-all"
-                                            style="display: flex; justify-content: center; align-items: center;">
-                                            <a href=""
-                                                style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
-                                                onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                                                onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
-                                                ADD TO CART
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="product-detail" id="productDetail{{forloop.counter}}"
+                                    style="margin-left: 10px;">
+                                    <h2><strong style="padding-right: 2px;">{{pre.modal_name}}</strong></h2>
+                                    <h5 style="padding-top: 2px;">{{pre.modal_ram}}&nbsp;RAM&nbsp; |
+                                        {{pre.modal_ssd}}&nbsp;SSD</h5>
+                                    <h5 style="padding-top: 5px;">Price</h5>
+                                    <h3 style="color: green;">₹{{pre.price}}</h3>
+                                    <h4 style="padding-top: 7px;">Description</h4>
+                                    <h5 style="color: lightslategrey;" id="description{{forloop.counter}}">
+                                        {{pre.description}}</h5>
+                                    <br>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="hover_window" class="hover-window">
-                    <div class="close-button" id="close_button">&times;</div>
-                    <div class="product-layout product-list">
-                        <div class="product-thumb transition clearfix">
-                            <div class="product-thumb">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="https://opencart.mahardhi.com/MT05/ecart/02/image/cache/catalog/products/7-258x258.jpg"
-                                            alt="image" title="image" class="img-responsive"
-                                            style="padding: 5%; width: 90%; height: auto;" />
-                                    </a>
-                                </div>
-                                <div class="thumb-description clearfix">
-                                    <div class="caption">
-                                        <h4 class="product-title">
-                                            <a href="#"><strong>Product Name</strong></a>
-                                        </h4>
-                                        <p class="price">
-                                            <span class="price-new">₹ 99.99</span>
-                                        </p>
-                                        <p class="price">
-                                            <span class="price-new">Product Description</span>
-                                        </p><br>
-                                        <div class="btn-all"
-                                            style="display: flex; justify-content: center; align-items: center;">
-                                            <a href=""
-                                                style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
-                                                onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                                                onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
-                                                ADD TO CART
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="image">
-                                <a href="#">
-                                    <img src="https://opencart.mahardhi.com/MT05/ecart/02/image/cache/catalog/products/7-258x258.jpg"
-                                        alt="image" title="image" class="img-responsive"
-                                        style="padding: 5%; width: 100px; height: 100px;" />
-                                </a>
-                            </div>
+
+                    <script>
+                        window.addEventListener('DOMContentLoaded', function () {
+                            var description = document.getElementById('description{{forloop.counter}}');
+                            var productDetail = document.getElementById('productDetail{{forloop.counter}}');
+                            var showMoreLink = document.createElement('a');
+                            showMoreLink.href = '#';
+                            showMoreLink.textContent = '';
+                            showMoreLink.style.display = 'none';
+                            productDetail.appendChild(showMoreLink);
+
+                            if (description.innerText.split(' ').length > 50) {
+                                productDetail.style.overflowY = 'scroll';
+                                productDetail.style.maxHeight = '155px'; // Set the desired maximum height
+                                showMoreLink.style.display = 'block';
+                            } else {
+                                showMoreLink.style.display = 'none';
+                            }
+
+                            showMoreLink.addEventListener('click', function (event) {
+                                event.preventDefault();
+                                if (productDetail.style.maxHeight === '155px') {
+                                    productDetail.style.maxHeight = 'none';
+                                    showMoreLink.textContent = '';
+                                } else {
+                                    productDetail.style.maxHeight = '155px';
+                                    showMoreLink.textContent = '';
+                                }
+                            });
+                        });
+                    </script>
+                    {% endfor %}
+
+                    <div class="popup-overlay" style="display: none;">
+                        <div class="popup-content">
+                            <button class="close-button">&times;</button>
+                            <h3>Additional Details</h3>
+                            <img src="" alt="Product Image" width="100" height="100" id="popup-image">
+                            <h4 id="popup-modal"></h4>
+                            <p id="popup-price">Price: </p>
+                            <p>RAM: 8GB</p>
+                            <p>ROM: 128GB</p>
+                            <button class="add-to-cart-button">Add to Cart</button>
+                            <button class="cancel-button">Cancel</button>
                         </div>
                     </div>
-                    <div class="additional-info">
-                        <p>Additional information:</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </div>
                 </div>
+                <br><br>
+                {% endblock %}
+                <br>
+                <footer
+                    style="background-color: black; color: white; position: fixed; left: 0; bottom: 0; width: 100%; padding: 10px; text-align: left;">
+                    <div>
+                        <p style="color: white;">
+                            All rights reserved &copy; 2023
+                        </p>
+                    </div>
+                </footer>
+                <!-- top scroll -->
+                <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i
+                        class="fa fa-caret-up"></i></a>
             </div>
-            {% endblock %}
-            <br><br>
-            <footer
-                style="background-color: black; color: white; position: fixed; left: 0; bottom: 0; width: 100%; padding: 10px; text-align: left;">
-                <div>
-                    <p style="color: white;">
-                        All rights reserved &copy; 2023
-                    </p>
-                </div>
-            </footer>
-            <!-- top scroll -->
-            <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i
-                    class="fa fa-caret-up"></i></a>
+        </div>
+        <script>
+            const popupOverlay = document.querySelector('.popup-overlay');
+            const closeButton = document.querySelector('.close-button');
+            const cancelButton = document.querySelector('.cancel-button');
+            const viewDetailsButtons = document.querySelectorAll('.view-details-button');
+            const popupImage = document.getElementById('popup-image');
+            const popupModal = document.getElementById('popup-modal');
+            const popupPrice = document.getElementById('popup-price');
 
-            <script>
-                // JavaScript/jQuery code to show/hide the "On Sale!" text on hover
-                $(document).ready(function () {
-                    var timeout;
+            // Function to open the popup
+            function openPopup() {
+                popupOverlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
 
-                    $('.product-layout').hover(
-                        function () {
-                            clearTimeout(timeout);
-                            $(this).find('.sale-text').show();
-                        },
-                        function () {
-                            var $saleText = $(this).find('.sale-text');
-                            timeout = setTimeout(function () {
-                                $saleText.hide();
-                            }, 1000);
-                        }
-                    );
+            // Function to close the popup
+            function closePopup() {
+                popupOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            // Add event listeners to view details buttons
+            viewDetailsButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const modalName = this.getAttribute('data-modal');
+                    const imageSrc = this.getAttribute('data-image');
+                    const price = this.getAttribute('data-price');
+
+                    // Set the popup details based on the selected product
+                    popupModal.textContent = modalName;
+                    popupImage.src = imageSrc;
+                    popupPrice.textContent = 'Price: ' + price;
+
+                    openPopup();
                 });
-                document.getElementById("hover_button").addEventListener("click", function () {
-                    var hoverWindow = document.getElementById("hover_window").cloneNode(true);
-                    hoverWindow.id = ""; // Remove the ID to prevent conflicts with the original hover window
-                    document.body.appendChild(hoverWindow);
+            });
 
-                    var closeButton = hoverWindow.querySelector(".close-button");
-                    closeButton.addEventListener("click", function () {
-                        var parentWindow = this.closest(".hover-window");
-                        document.body.removeChild(parentWindow);
-                        document.getElementById("hover_button").style.display = "block"; // Show the hover button
-                    });
+            // Close the popup when the close button is clicked
+            closeButton.addEventListener('click', closePopup);
+            cancelButton.addEventListener('click', closePopup);
 
-                    hoverWindow.style.display = "block";
-                    this.style.display = "none"; // Hide the hover button
-                });
-            </script>
-
-
+        </script>
 </body>
 
 </html>
