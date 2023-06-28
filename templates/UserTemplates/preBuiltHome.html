@@ -68,7 +68,69 @@
         }
 
         body {
-            background: white
+            background: white;
+        }
+
+        .product-layout .section-sale-ico {
+            display: none;
+        }
+
+        .product-layout:hover .section-sale-ico {
+            display: block;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .hover-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            width: 90%;
+            max-width: 600px;
+            /* Customize the max-width as desired */
+            height: auto;
+            /* Customize the height as desired */
+        }
+
+        .additional-info {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .additional-info p {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 767px) {
+            .col-sm-5 {
+                top: 0;
+            }
+
+            .product-layout {
+                margin-bottom: 20px;
+            }
+
+            .img-responsive {
+                width: 100%;
+                height: auto;
+            }
+
+            .hover-window {
+                width: 90%;
+            }
         }
 
         .menulist {
@@ -676,7 +738,7 @@
             <div id="content" class="col-sm-9">
                 <div class="cat_info">
                     <div class="row">
-                        <div class="col-sm-5" style="top: 10px;">
+                        <div class="col-sm-5">
                             <center>
                                 {% if category_name %}
                                 <h1 class="page_title">{{category_name}} List</h1>
@@ -689,34 +751,33 @@
                 </div>
                 <div class="row category-row">
                     <div class="col-md-4 product-layout product-list">
-                        <div class="product-thumb transition clearfix">
-                            <div class="button-group">
-                                <button type="button" data-toggle="tooltip" class="quickview-button" title="Quickview"
-                                    onclick="quickView.ajaxView('?route=product/quickview&product_id=33');"><i
-                                        class="icon-eye-o"></i></button>
-                            </div>
+                        <div class="transition clearfix" id="hover_button">
                             <div class="product-thumb">
                                 <div class="image">
+                                    <span class="section-sale-ico" type="button" data-toggle="tooltip"
+                                        class="quickview-button"><i class="icon-eye-o"></i></span><br>
                                     <a href="#">
                                         <img src="https://opencart.mahardhi.com/MT05/ecart/02/image/cache/catalog/products/7-258x258.jpg"
                                             alt="image" title="image" class="img-responsive"
-                                            style="padding: 5px; width: 290px; height: 250px;" />
+                                            style="padding: 5%; width: 90%; height: auto;" />
                                     </a>
                                     <div class="sale-text">
-                                        <span class="section-sale">On Sale!</span>
+                                        <span class="section-sale">On Sale!</span><br>
+                                        <span class="section-sale">On Sale!</span><br>
+                                        <span class="section-sale">On Sale!</span><br>
                                     </div>
                                 </div>
 
                                 <div class="thumb-description clearfix">
                                     <div class="caption">
                                         <h4 class="product-title">
-                                            <a href=""><strong>product.product_name</strong></a>
+                                            <a href="#"><strong>Product Name</strong></a>
                                         </h4>
                                         <p class="price">
-                                            <span class="price-new">₹ product.price</span>
+                                            <span class="price-new">₹ 99.99</span>
                                         </p>
                                         <p class="price">
-                                            <span class="price-new">product.description</span>
+                                            <span class="price-new">Product Description</span>
                                         </p><br>
                                         <div class="btn-all"
                                             style="display: flex; justify-content: center; align-items: center;">
@@ -733,6 +794,56 @@
                         </div>
                     </div>
                 </div>
+                <div id="hover_window" class="hover-window">
+                    <div class="close-button" id="close_button">&times;</div>
+                    <div class="product-layout product-list">
+                        <div class="product-thumb transition clearfix">
+                            <div class="product-thumb">
+                                <div class="image">
+                                    <a href="#">
+                                        <img src="https://opencart.mahardhi.com/MT05/ecart/02/image/cache/catalog/products/7-258x258.jpg"
+                                            alt="image" title="image" class="img-responsive"
+                                            style="padding: 5%; width: 90%; height: auto;" />
+                                    </a>
+                                </div>
+                                <div class="thumb-description clearfix">
+                                    <div class="caption">
+                                        <h4 class="product-title">
+                                            <a href="#"><strong>Product Name</strong></a>
+                                        </h4>
+                                        <p class="price">
+                                            <span class="price-new">₹ 99.99</span>
+                                        </p>
+                                        <p class="price">
+                                            <span class="price-new">Product Description</span>
+                                        </p><br>
+                                        <div class="btn-all"
+                                            style="display: flex; justify-content: center; align-items: center;">
+                                            <a href=""
+                                                style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                                                onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                                                onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
+                                                ADD TO CART
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="image">
+                                <a href="#">
+                                    <img src="https://opencart.mahardhi.com/MT05/ecart/02/image/cache/catalog/products/7-258x258.jpg"
+                                        alt="image" title="image" class="img-responsive"
+                                        style="padding: 5%; width: 100px; height: 100px;" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="additional-info">
+                        <p>Additional information:</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    </div>
+                </div>
             </div>
             {% endblock %}
             <br><br>
@@ -747,6 +858,43 @@
             <!-- top scroll -->
             <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i
                     class="fa fa-caret-up"></i></a>
+
+            <script>
+                // JavaScript/jQuery code to show/hide the "On Sale!" text on hover
+                $(document).ready(function () {
+                    var timeout;
+
+                    $('.product-layout').hover(
+                        function () {
+                            clearTimeout(timeout);
+                            $(this).find('.sale-text').show();
+                        },
+                        function () {
+                            var $saleText = $(this).find('.sale-text');
+                            timeout = setTimeout(function () {
+                                $saleText.hide();
+                            }, 1000);
+                        }
+                    );
+                });
+                document.getElementById("hover_button").addEventListener("click", function () {
+                    var hoverWindow = document.getElementById("hover_window").cloneNode(true);
+                    hoverWindow.id = ""; // Remove the ID to prevent conflicts with the original hover window
+                    document.body.appendChild(hoverWindow);
+
+                    var closeButton = hoverWindow.querySelector(".close-button");
+                    closeButton.addEventListener("click", function () {
+                        var parentWindow = this.closest(".hover-window");
+                        document.body.removeChild(parentWindow);
+                        document.getElementById("hover_button").style.display = "block"; // Show the hover button
+                    });
+
+                    hoverWindow.style.display = "block";
+                    this.style.display = "none"; // Hide the hover button
+                });
+            </script>
+
+
 </body>
 
 </html>
