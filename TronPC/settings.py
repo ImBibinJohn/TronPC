@@ -17,7 +17,7 @@ DEBUG = True
 
 # allowed hosts
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.tronpc.com','tronpc.com']
 
 
 
@@ -69,7 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'TronPCDB',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'tronpc@123',
         'HOST': 'localhost',
         'PORT': '3306',
     }
