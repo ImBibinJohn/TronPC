@@ -927,11 +927,11 @@ def pcb(request):
                 code_length = 3  # Customize the length of the code
                 x = datetime.datetime.now()
                 salt = x.strftime("%f")[3:].upper()
-                cus_cod = 'Cus-' + salt + \
+                cus_cod = salt + \
                     ''.join(random.choices(string.ascii_uppercase +
                             string.digits, k=code_length))
                 if CustomBuilt.objects.filter(cus_id=userid).exists():
-                    built_added_already = 'Already created a custom!you can edit it if u want'
+                    built_added_already = 'Already created a custom! Modify it if needed'
                     data = CustomBuilt.objects.filter(cus_id=userid)
                     data_get = CustomBuilt.objects.get(cus_id=userid)
                     datajson = json.loads(data_get.cus_additional)
@@ -966,7 +966,7 @@ def pcb(request):
                 code_length = 3  # Customize the length of the code
                 x = datetime.datetime.now()
                 salt = x.strftime("%f")[3:].upper()
-                cus_cod = 'Cus-' + salt + \
+                cus_cod = salt + \
                     ''.join(random.choices(string.ascii_uppercase +
                             string.digits, k=code_length))
                 if CustomBuilt.objects.filter(cus_id=userid).exists():
@@ -1785,34 +1785,39 @@ def add_sideBanners_form(request, id):
             adminid= request.session['adminid']
             if request.method == 'POST':
                 banners = Banners.objects.all()
-                if banners:
-                    if id == str(1):
-                        banner_id = request.session['banner_id']
+                if banners.exists():
+                    print('ewxist')
+                    if id == 1:
+                        print('ewxist 1')
+                        banner_id = Banners.objects.latest('id')
                         add_banner = request.FILES['add_banner']
-                        new_banner = Banners.objects.get(id=banner_id)
+                        new_banner = Banners.objects.get(id=banner_id.id)
                         new_banner.top_left_banner = add_banner
                         new_banner.save()
-                    elif id == str(2):
-                        banner_id = request.session['banner_id']
+                    elif id == 2:
+                        print('ewxist 2')
+                        banner_id = Banners.objects.latest('id')
                         add_banner = request.FILES['add_banner']
-                        new_banner = Banners.objects.get(id=banner_id)
+                        new_banner = Banners.objects.get(id=banner_id.id)
                         new_banner.top_right_banner = add_banner
                         new_banner.save()
-                    elif id == str(3):
-                        banner_id = request.session['banner_id']
+                    elif id == 3:
+                        print('ewxist 3')
+                        banner_id = Banners.objects.latest('id')
                         add_banner = request.FILES['add_banner']
-                        new_banner = Banners.objects.get(id=banner_id)
+                        new_banner = Banners.objects.get(id=banner_id.id)
                         new_banner.bottom_right_banner = add_banner
                         new_banner.save()
+                    
                     else:
                         return redirect('sideBanners')
 
                 else:
+                    print('not ewxist')
                     add_banner = request.FILES['add_banner']
                     banners = Banners(top_left_banner=add_banner,
                                     top_right_banner=add_banner, bottom_right_banner=add_banner)
                     banners.save()
-                    request.session['banner_id'] = banners.id
                     return redirect('sideBanners')
             return redirect('sideBanners')
         else:
@@ -1824,23 +1829,23 @@ def delete_sideBanners(request, id):
     if 'adminid' in request.session:
         if request.session.has_key('adminid'):
             adminid= request.session['adminid']
-            banner_id = request.session['banner_id']
-            mainpost = Banners.objects.get(id=banner_id)
-            if id == str(1):
+            banner_id = Banners.objects.latest('id')
+            mainpost = Banners.objects.get(id=banner_id.id)
+            if id == 1:
                 os.remove(mainpost.top_left_banner.path)
                 mainpost.top_left_banner.delete()
                 top_left_banner = 'top_left_banner'
                 mainpost.top_left_banner = top_left_banner
                 mainpost.save()
                 return redirect('sideBanners')
-            if id == str(2):
+            if id == 2:
                 os.remove(mainpost.top_right_banner.path)
                 mainpost.top_right_banner.delete()
                 top_right_banner = 'top_right_banner'
                 mainpost.top_right_banner = top_right_banner
                 mainpost.save()
                 return redirect('sideBanners')
-            if id == str(3):
+            if id == 3:
                 os.remove(mainpost.bottom_right_banner.path)
                 mainpost.bottom_right_banner.delete()
                 bottom_right_banner = 'bottom_right_banner'

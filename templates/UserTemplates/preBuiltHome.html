@@ -697,8 +697,8 @@
                 </div>
                 <div class="row category-row">
                     {% for pre in pre_built %}
-                    <div class="col-md-4 mt-4 col-sm-6 view-details-button" data-modal="{{pre.modal_name}}"
-                        data-image="{{pre.product_image.url}}" data-price="{{pre.price}}">
+                    <div class="col-md-4 mt-4 col-sm-6 view-details-button" data-modal="{{pre.id}}" data-toggle="modal"
+                        data-target="#exampleModal{{pre.id}}">
                         <div class="prestyle">
                             <div class="hover-text">Click to view more</div>
                             <div class="product-card">
@@ -754,20 +754,64 @@
                         });
                     </script>
                     {% endfor %}
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" id="modalTriggerButton">
+                        Launch demo modal
+                    </button>
 
-                    <div class="popup-overlay" style="display: none;">
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            // Get the button element
+                            var button = document.getElementById("modalTriggerButton");
+
+                            // Attach a click event listener to the button
+                            button.addEventListener("click", function () {
+                                // Get the modal element
+                                var modal = document.getElementById("exampleModalCenter");
+
+                                // Add the 'show' class to the modal element
+                                modal.classList.add("show");
+                                modal.style.display = "block";
+                                modal.setAttribute("aria-hidden", "false");
+
+                                // Remove the 'show' class from the modal backdrop element
+                                document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
+                            });
+                        });
+                    </script>
+
+                    <div class="popup-overlay" style="display: none;" class="modal fade" id="exampleModal{{pre.id}}">
+                        {{pre.id}}
                         <div class="popup-content">
                             <button class="close-button">&times;</button>
-                            <h3>Additional Details</h3>
-                            <img src="" alt="Product Image" width="100" height="100" id="popup-image">
-                            <h4 id="popup-modal"></h4>
-                            <p id="popup-price">Price: </p>
-                            <p>RAM: 8GB</p>
-                            <p>ROM: 128GB</p>
+
                             <button class="add-to-cart-button">Add to Cart</button>
                             <button class="cancel-button">Cancel</button>
                         </div>
                     </div>
+
                 </div>
                 <br><br>
                 {% endblock %}
@@ -785,48 +829,7 @@
                         class="fa fa-caret-up"></i></a>
             </div>
         </div>
-        <script>
-            const popupOverlay = document.querySelector('.popup-overlay');
-            const closeButton = document.querySelector('.close-button');
-            const cancelButton = document.querySelector('.cancel-button');
-            const viewDetailsButtons = document.querySelectorAll('.view-details-button');
-            const popupImage = document.getElementById('popup-image');
-            const popupModal = document.getElementById('popup-modal');
-            const popupPrice = document.getElementById('popup-price');
 
-            // Function to open the popup
-            function openPopup() {
-                popupOverlay.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
-
-            // Function to close the popup
-            function closePopup() {
-                popupOverlay.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-
-            // Add event listeners to view details buttons
-            viewDetailsButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    const modalName = this.getAttribute('data-modal');
-                    const imageSrc = this.getAttribute('data-image');
-                    const price = this.getAttribute('data-price');
-
-                    // Set the popup details based on the selected product
-                    popupModal.textContent = modalName;
-                    popupImage.src = imageSrc;
-                    popupPrice.textContent = 'Price: ' + price;
-
-                    openPopup();
-                });
-            });
-
-            // Close the popup when the close button is clicked
-            closeButton.addEventListener('click', closePopup);
-            cancelButton.addEventListener('click', closePopup);
-
-        </script>
 </body>
 
 </html>

@@ -172,6 +172,18 @@
         }
     }
 </style>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const productElement = document.getElementById('product-name');
+      const productName = productElement.innerHTML;
+
+      if (productName.length > 10) {
+        const truncatedName = productName.slice(0, 10) + '...';
+        productElement.innerHTML = truncatedName;
+        productElement.classList.add('formatted-name');
+      }
+    });
+  </script>
 <div id="product-search" class="container">
     <ul class="breadcrumb">
 
@@ -215,17 +227,17 @@
                                         <img class="img-responsive hover-img" src="{{special.product_image.url}}"
                                             title="iPhone" alt="iPhone" />
                                     </a>
-                                    <div class="sale-text">
+                                    <!-- <div class="sale-text">
                                         <span class="section-sale">On Sale!</span>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="thumb-description clearfix">
                                     <div class="caption">
                                         <h4 class="product-title">
-                                            <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                                            <a href="{% url 'view' special.id %}" id="product-name" style="font-weight: bold;">{{special.product_name}}</a>
                                         </h4>
                                         <p class="price">
-                                            <span class="price-new">{{special.price}}</span>
+                                            <span class="price-new" style="font-weight: bolder;font-size: 18px;">₹{{special.price}}</span>
                                             <!-- <span class="price-old">{{special.price}}</span> -->
                                         </p>
                                         <div class="rating">
@@ -739,7 +751,6 @@
         </form>
     </div>
     {% endif %}
-    something is wrong!contact admin
 </div>
 </div>
 <script>

@@ -96,22 +96,22 @@
           <div class="product-layout col-xs-12">
             <div class="product-thumb transition clearfix">
               <div class="image">
-                <a href="#">
+                <a href="{% url 'view' special.id %}">
                   <img src="{{special.product_image.url}}" alt="iPhone" title="iPhone" class="img-responsive" />
                   <img class="img-responsive hover-img" src="{{special.product_image.url}}" title="iPhone"
                     alt="iPhone" />
                 </a>
-                <div class="sale-text">
+                <!-- <div class="sale-text">
                   <span class="section-sale">On Sale!</span>
-                </div>
+                </div> -->
               </div>
               <div class="thumb-description clearfix">
                 <div class="caption">
                   <h4 class="product-title">
-                    <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                    <a href="{% url 'view' special.id %}" style="font-weight: bold">{{special.product_name}}</a>
                   </h4>
                   <p class="price">
-                    <span class="price-new">{{special.price}}</span>
+                    <span class="price-new" style="font-weight: bolder;font-size: 18px;">₹{{special.price}}</span>
                     <!-- <span class="price-old">{{special.price}}</span> -->
                   </p>
                   <div class="rating">
@@ -182,6 +182,18 @@
       },
     });
   </script>
+      <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+          const productElement = document.getElementById('product-name');
+          const productName = productElement.innerHTML;
+    
+          if (productName.length > 10) {
+            const truncatedName = productName.slice(0, 10) + '...';
+            productElement.innerHTML = truncatedName;
+            productElement.classList.add('formatted-name');
+          }
+        });
+      </script>
   <div class="box all-products latest">
     <div class="box-heading">
       <div class="box-content">
@@ -209,9 +221,9 @@
                   <div class="thumb-description clearfix">
                     <div class="caption">
                       <h4 class="product-title">
-                        <a href="{% url 'view' product.id %}">{{product.product_name}}</a>
+                        <a href="{% url 'view' product.id %}" id="product-name" style="font-weight: bold">{{product.product_name}}</a>
                       </h4>
-                      <p class="price">₹{{product.price}}</p>
+                      <p class="price" style="font-weight: bolder;font-size: 18px;">₹{{product.price}}</p>
                       <div class="rating">
                         <span class="fa fa-stack"></span>
                       </div>
@@ -428,7 +440,18 @@
       });
     }
   </script>
-
+    <script>
+      window.addEventListener('DOMContentLoaded', (event) => {
+        const productElement = document.getElementById('product-names');
+        const productName = productElement.innerHTML;
+  
+        if (productName.length > 10) {
+          const truncatedName = productName.slice(0, 10) + '...';
+          productElement.innerHTML = truncatedName;
+          productElement.classList.add('formatted-name');
+        }
+      });
+    </script>
   <div class="service-box">
     <div class="page-title toggled">
       <h3>Our Services</h3>
@@ -469,9 +492,9 @@
                     <img class="img-responsive hover-img"
                       src="{{dotd.product_image.url}}" title="Sony TV" alt="Sony TV" />
                   </a>
-                  <div class="sale-text">
+                  <!-- <div class="sale-text">
                     <span class="section-sale">On Sale!</span>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -479,10 +502,10 @@
                 <div class="caption">
                   <div class="desc-inner">
                     <h4 class="product-title">
-                      <a href="{% url 'view' dotd.id %}">{{dotd.product_name}}</a>
+                      <a href="{% url 'view' dotd.id %}" id="product-names" style="font-weight: bold">{{dotd.product_name}}</a>
                     </h4>
                     <div class="price">
-                      <span class="price-new">{{dotd.price}}</span>
+                      <span class="price-new" style="font-weight: bolder;font-size: 18px;">₹{{dotd.price}}</span>
                     </div>
 
                     <div class="rating">
@@ -496,9 +519,6 @@
                         ADD TO CART
                       </a>
                     </div>
-                    <p>
-                      {{dotd.description}}
-                    </p>
                   </div>
                 </div>
               </div>

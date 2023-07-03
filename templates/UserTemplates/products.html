@@ -11,6 +11,18 @@
   {% block list %}
 
   {% endblock list %}
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const productElement = document.getElementById('product-names');
+      const productName = productElement.innerHTML;
+
+      if (productName.length > 10) {
+        const truncatedName = productName.slice(0, 10) + '...';
+        productElement.innerHTML = truncatedName;
+        productElement.classList.add('formatted-name');
+      }
+    });
+  </script>
   <div class="box all-products special left-vertical-product">
     <div class="box-heading">
       <div class="box-content">
@@ -31,17 +43,17 @@
                     <img class="img-responsive hover-img" src="{{special.product_image.url}}" title="iPhone"
                       alt="iPhone" />
                   </a>
-                  <div class="sale-text">
+                  <!-- <div class="sale-text">
                     <span class="section-sale">On Sale!</span>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="thumb-description clearfix">
                   <div class="caption">
                     <h4 class="product-title">
-                      <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                      <a href="{% url 'view' special.id %}" id="product-names" style="font-weight: bold;">{{special.product_name}}</a>
                     </h4>
                     <p class="price">
-                      <span class="price-new">{{special.price}}</span>
+                      <span class="price-new" style="font-weight: bolder;font-size: 18px;">₹{{special.price}}</span>
                       <!-- <span class="price-old">{{special.price}}</span> -->
                     </p>
                     <div class="rating">
@@ -49,10 +61,10 @@
                     </div>
 
                     <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
-                      <a href="{% url 'add_to_cart_form' special.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                      <a href="{% url 'add_to_cart_form' special.id %}"
+                        style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
                         onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
-                      >
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
                         ADD TO CART
                       </a>
                     </div>
@@ -72,7 +84,6 @@
     </div>
   </div>
   </aside>
-
   <div id="content" class="col-sm-9">
     <div class="cat_info">
       <div class="row">
@@ -98,37 +109,48 @@
       </div>
     </div>
     <div class="row category-row">
+      <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+          const productElement = document.getElementById('product-name');
+          const productName = productElement.innerHTML;
 
+          if (productName.length > 10) {
+            const truncatedName = productName.slice(0, 10) + '...';
+            productElement.innerHTML = truncatedName;
+            productElement.classList.add('formatted-name');
+          }
+        });
+      </script>
       {% if products %}
       {% for product in products %}
       <div class="product-layout product-list col-xs-12">
         <div class="product-thumb">
           <div class="image">
-            <a href="#">
+            <a href="{% url 'view' product.id %}">
               <img src="{{product.product_image.url}}" alt="image" title="image" class="img-responsive"
                 style="padding: 5px; width: 290px; height: 250px;" />
             </a>
-            <div class="sale-text">
+            <!-- <div class="sale-text">
               <span class="section-sale">On Sale!</span>
-            </div>
+            </div> -->
           </div>
 
           <div class="thumb-description clearfix">
             <div class="caption">
               <h4 class="product-title">
-                <a href="{% url 'view' product.id %}"><strong>{{product.product_name}}</strong></a>
+                <a href="{% url 'view' product.id %}"><strong id="product-name">{{product.product_name}}</strong></a>
               </h4>
               <p class="price">
                 <span class="price-new">₹{{product.price}}</span>
               </p>
-              <p class="price">
+              <!-- <p class="price">
                 <span class="price-new">{{product.description}}</span>
-              </p><br>
+              </p><br> -->
               <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
-                <a href="{% url 'add_to_cart_form' product.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                <a href="{% url 'add_to_cart_form' product.id %}"
+                  style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
                   onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                  onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
-                >
+                  onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
                   ADD TO CART
                 </a>
               </div>

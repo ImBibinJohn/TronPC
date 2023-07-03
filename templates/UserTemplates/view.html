@@ -11,6 +11,18 @@
   {% block list %}
 
   {% endblock list %}
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const productElement = document.getElementById('product-name');
+        const productName = productElement.innerHTML;
+        
+        if (productName.length > 24) {
+            const formattedName = productName.slice(0, 24) + '\n' + productName.slice(24);
+            productElement.innerHTML = formattedName;
+            productElement.classList.add('formatted-name');
+        }
+    });
+</script>
   <div class="box all-products special left-vertical-product">
     <div class="box-heading">
       <div class="box-content">
@@ -31,17 +43,17 @@
                     <img class="img-responsive hover-img" src="{{special.product_image.url}}" title="iPhone"
                       alt="iPhone" />
                   </a>
-                  <div class="sale-text">
+                  <!-- <div class="sale-text">
                     <span class="section-sale">On Sale!</span>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="thumb-description clearfix">
                   <div class="caption">
                     <h4 class="product-title">
-                      <a href="{% url 'view' special.id %}">{{special.product_name}}</a>
+                      <a href="{% url 'view' special.id %}" style="font-weight: bold;">{{special.product_name}}</a>
                     </h4>
                     <p class="price">
-                      <span class="price-new">₹{{special.price}}</span>
+                      <span class="price-new" style="font-weight: bolder;font-size: 18px;">₹{{special.price}}</span>
                       <!-- <span class="price-old">{{special.price}}</span> -->
                     </p>
                     <div class="rating">
@@ -74,9 +86,7 @@
   </aside>
   <div id="content" class="col-sm-9">
 
-
     {% for pro in product %}
-    <h2 class="page_title">{{pro.product_name}}</h2>
     <div class="pro-deatil row">
       <div class="col-sm-6 product-img">
         <div class="thumbnails">
@@ -153,7 +163,7 @@
         </div>
       </div>
       <div class="col-sm-6 right_info">
-        <h1 class="" style="font-weight: bold;"><strong>{{pro.product_name}}</strong></h1>
+        <h1 id="product-name" class="" style="font-weight: bold;">{{pro.product_name}}</h1>
         <hr>
         <ul class="list-unstyled">
           <li><span class="disc">Brand:</span>{{pro.brand}}
