@@ -85,6 +85,56 @@
         background: white;
     }
 
+    .modal-dialog {
+        width: 90%;
+        /* Adjust the value as needed */
+        max-width: 800px;
+        /* Adjust the value as needed */
+    }
+
+    @media (max-width: 767px) {
+        .modal-dialog {
+            margin: 15px;
+        }
+    }
+
+    .product-img .pro-image img {
+        max-height: 300px;
+        /* Adjust the value as needed */
+        max-width: 100%;
+        /* Add this line to make the image width 100% of its container */
+    }
+
+    .image-additional img {
+        max-height: 60px;
+        /* Adjust the value as needed */
+    }
+
+    .right_info {
+        max-height: 400px;
+        /* Adjust the value as needed */
+        overflow-y: auto;
+    }
+
+
+    @media (max-width: 767px) {
+        .modal-content {
+            padding: 15px;
+        }
+
+        .modal-dialog {
+            margin: 15px;
+        }
+
+        .right_info {
+            margin-top: 15px;
+        }
+
+        .modal-footer {
+            justify-content: flex-end;
+        }
+    }
+
     .prestyle {
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 5px;
@@ -696,8 +746,10 @@
                     </div>
                 </div>
                 <div class="row category-row">
+                    <!-- Button trigger modal -->
                     {% for pre in pre_built %}
-                    <div class="col-md-4 mt-4 col-sm-6 view-details-button" data-modal="{{pre.id}}">
+                    <div class="col-md-4 mt-4 col-sm-6 view-details-button" data-toggle="modal"
+                        data-target="#exampleModalCenter{{pre.id}}">
                         <div class="prestyle">
                             <div class="hover-text">Click to view more</div>
                             <div class="product-card">
@@ -706,17 +758,20 @@
                                         style="width: 250px; height: 300px; object-fit: cover; padding: 10px 5px 10px 10px;">
                                 </div>
 
-                                <div class="product-detail" id="productDetail{{forloop.counter}}"
-                                    style="margin-left: 10px;">
+                                <div class="product-detail" id="productDetail{{pre.id}}"
+                                    style="margin-left: 10px; height: 200px; overflow: hidden;">
                                     <h2><strong style="padding-right: 2px;">{{pre.modal_name}}</strong></h2>
                                     <h5 style="padding-top: 2px;">{{pre.modal_ram}}&nbsp;RAM&nbsp; |
                                         {{pre.modal_ssd}}&nbsp;SSD</h5>
                                     <h5 style="padding-top: 5px;">Price</h5>
                                     <h3 style="color: green;">₹{{pre.price}}</h3>
                                     <h4 style="padding-top: 7px;">Description</h4>
-                                    <h5 style="color: lightslategrey;" id="description{{forloop.counter}}">
-                                        {{pre.description}}</h5>
-                                    <br>
+                                    <div style="max-height: 80px; overflow-y: scroll;">
+                                        <h5 style="color: lightslategrey; margin-bottom: 0;">{{pre.description}}</h5>
+                                    </div>
+                                    {% if pre.description|length > 50 %}
+                                    <a href="#" class="show-more-link" style="display: none;">Show More</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -724,49 +779,172 @@
 
                     <script>
                         window.addEventListener('DOMContentLoaded', function () {
-                            var description = document.getElementById('description{{forloop.counter}}');
-                            var productDetail = document.getElementById('productDetail{{forloop.counter}}');
-                            var showMoreLink = document.createElement('a');
-                            showMoreLink.href = '#';
-                            showMoreLink.textContent = '';
-                            showMoreLink.style.display = 'none';
-                            productDetail.appendChild(showMoreLink);
+                            var description = document.getElementById('productDetail{{pre.id}}').querySelector('h5');
+                            var productDetail = document.getElementById('productDetail{{pre.id}}');
+                            var showMoreLink = productDetail.querySelector('.show-more-link');
 
-                            if (description.innerText.split(' ').length > 50) {
-                                productDetail.style.overflowY = 'scroll';
-                                productDetail.style.maxHeight = '155px'; // Set the desired maximum height
+                            if (description.offsetHeight < description.scrollHeight) {
                                 showMoreLink.style.display = 'block';
-                            } else {
-                                showMoreLink.style.display = 'none';
                             }
 
                             showMoreLink.addEventListener('click', function (event) {
                                 event.preventDefault();
-                                if (productDetail.style.maxHeight === '155px') {
-                                    productDetail.style.maxHeight = 'none';
-                                    showMoreLink.textContent = '';
-                                } else {
-                                    productDetail.style.maxHeight = '155px';
-                                    showMoreLink.textContent = '';
-                                }
+                                productDetail.style.height = 'auto';
+                                showMoreLink.style.display = 'none';
                             });
                         });
                     </script>
                     {% endfor %}
 
-                    <div class="popup-overlay" style="display: none;">
-                        <div class="popup-content">
-                            <button class="close-button">&times;</button>
-                            <h3>Additional Details</h3>
-                            <img src="" alt="Product Image" width="100" height="100" id="popup-image">
-                            <h4 id="popup-modal"></h4>
-                            <p id="popup-price">Price: </p>
-                            <p>RAM: 8GB</p>
-                            <p>ROM: 128GB</p>
-                            <button class="add-to-cart-button">Add to Cart</button>
-                            <button class="cancel-button">Cancel</button>
+
+
+
+                    <!-- Modal -->
+
+                    {% for pre in pre_built %}
+                    <div class="modal" id="exampleModalCenter{{pre.id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <br>
+                                    <div class="pro-deatil row">
+                                        <div class="col-sm-5 product-img">
+                                            <div class="thumbnails">
+                                                <div class="pro-image">
+                                                    <img src="{{pre.product_image.url}}" title="pro-image"
+                                                        alt="pro-image" style="width: 300px; height: 400px;">
+                                                </div>
+                                                <div class="product-additional">
+                                                    <div id="additional-carousel"
+                                                        class="owl-carousel owl-theme clearfix">
+                                                        {% if pre.product_image_1 == "" %}
+                                                        {% else %}
+                                                        <div class="image-additional">
+                                                            <a href="{{pre.product_image_1.url}}" title="pro-image"
+                                                                class="elevatezoom-gallery"
+                                                                data-image="{{pre.product_image_1.url}}"
+                                                                data-zoom-image="{{pre.product_image_1.url}}">
+                                                                <img src="{{pre.product_image_1.url}}" title="pro-image"
+                                                                    alt="pro-image" width="80" height="80" />
+                                                            </a>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if pre.product_image_2 == "" %}
+                                                        {% else %}
+                                                        <div class="image-additional">
+                                                            <a href="{{pre.product_image_2.url}}" title="pro-image"
+                                                                class="elevatezoom-gallery"
+                                                                data-image="{{pre.product_image_2.url}}"
+                                                                data-zoom-image="{{pre.product_image_2.url}}">
+                                                                <img src="{{pre.product_image_2.url}}" title="pro-image"
+                                                                    alt="pro-image" width="80" height="80" />
+                                                            </a>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if pre.product_image_3 == "" %}
+                                                        {% else %}
+                                                        <div class="image-additional">
+                                                            <a href="{{pre.product_image_3.url}}" title="pro-image"
+                                                                class="elevatezoom-gallery"
+                                                                data-image="{{pre.product_image_3.url}}"
+                                                                data-zoom-image="{{pre.product_image_3.url}}">
+                                                                <img src="{{pre.product_image_3.url}}" title="pro-image"
+                                                                    alt="pro-image" width="80" height="80" />
+                                                            </a>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if pre.product_image_4 == "" %}
+                                                        {% else %}
+                                                        <div class="image-additional">
+                                                            <a href="{{pre.product_image_4.url}}" title="pro-image"
+                                                                class="elevatezoom-gallery"
+                                                                data-image="{{pre.product_image_4.url}}"
+                                                                data-zoom-image="{{pre.product_image_4.url}}">
+                                                                <img src="{{pre.product_image_4.url}}" title="pro-image"
+                                                                    alt="pro-image" width="80" height="80" />
+                                                            </a>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if pre.product_image_5 == "" %}
+                                                        {% else %}
+                                                        <div class="image-additional">
+                                                            <a href="{{pre.product_image_5.url}}" title="pro-image"
+                                                                class="elevatezoom-gallery"
+                                                                data-image="{{pre.product_image_5.url}}"
+                                                                data-zoom-image="{{pre.product_image_5.url}}">
+                                                                <img src="{{pre.product_image_5.url}}" title="pro-image"
+                                                                    alt="pro-image" width="80" height="80" />
+                                                            </a>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="image-additional">
+                                                            <a href="{{pre.product_image.url}}" title="pro-image"
+                                                                class="elevatezoom-gallery"
+                                                                data-image="{{pre.product_image.url}}"
+                                                                data-zoom-image="{{pre.product_image.url}}">
+                                                                <img src="{{pre.product_image.url}}" title="pro-image"
+                                                                    alt="pro-image" width="80" height="80" />
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7 right_info">
+                                            <h1 id="product-name" class="" style="font-weight: bold;">
+                                                {{pre.modal_name}}</h1>
+
+                                            <hr>
+                                            <ul class="list-unstyled">
+                                                <li><span class="disc">Processor:</span>{{pre.modal_cpu}}</li>
+                                                <li><span class="disc">MotherBoard:</span>{{pre.modal_motherbrd}}</li>
+                                                <li><span class="disc">Graphics:</span>{{pre.modal_gpu}}</li>
+                                                <li><span class="disc">RAM:</span>{{pre.modal_ram}}</li>
+                                                <li><span class="disc">Storage:</span>{{pre.modal_storage_rom}}</li>
+                                                <li><span class="disc">SSD:</span>{{pre.modal_ssd}}</li>
+                                                <li><span class="disc">SMPS:</span>{{pre.modal_smps}}</li>
+                                                <li><span class="disc">Availability:</span><span class="disc1"
+                                                        style="color: green;">In Stock</span></li>
+                                            </ul>
+                                            <hr>
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <span class="pro_price" style="color: #000;">₹ {{pre.price}}</span>
+                                                </li>
+                                            </ul>
+                                            <hr>
+                                            <span style="color: #000;font-weight: bold;">Description</span>
+                                            <div class="col-sm-12">
+                                                <div class="row propage-tab">
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane active" id="tab-description">
+                                                            <p style="color: black;">
+                                                                {{pre.description}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <a href="{% url 'add_to_cart_form' pre.id %}"><button type="button"
+                                            class="btn btn-primary btn-lg btn-block">Add to Cart</button></a>
+                                    <button style="border-radius: 5px;" type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
+                    {% endfor %}
                 </div>
                 <br><br>
                 {% endblock %}
@@ -785,41 +963,105 @@
             </div>
         </div>
         <script>
-            const popupOverlay = document.querySelector('.popup-overlay');
-            const closeButton = document.querySelector('.close-button');
-            const cancelButton = document.querySelector('.cancel-button');
-            const viewDetailsButtons = document.querySelectorAll('.view-details-button');
-            const popupModal = document.getElementById('popup-modal');
+            $(document).ready(function () {
+                if ($(window).width() > 991) {
+                    $("#zoom").elevateZoom({
+                        zoomType: "inner",
+                        cursor: "crosshair",
+                        gallery: 'additional-carousel',
+                        galleryActiveClass: 'active'
+                    });
 
-            // Function to open the popup
-            function openPopup() {
-                popupOverlay.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
+                    var image_index = 0;
+                    $(document).on('click', '.thumbnail', function () {
+                        $('.thumbnails').magnificPopup('open', image_index);
+                        return false;
+                    });
 
-            // Function to close the popup
-            function closePopup() {
-                popupOverlay.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
+                    $('#additional-carousel a').click(function () {
+                        var smallImage = $(this).attr('data-image');
+                        var largeImage = $(this).attr('data-zoom-image');
+                        var ez = $('#zoom').data('elevateZoom');
+                        $('.thumbnail').attr('href', largeImage);
+                        ez.swaptheimage(smallImage, largeImage);
+                        image_index = $(this).index('#additional-carousel a');
+                        return false;
+                    });
+                } else {
+                    $(document).on('click', '.thumbnail', function () {
+                        $('.thumbnails').magnificPopup('open', 0);
+                        return false;
+                    });
+                }
+            });
 
-            // Add event listeners to view details buttons
-            viewDetailsButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    const modalName = this.getAttribute('data-modal');
-
-                    // Set the popup details based on the selected product
-                    popupModal.textContent = modalName;
-
-                    openPopup();
+            $(document).ready(function () {
+                $('.thumbnails').magnificPopup({
+                    type: 'image',
+                    delegate: 'a.elevatezoom-gallery',
+                    gallery: {
+                        enabled: true
+                    }
                 });
             });
 
-            // Close the popup when the close button is clicked
-            closeButton.addEventListener('click', closePopup);
-            cancelButton.addEventListener('click', closePopup);
+            // Additional carousel
+            const direction = $('html').attr('dir');
 
+            $('#additional-carousel').each(function () {
+                if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {
+                    $(this).addClass('owl-carousel owl-theme');
+                    const items = $(this).data('items') || 4;
+                    const sliderOptions = {
+                        loop: false,
+                        nav: true,
+                        navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
+                        dots: false,
+                        items: items,
+                        mouseDrag: false,
+                        touchDrag: false,
+                        pullDrag: false,
+                        rewind: false,
+                        autoplay: true,
+                        responsiveRefreshRate: 200,
+                        responsive: {
+                            0: { items: 1 },
+                            320: { items: ((items - 2) > 1) ? (items - 2) : 1 },
+                            376: { items: ((items - 1) > 1) ? (items - 1) : 1 },
+                            1341: { items: items }
+                        }
+                    };
+                    if (direction == 'rtl') sliderOptions['rtl'] = true;
+                    $(this).owlCarousel(sliderOptions);
+                }
+            });
+
+            // Related carousel
+            const dirrelated = $('html').attr('dir');
+            $('.related-carousel').each(function () {
+                if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {
+                    $(this).addClass('owl-carousel owl-theme');
+                    const items = $(this).data('items') || 4;
+                    const sliderOptions = {
+                        loop: false,
+                        nav: true,
+                        navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
+                        dots: false,
+                        items: items,
+                        responsiveRefreshRate: 200,
+                        responsive: {
+                            0: { items: 1 },
+                            320: { items: ((items - 2) > 1) ? (items - 2) : 1 },
+                            480: { items: ((items - 1) > 1) ? (items - 1) : 1 },
+                            768: { items: items }
+                        }
+                    };
+                    if (dirrelated == 'rtl') sliderOptions['rtl'] = true;
+                    $(this).owlCarousel(sliderOptions);
+                }
+            });
         </script>
+
 </body>
 
 </html>
