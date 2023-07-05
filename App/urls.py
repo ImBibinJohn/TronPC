@@ -7,6 +7,7 @@ from App import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('add_to_cart_form/<int:id>', views.add_to_cart_form, name='add_to_cart_form'),
+    path('add_to_cart_form_pre/<int:id>', views.add_to_cart_form_pre, name='add_to_cart_form_pre'),
     path('addToCartPreBuilt/<int:id>', views.addToCartPreBuilt, name='addToCartPreBuilt'),
     path('allProducts/', views.allProducts, name='allProducts'),
     path('cart/', views.cart, name='cart'),

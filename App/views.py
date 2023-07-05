@@ -448,6 +448,51 @@ def add_to_cart_form(request, id):
     else:
         return redirect('/')
 
+def add_to_cart_form_pre(request, id):
+    if 'userid' in request.session:
+        if request.session.has_key('userid'):
+            userid = request.session['userid']
+            proid = PreBuilt.objects.get(id=id)
+            if Cart.objects.filter(customer_id=userid, product_code=proid.modal_code).exists():
+                cart = Cart.objects.get(
+                    customer_id=userid, product_code=proid.modal_code)
+                pro_qua = int(cart.product_quantity)
+                pro = proid.price.replace(',', '')
+                pro_cur = pro[:-3]
+                cart = cart.price.replace(',', '')
+                cart_cur = cart[:-3]
+                total_cart = int(cart_cur) + int(pro_cur)
+                locale.setlocale(locale.LC_ALL, 'en_IN.UTF-8')
+                total_cart_price_formatted = locale.currency(
+                    total_cart, grouping=True, symbol=False)
+                total_qua = int((pro_qua) + int(1))
+                cart_fk = Cart.objects.get(
+                    customer_id=userid, product_code=proid.modal_code)
+                cart_fk.price = total_cart_price_formatted
+                cart_fk.product_quantity = total_qua
+                cart_fk.save()
+                if 'Guest' in str(userid):
+                    return redirect('allProducts')
+                else:
+                    return redirect('productsHome')
+            else:
+                if 'Guest' in str(userid):
+                    proid = PreBuilt.objects.get(id=id)
+                    cart_add = Cart(product_code=proid.modal_code, product_quantity=1,
+                                    price=proid.price, customer_id=userid)
+                    cart_add.save()
+                    return redirect('allProducts')
+                else:
+                    proid = PreBuilt.objects.get(id=id)
+                    cart_add = Cart(product_code=proid.modal_code, product_quantity=1,
+                                    price=proid.price, customer_id=userid)
+                    cart_add.save()
+                    return redirect('productsHome')
+        else:
+            print('something wrong!')
+    else:
+        return redirect('/')
+
 
 def cartQuaAdd(request, id):
     if 'userid' in request.session:
@@ -707,6 +752,7 @@ def preBuiltHome(request):
         if request.session.has_key('userid'):
             userid = request.session['userid']
             category = Category.objects.all()
+            specials = Product.objects.filter(special=1, status=1)
             cart_list = Cart.objects.filter(customer_id=userid)
             cart_price_list = Cart.objects.filter(
                 customer_id=userid).values('price')
@@ -725,12 +771,12 @@ def preBuiltHome(request):
             pre_built = PreBuilt.objects.all()
             userid_confirm = str(userid)
             if 'Guest' in userid_confirm:
-                context = {'category': category, 'cart_list': cart_list, 'total_price': total_price,
+                context = {'specials':specials,'category': category, 'cart_list': cart_list, 'total_price': total_price,
                            'cart_list_count': cart_list_count, 'userid': userid, 'pre_built': pre_built}
                 return render(request, 'UserTemplates/preBuiltHome.html', context)
             else:
                 pro = UserDetails.objects.filter(id=userid)
-                context = {'category': category, 'cart_list': cart_list, 'total_price': total_price,
+                context = {'specials':specials,'category': category, 'cart_list': cart_list, 'total_price': total_price,
                            'cart_list_count': cart_list_count, 'userid': userid, 'pro': pro, 'pre_built': pre_built}
                 return render(request, 'UserTemplates/preBuiltHome.html', context)
         else:
@@ -2233,8 +2279,9 @@ def preBuilt(request):
         if request.session.has_key('adminid'):
             adminid= request.session['adminid']
             prebuilts = PreBuilt.objects.all()
+            specials = Product.objects.filter(special=1, status=1)
             count = 'add'
-            return render(request, 'AdminTemplates/preBuilt.html', {'count': count, 'prebuilts': prebuilts})
+            return render(request, 'AdminTemplates/preBuilt.html', {'count': count, 'prebuilts': prebuilts,'specials':specials})
         else:
             print('something wrong!')
     else:

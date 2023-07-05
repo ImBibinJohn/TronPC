@@ -934,7 +934,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer justify-content-end">
-                                    <a href="{% url 'add_to_cart_form' pre.id %}"><button type="button"
+                                    <a href="{% url 'add_to_cart_form_pre' pre.id %}"><button type="button"
                                             class="btn btn-primary btn-lg btn-block">Add to Cart</button></a>
                                     <button style="border-radius: 5px;" type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Cancel</button>
@@ -949,119 +949,134 @@
                 <br><br>
                 {% endblock %}
                 <br>
-                <footer
-                    style="background-color: black; color: white; position: fixed; left: 0; bottom: 0; width: 100%; padding: 10px; text-align: left;">
-                    <div>
-                        <p style="color: white;">
-                            All rights reserved &copy; 2023
-                        </p>
-                    </div>
-                </footer>
-                <!-- top scroll -->
-                <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i
-                        class="fa fa-caret-up"></i></a>
+
             </div>
-        </div>
-        <script>
-            $(document).ready(function () {
-                if ($(window).width() > 991) {
-                    $("#zoom").elevateZoom({
-                        zoomType: "inner",
-                        cursor: "crosshair",
-                        gallery: 'additional-carousel',
-                        galleryActiveClass: 'active'
-                    });
+            <script>
+                $(document).ready(function () {
+                    if ($(window).width() > 991) {
+                        $("#zoom").elevateZoom({
+                            zoomType: "inner",
+                            cursor: "crosshair",
+                            gallery: 'additional-carousel',
+                            galleryActiveClass: 'active'
+                        });
 
-                    var image_index = 0;
-                    $(document).on('click', '.thumbnail', function () {
-                        $('.thumbnails').magnificPopup('open', image_index);
-                        return false;
-                    });
+                        var image_index = 0;
+                        $(document).on('click', '.thumbnail', function () {
+                            $('.thumbnails').magnificPopup('open', image_index);
+                            return false;
+                        });
 
-                    $('#additional-carousel a').click(function () {
-                        var smallImage = $(this).attr('data-image');
-                        var largeImage = $(this).attr('data-zoom-image');
-                        var ez = $('#zoom').data('elevateZoom');
-                        $('.thumbnail').attr('href', largeImage);
-                        ez.swaptheimage(smallImage, largeImage);
-                        image_index = $(this).index('#additional-carousel a');
-                        return false;
-                    });
-                } else {
-                    $(document).on('click', '.thumbnail', function () {
-                        $('.thumbnails').magnificPopup('open', 0);
-                        return false;
-                    });
-                }
-            });
-
-            $(document).ready(function () {
-                $('.thumbnails').magnificPopup({
-                    type: 'image',
-                    delegate: 'a.elevatezoom-gallery',
-                    gallery: {
-                        enabled: true
+                        $('#additional-carousel a').click(function () {
+                            var smallImage = $(this).attr('data-image');
+                            var largeImage = $(this).attr('data-zoom-image');
+                            var ez = $('#zoom').data('elevateZoom');
+                            $('.thumbnail').attr('href', largeImage);
+                            ez.swaptheimage(smallImage, largeImage);
+                            image_index = $(this).index('#additional-carousel a');
+                            return false;
+                        });
+                    } else {
+                        $(document).on('click', '.thumbnail', function () {
+                            $('.thumbnails').magnificPopup('open', 0);
+                            return false;
+                        });
                     }
                 });
-            });
 
-            // Additional carousel
-            const direction = $('html').attr('dir');
-
-            $('#additional-carousel').each(function () {
-                if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {
-                    $(this).addClass('owl-carousel owl-theme');
-                    const items = $(this).data('items') || 4;
-                    const sliderOptions = {
-                        loop: false,
-                        nav: true,
-                        navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
-                        dots: false,
-                        items: items,
-                        mouseDrag: false,
-                        touchDrag: false,
-                        pullDrag: false,
-                        rewind: false,
-                        autoplay: true,
-                        responsiveRefreshRate: 200,
-                        responsive: {
-                            0: { items: 1 },
-                            320: { items: ((items - 2) > 1) ? (items - 2) : 1 },
-                            376: { items: ((items - 1) > 1) ? (items - 1) : 1 },
-                            1341: { items: items }
+                $(document).ready(function () {
+                    $('.thumbnails').magnificPopup({
+                        type: 'image',
+                        delegate: 'a.elevatezoom-gallery',
+                        gallery: {
+                            enabled: true
                         }
-                    };
-                    if (direction == 'rtl') sliderOptions['rtl'] = true;
-                    $(this).owlCarousel(sliderOptions);
-                }
-            });
+                    });
+                });
 
-            // Related carousel
-            const dirrelated = $('html').attr('dir');
-            $('.related-carousel').each(function () {
-                if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {
-                    $(this).addClass('owl-carousel owl-theme');
-                    const items = $(this).data('items') || 4;
-                    const sliderOptions = {
-                        loop: false,
-                        nav: true,
-                        navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
-                        dots: false,
-                        items: items,
-                        responsiveRefreshRate: 200,
-                        responsive: {
-                            0: { items: 1 },
-                            320: { items: ((items - 2) > 1) ? (items - 2) : 1 },
-                            480: { items: ((items - 1) > 1) ? (items - 1) : 1 },
-                            768: { items: items }
-                        }
-                    };
-                    if (dirrelated == 'rtl') sliderOptions['rtl'] = true;
-                    $(this).owlCarousel(sliderOptions);
-                }
-            });
-        </script>
+                // Additional carousel
+                const direction = $('html').attr('dir');
 
+                $('#additional-carousel').each(function () {
+                    if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {
+                        $(this).addClass('owl-carousel owl-theme');
+                        const items = $(this).data('items') || 4;
+                        const sliderOptions = {
+                            loop: false,
+                            nav: true,
+                            navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
+                            dots: false,
+                            items: items,
+                            mouseDrag: false,
+                            touchDrag: false,
+                            pullDrag: false,
+                            rewind: false,
+                            autoplay: true,
+                            responsiveRefreshRate: 200,
+                            responsive: {
+                                0: { items: 1 },
+                                320: { items: ((items - 2) > 1) ? (items - 2) : 1 },
+                                376: { items: ((items - 1) > 1) ? (items - 1) : 1 },
+                                1341: { items: items }
+                            }
+                        };
+                        if (direction == 'rtl') sliderOptions['rtl'] = true;
+                        $(this).owlCarousel(sliderOptions);
+                    }
+                });
+
+                // Related carousel
+                const dirrelated = $('html').attr('dir');
+                $('.related-carousel').each(function () {
+                    if ($(this).closest('#column-left').length == 0 && $(this).closest('#column-right').length == 0) {
+                        $(this).addClass('owl-carousel owl-theme');
+                        const items = $(this).data('items') || 4;
+                        const sliderOptions = {
+                            loop: false,
+                            nav: true,
+                            navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
+                            dots: false,
+                            items: items,
+                            responsiveRefreshRate: 200,
+                            responsive: {
+                                0: { items: 1 },
+                                320: { items: ((items - 2) > 1) ? (items - 2) : 1 },
+                                480: { items: ((items - 1) > 1) ? (items - 1) : 1 },
+                                768: { items: items }
+                            }
+                        };
+                        if (dirrelated == 'rtl') sliderOptions['rtl'] = true;
+                        $(this).owlCarousel(sliderOptions);
+                    }
+                });
+            </script>
+            <footer id="page-footer"
+                style="background-color: black; color: white; position: fixed; left: 0; bottom: 0; width: 100%; padding: 10px; text-align: left; display: none;">
+                <div>
+                    <p style="color: white;">
+                        All rights reserved &copy; 2023
+                    </p>
+                </div>
+            </footer>
+
+            <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top">
+                <i class="fa fa-caret-up"></i>
+            </a>
+            <script>
+                $(window).scroll(function () {
+                    var scrollDistance = $(window).scrollTop();
+                    var documentHeight = $(document).height();
+                    var windowHeight = $(window).height();
+
+                    // Show or hide the footer based on scroll position
+                    if (scrollDistance >= documentHeight - windowHeight) {
+                        $('#page-footer').fadeIn();
+                    } else {
+                        $('#page-footer').fadeOut();
+                    }
+                });
+
+            </script>
 </body>
 
 </html>

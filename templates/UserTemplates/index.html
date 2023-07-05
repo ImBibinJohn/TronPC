@@ -5,13 +5,25 @@
 {% endblock list %}
 <script>
   window.addEventListener('DOMContentLoaded', (event) => {
-    const productElement = document.getElementById('product-name');
-    const productName = productElement.innerHTML;
+    const productElements = document.getElementsByClassName('product-names');
 
-    if (productName.length > 10) {
-      const truncatedName = productName.slice(0, 10) + '...';
-      productElement.innerHTML = truncatedName;
-      productElement.classList.add('formatted-name');
+    for (let i = 0; i < productElements.length; i++) {
+      const productName = productElements[i].innerHTML.trim();
+      const words = productName.split(' ');
+      let truncatedName = '';
+
+      for (let j = 0; j < words.length; j++) {
+        if ((truncatedName + words[j]).length <= 15) {
+          truncatedName += words[j] + ' ';
+        } else {
+          break;
+        }
+      }
+
+      const remainingText = words.slice(truncatedName.trim().split(' ').length).join(' ');
+      const formattedName = truncatedName.trim() + '<br>' + remainingText;
+      productElements[i].innerHTML = formattedName;
+      productElements[i].classList.add('formatted-name');
     }
   });
 </script>
@@ -184,18 +196,32 @@
       },
     });
   </script>
-    <script>
-      window.addEventListener('DOMContentLoaded', (event) => {
-        const productElement = document.getElementById('product-names');
-        const productName = productElement.innerHTML;
-  
-        if (productName.length > 10) {
-          const truncatedName = productName.slice(0, 10) + '...';
-          productElement.innerHTML = truncatedName;
-          productElement.classList.add('formatted-name');
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const productElements = document.getElementsByClassName('product-name');
+
+      for (let i = 0; i < productElements.length; i++) {
+        const productName = productElements[i].innerHTML.trim();
+        const words = productName.split(' ');
+        let truncatedName = '';
+
+        for (let j = 0; j < words.length; j++) {
+          if ((truncatedName + words[j]).length <= 15) {
+            truncatedName += words[j] + ' ';
+          } else {
+            break;
+          }
         }
-      });
-    </script>
+
+        const remainingText = words.slice(truncatedName.trim().split(' ').length).join(' ');
+        const formattedName = truncatedName.trim() + '<br>' + remainingText;
+        productElements[i].innerHTML = formattedName;
+        productElements[i].classList.add('formatted-name');
+      }
+    });
+  </script>
+
+
   <div class="box all-products latest">
     <div class="box-heading">
       <div class="box-content">
@@ -208,7 +234,7 @@
             {% for product in specials %}
             <div class="product-content">
               <div class="product-layout col-xs-12">
-                <div class="product-thumb transition clearfix">
+                <div class="product-thumb transition clearfix" style="height: 420px;">
                   <div class="image">
                     <div class="sale-text">
                       <span class="section-sale" style="color: blue;">special!</span>
@@ -226,24 +252,29 @@
                         <a href="{% url 'view' product.id %}" id="product-names"
                           style="font-weight: bold">{{product.product_name}}</a>
                       </h4>
-                      <p class="price" style="font-weight: bolder;font-size: 18px;">₹{{product.price}}</p>
+                     
                       <div class="rating">
                         <span class="fa fa-stack"></span>
                       </div>
 
-                      <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
-                        <a href="{% url 'add_to_cart_form' product.id %}"
-                          style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
-                          onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                          onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
-                          ADD TO CART
-                        </a>
-                      </div>
                     </div>
+                  </div>
+                  <p class="price">
+                    <span class="price-new" style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 60px; width: 100%;">₹{{product.price}}</span>
+                  </p>
+                  <div class="btn-all"
+                    style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 20px; width: 100%;">
+                    <a href="{% url 'add_to_cart_form' product.id %}"
+                      style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                      onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                      onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
+                      ADD TO CART
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
+
             {% endfor %}
             {% else %}
             <h4 style="margin-left: 10%;">No Specials to show</h4>

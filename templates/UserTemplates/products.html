@@ -13,13 +13,25 @@
   {% endblock list %}
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-      const productElement = document.getElementById('product-names');
-      const productName = productElement.innerHTML;
+      const productElements = document.getElementsByClassName('product-names');
 
-      if (productName.length > 10) {
-        const truncatedName = productName.slice(0, 10) + '...';
-        productElement.innerHTML = truncatedName;
-        productElement.classList.add('formatted-name');
+      for (let i = 0; i < productElements.length; i++) {
+        const productName = productElements[i].innerHTML.trim();
+        const words = productName.split(' ');
+        let truncatedName = '';
+
+        for (let j = 0; j < words.length; j++) {
+          if ((truncatedName + words[j]).length <= 15) {
+            truncatedName += words[j] + ' ';
+          } else {
+            break;
+          }
+        }
+
+        const remainingText = words.slice(truncatedName.trim().split(' ').length).join(' ');
+        const formattedName = truncatedName.trim() + '<br>' + remainingText;
+        productElements[i].innerHTML = formattedName;
+        productElements[i].classList.add('formatted-name');
       }
     });
   </script>
@@ -50,7 +62,8 @@
                 <div class="thumb-description clearfix">
                   <div class="caption">
                     <h4 class="product-title">
-                      <a href="{% url 'view' special.id %}" id="product-names" style="font-weight: bold;">{{special.product_name}}</a>
+                      <a href="{% url 'view' special.id %}" id="product-names"
+                        style="font-weight: bold;">{{special.product_name}}</a>
                     </h4>
                     <p class="price">
                       <span class="price-new" style="font-weight: bolder;font-size: 18px;">₹{{special.price}}</span>
@@ -111,13 +124,25 @@
     <div class="row category-row">
       <script>
         window.addEventListener('DOMContentLoaded', (event) => {
-          const productElement = document.getElementById('product-name');
-          const productName = productElement.innerHTML;
+          const productElements = document.getElementsByClassName('product-name');
 
-          if (productName.length > 10) {
-            const truncatedName = productName.slice(0, 10) + '...';
-            productElement.innerHTML = truncatedName;
-            productElement.classList.add('formatted-name');
+          for (let i = 0; i < productElements.length; i++) {
+            const productName = productElements[i].innerHTML.trim();
+            const words = productName.split(' ');
+            let truncatedName = '';
+
+            for (let j = 0; j < words.length; j++) {
+              if ((truncatedName + words[j]).length <= 15) {
+                truncatedName += words[j] + ' ';
+              } else {
+                break;
+              }
+            }
+
+            const remainingText = words.slice(truncatedName.trim().split(' ').length).join(' ');
+            const formattedName = truncatedName.trim() + '<br>' + remainingText;
+            productElements[i].innerHTML = formattedName;
+            productElements[i].classList.add('formatted-name');
           }
         });
       </script>
@@ -135,26 +160,29 @@
             </div> -->
           </div>
 
-          <div class="thumb-description clearfix">
+          <div class="thumb-description clearfix" style="height: 160px;">
             <div class="caption">
               <h4 class="product-title">
                 <a href="{% url 'view' product.id %}"><strong id="product-name">{{product.product_name}}</strong></a>
               </h4>
-              <p class="price">
-                <span class="price-new">₹{{product.price}}</span>
-              </p>
+
               <!-- <p class="price">
                 <span class="price-new">{{product.description}}</span>
               </p><br> -->
-              <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
-                <a href="{% url 'add_to_cart_form' product.id %}"
-                  style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
-                  onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                  onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
-                  ADD TO CART
-                </a>
-              </div>
+
             </div>
+          </div>
+          <p class="price">
+            <span class="price-new" style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 50px; width: 100%;">₹{{product.price}}</span>
+          </p>
+          <div class="btn-all"
+            style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 10px; width: 100%;">
+            <a href="{% url 'add_to_cart_form' product.id %}"
+              style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+              onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
+              ADD TO CART
+            </a>
           </div>
         </div>
       </div>
