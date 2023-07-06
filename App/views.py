@@ -784,8 +784,26 @@ def preBuiltHome(request):
     else:
         return redirect('/')
 
+def search(request):
+    search_text = request.GET.get('search_text', '')
+
+    if search_text:
+        results = Category.objects.filter(
+            Q(category_name__icontains=search_text) |
+            Q(description__icontains=search_text)
+        )
+        serialized_results = [{
+            'category_name': result.category_name,
+            'category_id': result.id,
+        } for result in results]
+    else:
+        serialized_results = []
+
+    return JsonResponse(serialized_results, safe=False)
+
 
 def cart(request):
+
     if 'userid' in request.session:
         if request.session.has_key('userid'):
             userid = request.session['userid']

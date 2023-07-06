@@ -30,6 +30,7 @@ urlpatterns = [
     path('preBuiltHome/', views.preBuiltHome, name='preBuiltHome'),
     path('productsHome/', views.productsHome, name='productsHome'),
     path('register/', views.register, name='register'),
+    path('search/', views.search, name='search'),
     path('under_maintenance/', views.under_maintenance, name='under_maintenance'),
     path('uregister/', views.uregister, name='uregister'),
     path('view/<int:id>', views.view, name='view'),

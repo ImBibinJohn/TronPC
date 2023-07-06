@@ -36,6 +36,36 @@
       --border-color: #e5e5e5
     }
 
+    /* Add the following CSS rules */
+
+    /* Adjust the width of the search results to match the search input */
+    #search-results {
+      width: 100%;
+      max-width: 400px;
+      /* Adjust the maximum width as needed */
+    }
+
+    /* Apply the same styles as the search input to the search results */
+    #search-results .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      clear: both;
+      font-weight: 400;
+      color: #212529;
+      text-align: inherit;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0;
+      transition: all 0.15s ease;
+    }
+
+    #search-results .dropdown-item:hover {
+      color: #fff;
+      background-color: #007bff;
+    }
+
+
     @media screen and (min-width: 766px) {
       .tronlogo {
         display: none;
@@ -91,26 +121,26 @@
               {% if pro %}
               <!-- logo left -->
               <div id="logo" class="col-md-4">
-                <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC"
-                    alt="TronPC" class="img-responsive" /></a>
+                <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC" alt="TronPC"
+                    class="img-responsive" /></a>
               </div>
             </div>
             <!-- logo middle -->
             <div id="logo" class="col-md-4">
-              <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC"
-                  alt="TronPC" class="img-responsive tronlogo" /></a>
+              <a href="{% url 'home' %}"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC" alt="TronPC"
+                  class="img-responsive tronlogo" /></a>
             </div>
             {% else %}
             <!-- logo left -->
             <div id="logo" class="col-md-4">
-              <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC"
-                  alt="TronPC" class="img-responsive" /></a>
+              <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC" alt="TronPC"
+                  class="img-responsive" /></a>
             </div>
           </div>
           <!-- logo middle -->
           <div id="logo" class="col-md-4">
-            <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC"
-                alt="TronPC" class="img-responsive tronlogo" /></a>
+            <a href="/"><img src="{% static 'images/tronpclogo.png' %}" title="TronPC" alt="TronPC"
+                class="img-responsive tronlogo" /></a>
           </div>
           {% endif %}
 
@@ -297,52 +327,66 @@
           <div class="btn_search">
             <div class="header-search">
               <div id="customSearch" class="input-group custom-search">
-                <input type="text" name="search" value="" placeholder="Search here..."
-                  class="form-control input-lg ui-autocomplete-input" />
+                <input type="text" id="search-inputz" name="search" value="" placeholder="Search here..."
+                  class="form-control input-lg ui-autocomplete-input" autocomplete="off" />
                 <span class="btn-search input-group-btn">
                   <button type="button" class="btn btn-default btn-lg">
                     <i class="search-icon icon-search"></i>
                   </button>
                 </span>
               </div>
+              <div id="search-results" class="dropdown-menu" style="display: none;">
+                <!-- Results will be dynamically inserted here -->
+              </div>
+              <script>
+                $(document).ready(function () {
+                  var searchInput = $('#search-inputz');
+                  var searchResults = $('#search-results');
 
-              <script type="text/javascript">
-                $("#customSearch .btn-search button").bind(
-                  "click",
-                  function () {
-                    url = "#";
+                  searchInput.on('input', function () {
+                    var searchText = $(this).val().trim();
 
-                    var search = $(
-                      "#customSearch input[name='search']"
-                    ).prop("value");
-                    if (search) {
-                      url += "&search=" + encodeURIComponent(search);
+                    if (searchText.length > 0) {
+                      $.ajax({
+                        url: "{% url 'search' %}",
+                        method: 'GET',
+                        data: { 'search_text': searchText },
+                        success: function (response) {
+                          searchResults.html('');
+
+                          if (response.length > 0) {
+                            $.each(response, function (index, result) {
+                              var url = "/categoryFilter/" + result.category_id;
+                              var item = $('<a>')
+                                .addClass('dropdown-item')
+                                .attr('href', url)
+                                .append($('<h5>').text(result.category_name));
+
+                              searchResults.append(item);
+                            });
+
+                            searchResults.show(); // Show the dropdown
+                          } else {
+                            searchResults.html('<h5>No results found.</h5>');
+                          }
+                        },
+                        error: function (xhr) {
+                          console.log(xhr.responseText);
+                        }
+                      });
+                    } else {
+                      searchResults.html('');
+                      searchResults.hide(); // Hide the dropdown
                     }
+                  });
 
-                    var category_id = $(
-                      "#customSearch select[name='category_id']"
-                    ).prop("value");
-                    if (category_id > 0) {
-                      url +=
-                        "&category_id=" + encodeURIComponent(category_id);
-                      // url += '&sub_category=true';
-                      // url += '&description=true';
+                  // Hide the dropdown when clicked outside
+                  $(document).on('click', function (event) {
+                    if (!$(event.target).closest('#customSearch').length) {
+                      searchResults.hide();
                     }
-
-                    location = url;
-                  }
-                );
-
-                $("#customSearch input[name='search']").bind(
-                  "keydown",
-                  function (e) {
-                    if (e.keyCode == 13) {
-                      $("#customSearch .btn-search button").trigger(
-                        "click"
-                      );
-                    }
-                  }
-                );
+                  });
+                });
               </script>
             </div>
           </div>
@@ -399,11 +443,11 @@
         {% endblock %}
         <footer>
           <div style="display: inline-block; padding: 10px;">
-              <p style="color: white; margin: 0;">
-                  All rights reserved &copy; 2023
-              </p>
+            <p style="color: white; margin: 0;">
+              All rights reserved &copy; 2023
+            </p>
           </div>
-      </footer>
+        </footer>
 
         <!-- top scroll -->
         <a href="#" class="scrollToTop back-to-top" data-toggle="tooltip" title="Top"><i class="fa fa-caret-up"></i></a>

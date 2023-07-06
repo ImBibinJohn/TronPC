@@ -9,7 +9,6 @@
     <title>TronPC</title>
     <meta name="description" content="My Store" />
     <script src="{% static 'catalog/view/javascript/jquery/jquery-2.1.1.min.js' %}"></script>
-    <script src="{% static 'catalog/view/javascript/custom/custom_search.js' %}"></script>
     <link href="{% static 'catalog/view/javascript/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"
         media="screen" />
     <script src="{% static 'catalog/view/javascript/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -90,6 +89,35 @@
         /* Adjust the value as needed */
         max-width: 800px;
         /* Adjust the value as needed */
+    }
+
+    /* Add the following CSS rules */
+
+    /* Adjust the width of the search results to match the search input */
+    #search-results {
+        width: 100%;
+        max-width: 400px;
+        /* Adjust the maximum width as needed */
+    }
+
+    /* Apply the same styles as the search input to the search results */
+    #search-results .dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        clear: both;
+        font-weight: 400;
+        color: #212529;
+        text-align: inherit;
+        white-space: nowrap;
+        background-color: transparent;
+        border: 0;
+        transition: all 0.15s ease;
+    }
+
+    #search-results .dropdown-item:hover {
+        color: #fff;
+        background-color: #007bff;
     }
 
     @media (max-width: 767px) {
@@ -338,6 +366,31 @@
         /* Adjust the size as needed */
     }
 
+    .menu a {
+        font-size: 19px;
+    }
+
+    .menu li {
+        position: relative;
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .menu li::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: white;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .menu li:hover::after {
+        width: calc(100% / 3);
+        /* Set the width to 1/3 of the parent's width */
+    }
 
     @keyframes s9 {
         100% {
@@ -508,7 +561,7 @@
                             <div class="menu-close hidden-lg hidden-md">
                                 <span id="category" class="">Menu</span><i class="icon-close"></i>
                             </div>
-                            <ul class="nav navbar-nav">
+                            <ul class="nav navbar-nav" style="margin-top: -20px;">
                                 {% if pro %}
                                 <ul class="menu">
                                     <li class="menulist home">
@@ -573,56 +626,72 @@
                     <div class="btn_search">
                         <div class="header-search">
                             <div id="customSearch" class="input-group custom-search">
-                                <input type="text" name="search" value="" placeholder="Search here..."
-                                    class="form-control input-lg ui-autocomplete-input" />
+                                <input type="text" id="search-inputz" name="search" value=""
+                                    placeholder="Search here..." class="form-control input-lg ui-autocomplete-input"
+                                    autocomplete="off" />
                                 <span class="btn-search input-group-btn">
                                     <button type="button" class="btn btn-default btn-lg">
                                         <i class="search-icon icon-search"></i>
                                     </button>
                                 </span>
                             </div>
+                            <div id="search-results" class="dropdown-menu" style="display: none;">
+                                <!-- Results will be dynamically inserted here -->
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    var searchInput = $('#search-inputz');
+                                    var searchResults = $('#search-results');
 
-                            <script type="text/javascript">
-                                $("#customSearch .btn-search button").bind(
-                                    "click",
-                                    function () {
-                                        url = "#";
+                                    searchInput.on('input', function () {
+                                        var searchText = $(this).val().trim();
 
-                                        var search = $(
-                                            "#customSearch input[name='search']"
-                                        ).prop("value");
-                                        if (search) {
-                                            url += "&search=" + encodeURIComponent(search);
+                                        if (searchText.length > 0) {
+                                            $.ajax({
+                                                url: "{% url 'search' %}",
+                                                method: 'GET',
+                                                data: { 'search_text': searchText },
+                                                success: function (response) {
+                                                    searchResults.html('');
+
+                                                    if (response.length > 0) {
+                                                        $.each(response, function (index, result) {
+                                                            var url = "/categoryFilter/" + result.category_id;
+                                                            var item = $('<a>')
+                                                                .addClass('dropdown-item')
+                                                                .attr('href', url)
+                                                                .append($('<h5>').text(result.category_name));
+
+                                                            searchResults.append(item);
+                                                        });
+
+                                                        searchResults.show(); // Show the dropdown
+                                                    } else {
+                                                        searchResults.html('<h5>No results found.</h5>');
+                                                    }
+                                                },
+                                                error: function (xhr) {
+                                                    console.log(xhr.responseText);
+                                                }
+                                            });
+                                        } else {
+                                            searchResults.html('');
+                                            searchResults.hide(); // Hide the dropdown
                                         }
+                                    });
 
-                                        var category_id = $(
-                                            "#customSearch select[name='category_id']"
-                                        ).prop("value");
-                                        if (category_id > 0) {
-                                            url +=
-                                                "&category_id=" + encodeURIComponent(category_id);
-                                            // url += '&sub_category=true';
-                                            // url += '&description=true';
+                                    // Hide the dropdown when clicked outside
+                                    $(document).on('click', function (event) {
+                                        if (!$(event.target).closest('#customSearch').length) {
+                                            searchResults.hide();
                                         }
-
-                                        location = url;
-                                    }
-                                );
-
-                                $("#customSearch input[name='search']").bind(
-                                    "keydown",
-                                    function (e) {
-                                        if (e.keyCode == 13) {
-                                            $("#customSearch .btn-search button").trigger(
-                                                "click"
-                                            );
-                                        }
-                                    }
-                                );
+                                    });
+                                });
                             </script>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

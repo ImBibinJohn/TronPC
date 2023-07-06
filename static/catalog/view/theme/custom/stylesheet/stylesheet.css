@@ -419,6 +419,7 @@ header {
 }
 .header-bottom {
     padding: 15px 0;
+    height: 100px;
     border-top: 1px solid rgba(255,255,255,0.2);
 }
 .header-top {
