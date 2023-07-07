@@ -7,6 +7,7 @@ import locale
 import hashlib
 import datetime
 from App.models import *
+from functools import wraps
 from django.db.models import Q
 from django.urls import reverse
 from django.conf import settings
@@ -27,6 +28,20 @@ from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 
 def error_404(request, *args, **kwargs):
     return render(request, 'UserTemplates/404_robo.html', status=404)
+
+def maintenance(view_func):
+    @wraps(view_func)
+    def wrapped_view(request, *args, **kwargs):
+        try:
+            user_object = UserDetails.objects.get(email='admin@tronpc.web')
+        except UserDetails.DoesNotExist:
+            user_object = None
+        if user_object and user_object.city == 'live':
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect('under_maintenance')
+
+    return wrapped_view
 
 def change_init_page(request):
     if 'adminid' in request.session:
@@ -97,8 +112,6 @@ def under_maintenance(request):
     else:
         return redirect('login')
 
-
-
 def maintenance_login(request):
     if request.method == 'POST':
         user_email = request.POST['user_email']
@@ -129,6 +142,7 @@ def maintenance_login(request):
     else:
         return render(request, 'UserTemplates/maintenance.html')
 
+@maintenance
 def uregister(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -244,7 +258,7 @@ def uregister(request):
     else:
         return redirect('index')
 
-
+@maintenance
 def loginform(request):
     if request.method == 'POST':
         user_email = request.POST['user_email']
@@ -288,6 +302,7 @@ def loginform(request):
     else:
         return redirect('login')
 
+@maintenance
 def index(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -352,6 +367,7 @@ def index(request):
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@maintenance
 def mainIndex(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -364,6 +380,7 @@ def mainIndex(request):
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@maintenance
 def home(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -404,7 +421,7 @@ def home(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def add_to_cart_form(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -448,6 +465,7 @@ def add_to_cart_form(request, id):
     else:
         return redirect('/')
 
+@maintenance
 def add_to_cart_form_pre(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -493,7 +511,7 @@ def add_to_cart_form_pre(request, id):
     else:
         return redirect('/')
 
-
+@maintenance
 def cartQuaAdd(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -522,7 +540,7 @@ def cartQuaAdd(request, id):
     else:
         return redirect('/')
 
-
+@maintenance
 def categoryFilter(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -567,7 +585,7 @@ def categoryFilter(request, id):
     else:
         return redirect('/')
 
-
+@maintenance
 def checkOut(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -624,7 +642,7 @@ def checkOut(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def contactHome(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -652,7 +670,7 @@ def contactHome(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def contact(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -679,7 +697,7 @@ def contact(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def productsHome(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -713,7 +731,7 @@ def productsHome(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def allProducts(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -746,7 +764,7 @@ def allProducts(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def preBuiltHome(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -801,9 +819,8 @@ def search(request):
 
     return JsonResponse(serialized_results, safe=False)
 
-
+@maintenance
 def cart(request):
-
     if 'userid' in request.session:
         if request.session.has_key('userid'):
             userid = request.session['userid']
@@ -859,7 +876,7 @@ def cart(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def cartDelete(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -872,7 +889,7 @@ def cartDelete(request, id):
     else:
         return redirect('/')
 
-
+@maintenance
 def cusDelete(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -885,7 +902,7 @@ def cusDelete(request, id):
     else:
         return redirect('/')
 
-
+@maintenance
 def register(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -896,7 +913,7 @@ def register(request):
     else:
         return render(request, 'UserTemplates/register.html')
 
-
+@maintenance
 def login(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -907,7 +924,7 @@ def login(request):
     else:
         return render(request, 'UserTemplates/login.html')
 
-
+@maintenance
 def view(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -963,7 +980,7 @@ def view(request, id):
     else:
         return redirect('/')
 
-
+@maintenance
 def pcb(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -1052,7 +1069,7 @@ def pcb(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def pcbAddForm(request):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -1167,7 +1184,7 @@ def pcbAddForm(request):
     else:
         return redirect('/')
 
-
+@maintenance
 def pcbAddFormEdit(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -1263,7 +1280,7 @@ def pcbAddFormEdit(request, id):
     else:
         return redirect('/')
 
-
+@maintenance
 def addToCartPreBuilt(request, id):
     if 'userid' in request.session:
         if request.session.has_key('userid'):
@@ -1306,7 +1323,7 @@ def pcbCustom(request):
     product_ram = Product.objects.filter(category=category_ram.id)
     return render(request, 'UserTemplates/pcbCustom.html', {'cus_cod': cus_cod, 'product_ram': product_ram})
 
-
+@maintenance
 def logout(request):
     if 'userid' in request.session:
         request.session.flush()
@@ -1382,9 +1399,9 @@ def addBlogsForm(request):
 
 
 def editBlogs(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid = request.session['adminid']
             blog_list_edit = Blogs.objects.filter(id=id)
             blog_list = Blogs.objects.all()
             return render(request, 'AdminTemplates/addBlogs.html', {'blog_list': blog_list, 'blog_list_edit': blog_list_edit})
@@ -1394,9 +1411,9 @@ def editBlogs(request, id):
         return redirect('/')
 
 def editBlogsForm(request, id):
-    if 'userid' in request.session:
-        if request.session.has_key('userid'):
-            userid = request.session['userid']
+    if 'adminid' in request.session:
+        if request.session.has_key('adminid'):
+            adminid = request.session['adminid']
             if request.method == 'POST':
                 blog_name = request.POST['blog_name'].capitalize()
                 blog_link = request.POST['blog_link']
@@ -1872,7 +1889,7 @@ def add_sideBanners_form(request, id):
                         new_banner = Banners.objects.get(id=banner_id.id)
                         new_banner.bottom_right_banner = add_banner
                         new_banner.save()
-                    
+
                     else:
                         return redirect('sideBanners')
 
