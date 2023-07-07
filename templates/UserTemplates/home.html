@@ -119,10 +119,10 @@
                   </div>
 
                   <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
-                    <a href="{% url 'add_to_cart_form' special.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                    <a href="{% url 'add_to_cart_form' special.id %}"
+                      style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
                       onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                      onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
-                    >
+                      onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
                       ADD TO CART
                     </a>
                   </div>
@@ -233,24 +233,26 @@
                   <div class="thumb-description clearfix">
                     <div class="caption">
                       <h4 class="product-title">
-                        <a href="{% url 'view' product.id %}" id="product-name" style="font-weight: bold">{{product.product_name}}</a>
+                        <a href="{% url 'view' product.id %}" id="product-name"
+                          style="font-weight: bold">{{product.product_name}}</a>
                       </h4>
-                     
+
                       <div class="rating">
                         <span class="fa fa-stack"></span>
                       </div>
                       <p class="price">
-                        <span class="price-new" style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 60px; width: 100%;">₹{{product.price}}</span>
+                        <span class="price-new"
+                          style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 60px; width: 100%;">₹{{product.price}}</span>
                       </p>
-                  <div class="btn-all"
-                    style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 20px; width: 100%;">
-                    <a href="{% url 'add_to_cart_form' product.id %}"
-                      style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
-                      onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                      onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
-                      ADD TO CART
-                    </a>
-                  </div>
+                      <div class="btn-all"
+                        style="display: flex; justify-content: center; align-items: flex-end; position: absolute; bottom: 20px; width: 100%;">
+                        <a href="{% url 'add_to_cart_form' product.id %}"
+                          style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                          onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
+                          onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
+                          ADD TO CART
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -455,18 +457,18 @@
       });
     }
   </script>
-    <script>
-      window.addEventListener('DOMContentLoaded', (event) => {
-        const productElement = document.getElementById('product-names');
-        const productName = productElement.innerHTML;
-  
-        if (productName.length > 10) {
-          const truncatedName = productName.slice(0, 10) + '...';
-          productElement.innerHTML = truncatedName;
-          productElement.classList.add('formatted-name');
-        }
-      });
-    </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const productElement = document.getElementById('product-names');
+      const productName = productElement.innerHTML;
+
+      if (productName.length > 10) {
+        const truncatedName = productName.slice(0, 10) + '...';
+        productElement.innerHTML = truncatedName;
+        productElement.classList.add('formatted-name');
+      }
+    });
+  </script>
   <div class="service-box">
     <div class="page-title toggled">
       <h3>Our Services</h3>
@@ -475,13 +477,38 @@
       <div class="service-item">
         <div class="service">
           <div class="service-icon">
-            <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
             <lord-icon src="https://cdn.lordicon.com/uetqnvvg.json" trigger="loop"
               colors="primary:#121331,secondary:#3080e8" style="width:55px;height:50px">
             </lord-icon>
           </div>
           <div class="service-content">
             <h4 class="promo-title">All Kerala Shipping Available</h4>
+            <span class="promo-desc"></span>
+          </div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service">
+          <div class="service-icon">
+            <lord-icon src="https://cdn.lordicon.com/twprnhsj.json" trigger="hover"
+              colors="primary:#121331,secondary:#3080e8" style="width:55px;height:50px">
+            </lord-icon>
+          </div>
+          <div class="service-content">
+            <h4 class="promo-title">Cash On Delivery</h4>
+            <span class="promo-desc"></span>
+          </div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service">
+          <div class="service-icon">
+            <lord-icon src="https://cdn.lordicon.com/mjmrmyzg.json" trigger="hover"
+              colors="primary:#121331,secondary:#3080e8" style="width:55px;height:50px">
+            </lord-icon>
+          </div>
+          <div class="service-content">
+            <h4 class="promo-title">Professional Support</h4>
             <span class="promo-desc"></span>
           </div>
         </div>
@@ -502,10 +529,9 @@
               <div class="image countdown-images">
                 <div class="special-image">
                   <a href="#">
-                    <img src="{{dotd.product_image.url}}" alt="Sony TV" title="Sony TV"
-                      class="img-responsive" />
-                    <img class="img-responsive hover-img"
-                      src="{{dotd.product_image.url}}" title="Sony TV" alt="Sony TV" />
+                    <img src="{{dotd.product_image.url}}" alt="Sony TV" title="Sony TV" class="img-responsive" />
+                    <img class="img-responsive hover-img" src="{{dotd.product_image.url}}" title="Sony TV"
+                      alt="Sony TV" />
                   </a>
                   <!-- <div class="sale-text">
                     <span class="section-sale">On Sale!</span>
@@ -517,7 +543,8 @@
                 <div class="caption">
                   <div class="desc-inner">
                     <h4 class="product-title">
-                      <a href="{% url 'view' dotd.id %}" id="product-names" style="font-weight: bold">{{dotd.product_name}}</a>
+                      <a href="{% url 'view' dotd.id %}" id="product-names"
+                        style="font-weight: bold">{{dotd.product_name}}</a>
                     </h4>
                     <div class="price">
                       <span class="price-new" style="font-weight: bolder;font-size: 18px;">₹{{dotd.price}}</span>
@@ -527,10 +554,10 @@
                       <span class="fa fa-stack"></span>
                     </div>
                     <div class="btn-all" style="display: flex; justify-content: center; align-items: center;">
-                      <a href="{% url 'add_to_cart_form' dotd.id %}" style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
+                      <a href="{% url 'add_to_cart_form' dotd.id %}"
+                        style="display: inline-block; padding: 4px 8px; background-color: transparent; color: #4d94ff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease; font-size: 14px;"
                         onmouseover="this.style.backgroundColor='#4d94ff'; this.style.color='white';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
-                      >
+                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';">
                         ADD TO CART
                       </a>
                     </div>
